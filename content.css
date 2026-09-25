@@ -1,5 +1,5 @@
-/* content.css - Mobile View Unified Design System (v2.7) */
-/* Single Source of Truth: 100% Konsisten di In-Page Overlay & Standalone Studio */
+/* content.css - Mobile View Unified Design System (v3.0) */
+/* Single Source of Truth: Maximum Tactile Contrast Apple Cupertino Surface */
 
 :root {
   --apple-blue: #0071E3;
@@ -10,52 +10,136 @@
   --apple-indigo: #5E5CE6;
   --apple-teal: #64D2FF;
 
-  /* Dark Obsidian Theme (Default) */
+  /* ========================================================
+     DARK OBSIDIAN THEME (MAXIMUM CONTRAST & TACTILE CLARITY)
+     ======================================================== */
   --bg-page: #07090E;
-  --text-primary: #F9FAFB;
-  --text-secondary: #9CA3AF;
-  --topbar-bg: rgba(15, 20, 32, 0.82);
-  --topbar-border: rgba(255, 255, 255, 0.13);
-  --topbar-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.65), 0 8px 24px -4px rgba(0, 113, 227, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  --groove-bg: rgba(0, 0, 0, 0.42);
-  --groove-border: rgba(255, 255, 255, 0.08);
-  --groove-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.08);
+  --text-primary: #FFFFFF;
+  --text-secondary: #F1F5F9;
+  --topbar-bg: rgba(13, 17, 28, 0.95);
+  --topbar-border: rgba(255, 255, 255, 0.25);
+  --topbar-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.85), 0 8px 24px -4px rgba(0, 113, 227, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  /* Neomorphic Groove Track */
+  --groove-bg: rgba(0, 0, 0, 0.75);
+  --groove-border: rgba(255, 255, 255, 0.24);
+  --groove-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.80), 0 1px 0 rgba(255, 255, 255, 0.15);
+
+  /* Segmented Inactive Tab */
+  --tab-inactive-color: rgba(255, 255, 255, 0.88);
+  --tab-inactive-hover-bg: rgba(255, 255, 255, 0.18);
+  --tab-inactive-hover-color: #FFFFFF;
+
+  /* Segmented Active Pill */
   --tab-active-bg: #0071E3;
   --tab-active-text: #FFFFFF;
-  --tab-active-shadow: 0 2px 10px rgba(0, 113, 227, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  --pill-bg: rgba(255, 255, 255, 0.07);
-  --pill-border: rgba(255, 255, 255, 0.11);
-  --pill-text: #F1F5F9;
+  --tab-active-border: rgba(255, 255, 255, 0.40);
+  --tab-active-shadow: 0 2px 14px rgba(0, 113, 227, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.50);
+
+  /* Standard Tactile Button (.mv-btn) - High Contrast Plate */
+  --pill-bg: rgba(255, 255, 255, 0.20);
+  --pill-border: rgba(255, 255, 255, 0.35);
+  --pill-text: #FFFFFF;
+  --pill-shadow: 0 3px 8px rgba(0, 0, 0, 0.60), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  /* Active Tactile Button (.mv-btn.mv-btn-active) - Vivid Apple Blue */
+  --pill-active-bg: #0071E3;
+  --pill-active-border: #60A5FA;
+  --pill-active-text: #FFFFFF;
+  --pill-active-shadow: 0 3px 16px rgba(0, 113, 227, 0.90), inset 0 1px 0 rgba(255, 255, 255, 0.50);
+
+  /* Dimension Badge (Electric Cyan HUD) */
+  --dim-bg: rgba(14, 165, 233, 0.20);
+  --dim-border: rgba(56, 189, 248, 0.65);
+  --dim-text: #38BDF8;
+  --dim-shadow: 0 2px 6px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(56, 189, 248, 0.30);
+
+  /* Tactile Physical Keycap Badge (.mv-kbd) */
+  --kbd-bg: #000000;
+  --kbd-border: rgba(255, 255, 255, 0.45);
+  --kbd-text: #FFFFFF;
+  --kbd-shadow: 0 1px 3px rgba(0, 0, 0, 0.60), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+  /* Close Button (Crimson Warning Pill) */
+  --btn-close-bg: rgba(220, 38, 38, 0.35);
+  --btn-close-border: rgba(248, 113, 113, 0.70);
+  --btn-close-text: #FFFFFF;
+  --btn-close-shadow: 0 3px 10px rgba(0, 0, 0, 0.60), inset 0 1px 0 rgba(255, 255, 255, 0.30);
+  --btn-close-hover-bg: #DC2626;
+
+  /* Chassis & Ambient Halo */
   --chassis-bg: #0f1219;
   --chassis-outer: #1b202c;
   --chassis-rim: #2d3546;
-  --chassis-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 113, 227, 0.12);
-  --ambient-glow: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 75%);
+  --chassis-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.90), 0 0 35px rgba(0, 113, 227, 0.18);
+  --ambient-glow: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.22) 0%, rgba(99, 102, 241, 0.12) 50%, transparent 75%);
 }
 
-/* Light Platinum Theme */
+/* ========================================================
+   LIGHT PLATINUM THEME (MAXIMUM CONTRAST & TACTILE CLARITY)
+   ======================================================== */
 #mv-studio-overlay.mv-theme-light,
 body.mv-theme-light {
   --bg-page: #F5F5F7;
-  --text-primary: #1D1D1F;
-  --text-secondary: #86868B;
-  --topbar-bg: rgba(255, 255, 255, 0.85);
-  --topbar-border: rgba(255, 255, 255, 0.95);
-  --topbar-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08), 0 4px 14px -2px rgba(0, 113, 227, 0.06), inset 0 1px 0 rgba(255, 255, 255, 1);
-  --groove-bg: rgba(0, 0, 0, 0.05);
-  --groove-border: rgba(0, 0, 0, 0.06);
-  --groove-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(0, 0, 0, 0.04), 0 1px 0 rgba(255, 255, 255, 0.9);
+  --text-primary: #0F172A;
+  --text-secondary: #1E293B;
+  --topbar-bg: rgba(255, 255, 255, 0.96);
+  --topbar-border: rgba(0, 0, 0, 0.22);
+  --topbar-shadow: 0 18px 40px -4px rgba(0, 0, 0, 0.16), 0 4px 14px -2px rgba(0, 113, 227, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+
+  /* Neomorphic Groove Track */
+  --groove-bg: rgba(0, 0, 0, 0.10);
+  --groove-border: rgba(0, 0, 0, 0.18);
+  --groove-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  /* Segmented Inactive Tab */
+  --tab-inactive-color: #1E293B;
+  --tab-inactive-hover-bg: rgba(0, 0, 0, 0.10);
+  --tab-inactive-hover-color: #0F172A;
+
+  /* Segmented Active Pill */
   --tab-active-bg: #FFFFFF;
-  --tab-active-text: #1D1D1F;
-  --tab-active-shadow: 0 2px 8px rgba(0, 0, 0, 0.09), 0 1px 2px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 1);
-  --pill-bg: rgba(0, 0, 0, 0.04);
-  --pill-border: rgba(0, 0, 0, 0.08);
-  --pill-text: #1D1D1F;
+  --tab-active-text: #0071E3;
+  --tab-active-border: rgba(0, 0, 0, 0.22);
+  --tab-active-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 1px 2px rgba(0, 0, 0, 0.10), inset 0 1px 0 #FFFFFF;
+
+  /* Standard Tactile Button (.mv-btn) - Solid Elevated White Card */
+  --pill-bg: #FFFFFF;
+  --pill-border: rgba(0, 0, 0, 0.25);
+  --pill-text: #0F172A;
+  --pill-shadow: 0 2px 6px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08), inset 0 1px 0 #FFFFFF;
+
+  /* Active Tactile Button (.mv-btn.mv-btn-active) - Solid Apple Blue */
+  --pill-active-bg: #0071E3;
+  --pill-active-border: #005BB5;
+  --pill-active-text: #FFFFFF;
+  --pill-active-shadow: 0 3px 12px rgba(0, 113, 227, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+
+  /* Dimension Badge (Apple Blue Capsule) */
+  --dim-bg: #FFFFFF;
+  --dim-border: rgba(0, 113, 227, 0.50);
+  --dim-text: #0071E3;
+  --dim-shadow: 0 2px 5px rgba(0, 113, 227, 0.15), inset 0 1px 0 #FFFFFF;
+
+  /* Tactile Physical Keycap Badge (.mv-kbd) */
+  --kbd-bg: #F1F5F9;
+  --kbd-border: rgba(0, 0, 0, 0.28);
+  --kbd-text: #0F172A;
+  --kbd-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+
+  /* Close Button (Crimson Warning Pill) */
+  --btn-close-bg: #FEE2E2;
+  --btn-close-border: #EF4444;
+  --btn-close-text: #DC2626;
+  --btn-close-shadow: 0 2px 6px rgba(220, 38, 38, 0.20), inset 0 1px 0 #FFFFFF;
+  --btn-close-hover-bg: #DC2626;
+
+  /* Chassis & Ambient Halo */
   --chassis-bg: #1c1f26;
   --chassis-outer: #2c323f;
   --chassis-rim: #434c5f;
   --chassis-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.25), 0 0 35px rgba(0, 113, 227, 0.08);
-  --ambient-glow: radial-gradient(ellipse at center, rgba(0, 113, 227, 0.12) 0%, rgba(94, 92, 230, 0.06) 50%, transparent 75%);
+  --ambient-glow: radial-gradient(ellipse at center, rgba(0, 113, 227, 0.15) 0%, rgba(94, 92, 230, 0.08) 50%, transparent 75%);
 }
 
 /* Base Workbench Canvas (Overlay & Standalone) */
@@ -80,7 +164,7 @@ body.mv-standalone-body {
   flex-direction: column !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  font-family: -apple-system, BlinkMacSystemFont, SF Pro Display, Plus Jakarta Sans, system-ui, sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", system-ui, sans-serif !important;
   overflow: hidden !important;
   user-select: none !important;
   -webkit-user-select: none !important;
@@ -107,7 +191,7 @@ body.mv-standalone-body {
   background: var(--topbar-bg) !important;
   backdrop-filter: blur(36px) saturate(200%) !important;
   -webkit-backdrop-filter: blur(36px) saturate(200%) !important;
-  border: 1px solid var(--topbar-border) !important;
+  border: 1.5px solid var(--topbar-border) !important;
   border-radius: 18px !important;
   box-shadow: var(--topbar-shadow) !important;
   display: flex !important;
@@ -126,47 +210,55 @@ body.mv-standalone-body {
   gap: 5px !important;
 }
 
-/* Liquid Pool Brand Capsule */
+/* Liquid Pool Brand Capsule (High Contrast Accent) */
 .mv-brand {
   display: flex !important;
   align-items: center !important;
   gap: 6px !important;
-  color: var(--apple-blue) !important;
-  font-weight: 700 !important;
+  color: #38BDF8 !important;
+  font-weight: 800 !important;
   font-size: 11px !important;
   letter-spacing: 0.6px !important;
   text-transform: uppercase !important;
-  padding: 3px 9px !important;
+  padding: 3px 10px !important;
   border-radius: 9999px !important;
-  background: rgba(0, 113, 227, 0.10) !important;
-  border: 1px solid rgba(0, 113, 227, 0.22) !important;
+  background: rgba(0, 113, 227, 0.24) !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.50) !important;
   flex-shrink: 0 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+}
+#mv-studio-overlay.mv-theme-light .mv-brand,
+body.mv-theme-light .mv-brand {
+  color: var(--apple-blue) !important;
+  background: rgba(0, 113, 227, 0.12) !important;
+  border-color: rgba(0, 113, 227, 0.40) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Neomorphic Recessed Groove (Concentric Radius: 12px) */
 .mv-neo-groove {
   background: var(--groove-bg) !important;
   box-shadow: var(--groove-shadow) !important;
-  border: 1px solid var(--groove-border) !important;
+  border: 1.5px solid var(--groove-border) !important;
   border-radius: 12px !important;
   padding: 2.5px !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 2px !important;
-  transition: background-color 200ms ease !important;
+  transition: background-color 200ms ease, border-color 200ms ease !important;
 }
 
 /* Segmented Tab Pill (Concentric Radius: 9px) */
 .mv-tab-pill {
-  padding: 4px 10px !important;
+  padding: 4px 11px !important;
   border-radius: 9px !important;
   font-size: 11px !important;
-  font-weight: 600 !important;
-  color: var(--text-secondary) !important;
+  font-weight: 700 !important;
+  color: var(--tab-inactive-color) !important;
   background: transparent !important;
-  border: none !important;
+  border: 1px solid transparent !important;
   cursor: pointer !important;
-  transition: color 120ms ease, background-color 120ms ease, box-shadow 120ms ease, transform 120ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: color 120ms ease, background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease, transform 120ms cubic-bezier(0.16, 1, 0.3, 1) !important;
   outline: none !important;
   display: flex !important;
   align-items: center !important;
@@ -176,7 +268,8 @@ body.mv-standalone-body {
   box-sizing: border-box !important;
 }
 .mv-tab-pill:hover {
-  color: var(--text-primary) !important;
+  color: var(--tab-inactive-hover-color) !important;
+  background: var(--tab-inactive-hover-bg) !important;
 }
 .mv-tab-pill:active {
   transform: scale(0.96) !important;
@@ -184,77 +277,119 @@ body.mv-standalone-body {
 .mv-tab-pill.mv-active {
   background: var(--tab-active-bg) !important;
   color: var(--tab-active-text) !important;
+  border: 1px solid var(--tab-active-border) !important;
+  font-weight: 800 !important;
   box-shadow: var(--tab-active-shadow) !important;
 }
 
-/* Tactile Icon Button */
+/* Tactile High-Contrast Icon Button */
 .mv-btn {
   background: var(--pill-bg) !important;
-  border: 1px solid var(--pill-border) !important;
+  border: 1.5px solid var(--pill-border) !important;
   color: var(--pill-text) !important;
   font-size: 11px !important;
-  font-weight: 600 !important;
-  padding: 4px 9px !important;
+  font-weight: 700 !important;
+  padding: 4px 10px !important;
   border-radius: 10px !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
   gap: 5px !important;
-  transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1), background-color 120ms ease, border-color 120ms ease, color 120ms ease !important;
+  box-shadow: var(--pill-shadow) !important;
+  transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1), background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease !important;
   outline: none !important;
   min-height: 28px !important;
   box-sizing: border-box !important;
   white-space: nowrap !important;
 }
 .mv-btn:hover {
-  background: rgba(0, 113, 227, 0.15) !important;
-  border-color: rgba(0, 113, 227, 0.3) !important;
+  background: rgba(0, 113, 227, 0.30) !important;
+  border-color: #38BDF8 !important;
+  color: #38BDF8 !important;
+  transform: translateY(-0.5px) !important;
+}
+#mv-studio-overlay.mv-theme-light .mv-btn:hover,
+body.mv-theme-light .mv-btn:hover {
+  background: #EFF6FF !important;
+  border-color: var(--apple-blue) !important;
   color: var(--apple-blue) !important;
 }
 .mv-btn:active {
   transform: scale(0.95) !important;
 }
-.mv-btn-active {
-  background: rgba(0, 113, 227, 0.20) !important;
-  border-color: var(--apple-blue) !important;
-  color: var(--apple-blue) !important;
+.mv-btn.mv-btn-active {
+  background: var(--pill-active-bg) !important;
+  border-color: var(--pill-active-border) !important;
+  color: var(--pill-active-text) !important;
+  box-shadow: var(--pill-active-shadow) !important;
 }
 
-/* Close Pill */
+/* Close Pill (High Contrast Crimson Warning) */
 .mv-btn-close {
-  background: rgba(239, 68, 68, 0.12) !important;
-  border-color: rgba(239, 68, 68, 0.25) !important;
-  color: #ef4444 !important;
+  background: var(--btn-close-bg) !important;
+  border: 1.5px solid var(--btn-close-border) !important;
+  color: var(--btn-close-text) !important;
+  box-shadow: var(--btn-close-shadow) !important;
 }
 .mv-btn-close:hover {
-  background: rgba(239, 68, 68, 0.25) !important;
-  border-color: #ef4444 !important;
-  color: #ffffff !important;
+  background: var(--btn-close-hover-bg) !important;
+  border-color: var(--btn-close-hover-bg) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 12px rgba(239, 68, 68, 0.60) !important;
 }
 
-/* Live Dimension Capsule */
+/* Live Dimension Capsule (High-Visibility Monospace HUD) */
 .mv-dim-pill {
-  font-family: ui-monospace, SF Mono, monospace !important;
+  font-family: ui-monospace, "SF Mono", monospace !important;
   font-variant-numeric: tabular-nums !important;
-  font-size: 10px !important;
-  font-weight: 600 !important;
-  color: var(--text-secondary) !important;
-  background: var(--groove-bg) !important;
-  border: 1px solid var(--groove-border) !important;
-  padding: 3px 8px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  color: var(--dim-text) !important;
+  background: var(--dim-bg) !important;
+  border: 1.5px solid var(--dim-border) !important;
+  padding: 3px 9px !important;
   border-radius: 8px !important;
   white-space: nowrap !important;
+  letter-spacing: 0.4px !important;
+  box-shadow: var(--dim-shadow) !important;
 }
 
+/* Tactile Physical Keycap Badge (.mv-kbd) */
 .mv-kbd {
-  font-size: 9px !important;
-  background: var(--groove-bg) !important;
-  border: 1px solid var(--groove-border) !important;
-  padding: 1px 4px !important;
+  font-size: 9.5px !important;
+  background: var(--kbd-bg) !important;
+  border: 1px solid var(--kbd-border) !important;
+  padding: 1.5px 5px !important;
   border-radius: 4px !important;
-  color: var(--text-secondary) !important;
+  color: var(--kbd-text) !important;
   font-family: ui-monospace, monospace !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  display: inline-block !important;
+  box-shadow: var(--kbd-shadow) !important;
+}
+
+.mv-btn.mv-btn-active .mv-kbd {
+  background: rgba(255, 255, 255, 0.30) !important;
+  border-color: rgba(255, 255, 255, 0.55) !important;
+  color: #FFFFFF !important;
+}
+
+.mv-btn-close .mv-kbd {
+  background: rgba(0, 0, 0, 0.45) !important;
+  border-color: rgba(248, 113, 113, 0.50) !important;
+  color: #FFFFFF !important;
+}
+#mv-studio-overlay.mv-theme-light .mv-btn-close .mv-kbd,
+body.mv-theme-light .mv-btn-close .mv-kbd {
+  background: rgba(220, 38, 38, 0.15) !important;
+  border-color: rgba(220, 38, 38, 0.35) !important;
+  color: #DC2626 !important;
+}
+.mv-btn-close:hover .mv-kbd {
+  background: rgba(255, 255, 255, 0.35) !important;
+  border-color: rgba(255, 255, 255, 0.60) !important;
+  color: #FFFFFF !important;
 }
 
 /* Canvas Area */

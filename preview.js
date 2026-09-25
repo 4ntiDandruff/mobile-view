@@ -41,18 +41,19 @@
     }
   };
 
+  // Baca target URL dan opsi dari query parameter
+  const params = new URLSearchParams(window.location.search);
+  const themeParam = params.get('theme');
+
   let state = {
-    activeDeviceKey: localStorage.getItem('mv_device') || 'iphone15pro',
+    activeDeviceKey: params.get('device') || localStorage.getItem('mv_device') || 'iphone15pro',
     isLandscape: localStorage.getItem('mv_landscape') === 'true',
     scaleMode: localStorage.getItem('mv_scale_mode') || 'fit',
     showFrame: localStorage.getItem('mv_frame') !== 'false',
-    theme: localStorage.getItem('mv_theme') || 'dark',
+    theme: (themeParam === 'light' || themeParam === 'dark') ? themeParam : (localStorage.getItem('mv_theme') || 'dark'),
     zoom: 1.0,
     currentUrl: 'https://google.com'
   };
-
-  // Baca target URL dari query parameter (?url=https://...)
-  const params = new URLSearchParams(window.location.search);
   let target = params.get('url');
   if (target && target !== 'about:blank') {
     if (!target.startsWith('http://') && !target.startsWith('https://') && !target.startsWith('file://')) {
