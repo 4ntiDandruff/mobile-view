@@ -1,4 +1,4 @@
-// content.js - Mobile View Apple Studio Edition (v2.4)
+// content.js - Mobile View Liquid Apple UI Edition (v2.5)
 
 (function () {
   // 1. Sekring Anti-Rekursi: Jangan pernah jalan di dalam iframe
@@ -56,6 +56,7 @@
     isLandscape: localStorage.getItem('mv_landscape') === 'true',
     scaleMode: localStorage.getItem('mv_scale_mode') || 'fit',
     showFrame: localStorage.getItem('mv_frame') !== 'false',
+    theme: localStorage.getItem('mv_theme') || 'dark',
     zoom: 1.0,
     originalOverflowHtml: '',
     originalOverflowBody: ''
@@ -80,6 +81,9 @@
     const overlay = document.getElementById('mv-studio-overlay');
     if (!overlay) return;
 
+    // Terapkan tema Liquid Apple
+    overlay.classList.toggle('mv-theme-light', state.theme === 'light');
+
     const dev = DEVICES[state.activeDeviceKey] || DEVICES.iphone15pro;
     const screenW = state.isLandscape ? dev.height : dev.width;
     const screenH = state.isLandscape ? dev.width : dev.height;
@@ -94,6 +98,7 @@
     const hwButtonsContainer = document.getElementById('mv-hw-buttons');
     const dimBadge = document.getElementById('mv-dim-badge');
     const frameToggleBtn = document.getElementById('mv-frame-btn');
+    const themeBtn = document.getElementById('mv-theme-btn');
 
     if (!frameEl || !scaleWrapper) return;
 
@@ -120,7 +125,7 @@
 
     // 3. Update Badge Dimensi Monospace
     if (dimBadge) {
-      dimBadge.textContent = `${screenW} × ${screenH}`;
+      dimBadge.textContent = `${screenW} × ${screenH} px`;
     }
 
     // 4. Tombol Fisik Samping (Hardware Buttons di Sisi Luar Bezel)
@@ -165,6 +170,13 @@
       frameToggleBtn.classList.toggle('mv-btn-active', state.showFrame);
     }
 
+    if (themeBtn) {
+      themeBtn.innerHTML = state.theme === 'light' 
+        ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`
+        : `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
+      themeBtn.title = state.theme === 'light' ? 'Beralih ke Mode Gelap' : 'Beralih ke Mode Terang (Apple Platinum)';
+    }
+
     const fitBtn = document.getElementById('mv-fit-btn');
     const z100Btn = document.getElementById('mv-z100-btn');
 
@@ -185,7 +197,7 @@
   }
 
   /**
-   * Membuat dan Memunculkan Overlay Studio Apple Studio Edition
+   * Membuat dan Memunculkan Overlay Studio Liquid Apple UI
    */
   function openMobileView() {
     if (document.getElementById('mv-studio-overlay')) return;
@@ -197,8 +209,11 @@
 
     const overlay = document.createElement('div');
     overlay.id = 'mv-studio-overlay';
+    if (state.theme === 'light') {
+      overlay.classList.add('mv-theme-light');
+    }
 
-    // HTML Struktur Overlay Apple Studio
+    // HTML Struktur Overlay Liquid Apple
     overlay.innerHTML = `
       <!-- Topbar Studio (Cupertino Frosted Crystal Island) -->
       <div id="mv-topbar">
@@ -231,7 +246,7 @@
 
         <!-- Center: Metrics + Rotate + Frame Toggle + Reload -->
         <div class="mv-group">
-          <div id="mv-dim-badge" class="mv-dim-pill">393 × 852</div>
+          <div id="mv-dim-badge" class="mv-dim-pill">393 × 852 px</div>
 
           <!-- Rotate Button -->
           <button id="mv-rot-btn" class="mv-btn ${state.isLandscape ? 'mv-btn-active' : ''}" title="Putar Layar (Tekan 'R')">
@@ -262,13 +277,21 @@
           </button>
         </div>
 
-        <!-- Right: Segmented Zoom & Close -->
+        <!-- Right: Segmented Zoom, Theme Toggle, & Close -->
         <div class="mv-group">
           <!-- Neomorphic Segmented Track for Zoom -->
           <div class="mv-neo-groove">
             <button id="mv-fit-btn" class="mv-tab-pill ${state.scaleMode === 'fit' ? 'mv-active' : ''}">Fit</button>
             <button id="mv-z100-btn" class="mv-tab-pill ${state.scaleMode === '1.0' ? 'mv-active' : ''}">100%</button>
           </div>
+
+          <!-- Cupertino Theme Toggle (Light / Dark) -->
+          <button id="mv-theme-btn" class="mv-btn" title="Ganti Tema (Terang / Gelap)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+            </svg>
+          </button>
 
           <!-- Close / Back to Desktop -->
           <button id="mv-close-btn" class="mv-btn mv-btn-close" title="Kembali ke Desktop (Esc / Alt+M)">
@@ -335,6 +358,12 @@
     document.getElementById('mv-z100-btn').addEventListener('click', () => {
       state.scaleMode = '1.0';
       localStorage.setItem('mv_scale_mode', '1.0');
+      updateChassisView();
+    });
+
+    document.getElementById('mv-theme-btn').addEventListener('click', () => {
+      state.theme = state.theme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('mv_theme', state.theme);
       updateChassisView();
     });
 
