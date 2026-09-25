@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Mobile View - Device Frame Studio",
-  "version": "1.0.0",
-  "description": "Pratinjau tampilan mobile instan dengan bingkai fisik smartphone, rotasi, zoom, dan siap inspect element.",
+  "version": "1.1.0",
+  "description": "Pratinjau tampilan mobile instan dengan bingkai fisik smartphone, toggle 1-klik, dan siap inspect element.",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -10,7 +10,7 @@
     "128": "icons/icon128.png"
   },
   "action": {
-    "default_title": "Buka di Mobile View (Alt+M)",
+    "default_title": "Toggle Mobile View (Alt+M)",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
@@ -24,12 +24,22 @@
   "permissions": [
     "activeTab",
     "tabs",
+    "scripting",
     "contextMenus",
     "storage",
     "declarativeNetRequest"
   ],
   "host_permissions": [
     "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
   ],
   "declarative_net_request": {
     "rule_resources": [
@@ -46,7 +56,7 @@
         "default": "Alt+M",
         "mac": "Alt+M"
       },
-      "description": "Buka halaman saat ini di Mobile View"
+      "description": "Toggle Mobile View pada tab aktif"
     }
   }
 }

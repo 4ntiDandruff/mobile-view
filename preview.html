@@ -3,439 +3,125 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mobile View - Studio</title>
+  <title>Mobile View - Standalone Studio</title>
   <link rel="icon" type="image/png" href="icons/icon32.png">
-  
-  <!-- CDN Zero-Build: Tailwind & Alpine.js -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+  <link rel="stylesheet" href="content.css">
   <style>
-    /* Dot Grid Backgrounds */
-    .bg-grid-dark {
-      background-color: #0b0f17;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-      background-size: 24px 24px;
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #0b0f17;
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    .bg-grid-light {
-      background-color: #f1f5f9;
-      background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px);
-      background-size: 24px 24px;
+    #mv-studio-standalone {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
-    .bg-clean-slate {
-      background-color: #0d121d;
-    }
-
-    /* Hardware Chassis Themes */
-    .chassis-black {
-      --frame-outer: #1c1f26;
-      --frame-rim: #333842;
-      --frame-inner: #0a0b0e;
-      --btn-color: #2b303c;
-    }
-    .chassis-silver {
-      --frame-outer: #868c98;
-      --frame-rim: #cfd4dc;
-      --frame-inner: #1a1c22;
-      --btn-color: #9ba1ad;
-    }
-    .chassis-blue {
-      --frame-outer: #1e293b;
-      --frame-rim: #38bdf8;
-      --frame-inner: #0f172a;
-      --btn-color: #2e3f59;
-    }
-
-    /* Device Chassis Base */
-    .device-chassis {
-      position: relative;
-      background-color: var(--frame-inner);
-      box-shadow: 
-        0 0 0 10px var(--frame-outer),
-        0 0 0 11px var(--frame-rim),
-        0 25px 60px -15px rgba(0, 0, 0, 0.75),
-        0 0 35px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* Hardware Buttons (Simulasi Tombol Fisik) */
-    .btn-hardware {
-      position: absolute;
-      background: var(--btn-color);
-      border-radius: 3px;
-      z-index: -1;
-      box-shadow: -1px 0 2px rgba(0,0,0,0.5);
-    }
-
-    /* Dynamic Island */
-    .dynamic-island {
-      position: absolute;
-      top: 11px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 118px;
-      height: 32px;
-      background: #000000;
-      border-radius: 20px;
-      z-index: 40;
+    .mv-url-form {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-      pointer-events: none;
-    }
-    .camera-lens {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #1e3a8a 0%, #050b14 70%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    /* Punch Hole Camera */
-    .punch-hole {
-      position: absolute;
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #2563eb 0%, #030712 80%);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      z-index: 40;
-      pointer-events: none;
+      border-radius: 8px;
+      padding: 3px 8px;
+      gap: 6px;
+      flex: 1;
+      max-width: 400px;
     }
-
-    /* Classic Notch */
-    .classic-notch {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 160px;
-      height: 26px;
-      background: #000000;
-      border-bottom-left-radius: 16px;
-      border-bottom-right-radius: 16px;
-      z-index: 40;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-    }
-    .speaker-slit {
-      width: 46px;
-      height: 4px;
-      background: #232730;
-      border-radius: 3px;
-    }
-
-    /* Home Indicator Bar */
-    .home-bar {
-      position: absolute;
-      bottom: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 135px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.5);
-      border-radius: 4px;
-      z-index: 40;
-      pointer-events: none;
-      backdrop-filter: blur(4px);
-    }
-
-    /* Hide scrollbars on workbench */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.2);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 4px;
+    .mv-url-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #f8fafc;
+      font-size: 12px;
+      font-family: monospace;
+      width: 100%;
     }
   </style>
 </head>
-<body 
-  x-data="mobileStudio()" 
-  class="h-screen w-screen overflow-hidden flex flex-col font-sans select-none"
-  :class="{
-    'bg-grid-dark text-slate-100': canvasBg === 'dark',
-    'bg-grid-light text-slate-800': canvasBg === 'light',
-    'bg-clean-slate text-slate-100': canvasBg === 'slate'
-  }"
->
+<body>
+  <div id="mv-studio-standalone">
+    <!-- Standalone Header -->
+    <div id="mv-topbar">
+      <div class="mv-group">
+        <div class="mv-brand">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect width="14" height="20" x="5" y="2" rx="3" ry="3"/>
+            <path d="M12 18h.01"/>
+          </svg>
+          <span>Mobile View</span>
+        </div>
 
-  <!-- ================= TOP WORKBENCH HEADER ================= -->
-  <header class="h-14 border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md px-4 flex items-center justify-between z-50 shrink-0 gap-3 text-sm">
-    
-    <!-- Left: Brand & URL Form -->
-    <div class="flex items-center gap-3 min-w-0 flex-1">
-      <!-- Brand Pill -->
-      <div class="flex items-center gap-2 px-2.5 py-1 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 font-semibold shrink-0">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect width="14" height="20" x="5" y="2" rx="3" ry="3"/>
-          <path d="M12 18h.01"/>
-        </svg>
-        <span class="text-xs tracking-wider uppercase">Mobile View</span>
+        <!-- URL Input -->
+        <form id="url-form" class="mv-url-form">
+          <input type="text" id="url-input" class="mv-url-input" placeholder="https://..." value="https://google.com">
+          <button type="submit" class="mv-btn" style="padding: 2px 6px; font-size: 11px;">Muat</button>
+        </form>
+
+        <!-- Device Dropdown -->
+        <select id="device-select" class="mv-select">
+          <option value="iphone15pro">iPhone 15 Pro (393×852)</option>
+          <option value="iphone14">iPhone 14 (390×844)</option>
+          <option value="iphonese">iPhone SE (375×667)</option>
+          <option value="galaxys24">Galaxy S24 (412×915)</option>
+          <option value="pixel8">Pixel 8 (412×892)</option>
+          <option value="ipadmini">iPad Mini (768×1024)</option>
+        </select>
+
+        <!-- Rotate Button -->
+        <button id="rot-btn" class="mv-btn" title="Putar Layar (R)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          <span>Putar</span>
+          <span class="mv-kbd">R</span>
+        </button>
       </div>
 
-      <!-- Live URL Input Bar -->
-      <form @submit.prevent="submitUrl()" class="flex items-center gap-1.5 flex-1 max-w-xl bg-slate-950/70 border border-slate-700/60 rounded-lg px-2.5 py-1 focus-within:border-sky-500 transition-colors">
-        <!-- Status indicator -->
-        <span class="w-2 h-2 rounded-full shrink-0" :class="isLoading ? 'bg-amber-400 animate-ping' : 'bg-emerald-400'"></span>
-        
-        <input 
-          type="text" 
-          x-model="urlInput"
-          placeholder="http://localhost:3000..." 
-          class="bg-transparent border-0 outline-none text-xs text-slate-200 w-full placeholder-slate-500 font-mono"
-        >
+      <!-- Right: Inspect Hint & Zoom -->
+      <div class="mv-group">
+        <div class="mv-inspect-hint">
+          <span>Klik kanan di layar HP ➜ Inspect (F12)</span>
+        </div>
 
-        <!-- Go / Navigate Button -->
-        <button type="submit" title="Muat URL" class="p-1 hover:text-sky-400 text-slate-400 transition-colors">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="9 18 15 12 9 6"/>
-          </svg>
-        </button>
+        <div style="display: flex; gap: 3px; background: rgba(0,0,0,0.3); padding: 2px; border-radius: 8px;">
+          <button id="fit-btn" class="mv-btn mv-btn-active" style="padding: 4px 8px; font-size: 11px;">Fit</button>
+          <button id="z75-btn" class="mv-btn" style="padding: 4px 8px; font-size: 11px;">75%</button>
+          <button id="z100-btn" class="mv-btn" style="padding: 4px 8px; font-size: 11px;">100%</button>
+        </div>
 
-        <!-- Refresh Button -->
-        <button type="button" @click="reloadFrame()" title="Segarkan (Reload)" class="p-1 hover:text-sky-400 text-slate-400 transition-colors">
-          <svg class="w-3.5 h-3.5" :class="{'animate-spin text-sky-400': isLoading}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button id="reload-btn" class="mv-btn" title="Segarkan">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
             <path d="M3 3v5h5"/>
             <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
             <path d="M16 21h5v-5"/>
           </svg>
         </button>
-
-        <!-- Copy URL Button -->
-        <button type="button" @click="copyUrl()" title="Salin URL" class="p-1 hover:text-sky-400 text-slate-400 transition-colors relative">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
-            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
-          </svg>
-          <span x-show="copiedTooltip" x-cloak class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-sky-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded shadow whitespace-nowrap">
-            Tersalin!
-          </span>
-        </button>
-
-        <!-- Open External Tab -->
-        <button type="button" @click="openExternal()" title="Buka di tab browser biasa" class="p-1 hover:text-sky-400 text-slate-400 transition-colors">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15 3 21 3 21 9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-        </button>
-      </form>
+      </div>
     </div>
 
-    <!-- Center/Right: Device Controls -->
-    <div class="flex items-center gap-2 shrink-0">
-      
-      <!-- Device Selector Dropdown -->
-      <div class="relative" x-data="{ open: false }">
-        <button 
-          @click="open = !open" 
-          class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700/80 text-slate-200 text-xs px-3 py-1.5 rounded-lg border border-slate-700 transition-colors"
-        >
-          <span class="font-medium" x-text="activeDevice.name"></span>
-          <span class="text-[11px] text-slate-400 font-mono" x-text="`${screenWidth} × ${screenHeight}`"></span>
-          <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
-        </button>
-
-        <!-- Dropdown Menu -->
-        <div 
-          x-show="open" 
-          @click.outside="open = false" 
-          x-cloak 
-          class="absolute right-0 mt-1.5 w-64 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl py-1.5 z-50 text-xs"
-        >
-          <div class="px-3 py-1 text-[10px] uppercase font-bold tracking-wider text-slate-400 border-b border-slate-800">
-            Pilih Perangkat
+    <!-- Canvas -->
+    <div id="mv-canvas">
+      <div id="mv-scale-wrapper">
+        <div id="mv-phone-frame" class="mv-phone-frame">
+          <div id="mv-hw-buttons"></div>
+          <div id="mv-screen-container" class="mv-screen-container">
+            <div id="mv-notch-container"></div>
+            <iframe id="mv-viewport-iframe" src="https://google.com"></iframe>
+            <div class="mv-home-bar"></div>
           </div>
-
-          <template x-for="(dev, key) in devices" :key="key">
-            <button 
-              type="button"
-              @click="setDevice(key); open = false;"
-              class="w-full text-left px-3 py-2 flex items-center justify-between hover:bg-slate-800 transition-colors"
-              :class="deviceKey === key ? 'text-sky-400 bg-sky-500/10 font-medium' : 'text-slate-300'"
-            >
-              <div class="flex flex-col">
-                <span x-text="dev.name"></span>
-                <span class="text-[10px] text-slate-500 font-mono" x-text="`${dev.width} × ${dev.height} px`"></span>
-              </div>
-              <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400" x-text="dev.category"></span>
-            </button>
-          </template>
         </div>
       </div>
-
-      <!-- Orientation Toggle (Portrait ⇄ Landscape) -->
-      <button 
-        type="button" 
-        @click="toggleOrientation()" 
-        title="Putar Layar (Tekan tombol 'R')"
-        class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs transition-colors"
-        :class="isLandscape ? 'bg-sky-500/20 text-sky-400 border-sky-500/40' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'"
-      >
-        <svg class="w-3.5 h-3.5 transition-transform duration-300" :class="isLandscape ? 'rotate-90' : 'rotate-0'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
-        </svg>
-        <span class="hidden sm:inline" x-text="isLandscape ? 'Landscape' : 'Portrait'"></span>
-        <kbd class="text-[9px] bg-slate-950 px-1 py-0.2 rounded border border-slate-700 text-slate-400">R</kbd>
-      </button>
-
-      <!-- Zoom Scale Dropdown -->
-      <div class="flex items-center bg-slate-800 border border-slate-700 rounded-lg p-0.5 text-xs">
-        <button 
-          @click="setScaleMode('fit')" 
-          class="px-2 py-1 rounded transition-colors"
-          :class="scaleMode === 'fit' ? 'bg-sky-500 text-slate-950 font-bold' : 'text-slate-300 hover:text-white'"
-        >
-          Fit
-        </button>
-        <button 
-          @click="setScaleMode('0.75')" 
-          class="px-2 py-1 rounded transition-colors"
-          :class="scaleMode === '0.75' ? 'bg-sky-500 text-slate-950 font-bold' : 'text-slate-300 hover:text-white'"
-        >
-          75%
-        </button>
-        <button 
-          @click="setScaleMode('1.0')" 
-          class="px-2 py-1 rounded transition-colors"
-          :class="scaleMode === '1.0' ? 'bg-sky-500 text-slate-950 font-bold' : 'text-slate-300 hover:text-white'"
-        >
-          100%
-        </button>
-      </div>
-
-      <!-- Chassis Theme Selector -->
-      <div class="flex items-center gap-1 bg-slate-800 border border-slate-700 rounded-lg p-1">
-        <button @click="setBezelTheme('black')" title="Midnight Black" class="w-4 h-4 rounded-full bg-slate-900 border" :class="bezelTheme === 'black' ? 'border-sky-400 scale-110' : 'border-slate-700'"></button>
-        <button @click="setBezelTheme('silver')" title="Titanium Silver" class="w-4 h-4 rounded-full bg-slate-300 border" :class="bezelTheme === 'silver' ? 'border-sky-400 scale-110' : 'border-slate-700'"></button>
-        <button @click="setBezelTheme('blue')" title="Deep Blue" class="w-4 h-4 rounded-full bg-sky-900 border" :class="bezelTheme === 'blue' ? 'border-sky-400 scale-110' : 'border-slate-700'"></button>
-      </div>
-
-      <!-- DevTools Inspection Pill -->
-      <div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-xs font-mono">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="16 18 22 12 16 6"/>
-          <polyline points="8 6 2 12 8 18"/>
-        </svg>
-        <span>Klik kanan ➜ Inspect (F12)</span>
-      </div>
-
     </div>
-  </header>
+  </div>
 
-  <!-- ================= CANVAS WORKSPACE ================= -->
-  <main class="flex-1 overflow-auto flex items-center justify-center p-6 relative">
-    
-    <!-- Phone Chassis Container with Dynamic Scaling -->
-    <div 
-      class="origin-center transition-transform duration-200 ease-out"
-      :style="`transform: scale(${zoom});`"
-    >
-      <!-- Physical Phone Frame -->
-      <div 
-        class="device-chassis"
-        :class="{
-          'chassis-black': bezelTheme === 'black',
-          'chassis-silver': bezelTheme === 'silver',
-          'chassis-blue': bezelTheme === 'blue'
-        }"
-        :style="`
-          width: ${screenWidth + (activeDevice.bezel * 2)}px;
-          height: ${screenHeight + (activeDevice.bezel * 2)}px;
-          border-radius: ${frameRadius}px;
-          padding: ${activeDevice.bezel}px;
-        `"
-      >
-        <!-- Simulated Hardware Side Buttons (Portrait) -->
-        <template x-if="!isLandscape && activeDevice.type !== 'tablet'">
-          <div>
-            <!-- Left: Action Button -->
-            <div class="btn-hardware" style="top: 100px; left: -14px; width: 4px; height: 26px;"></div>
-            <!-- Left: Volume Up -->
-            <div class="btn-hardware" style="top: 145px; left: -14px; width: 4px; height: 50px;"></div>
-            <!-- Left: Volume Down -->
-            <div class="btn-hardware" style="top: 205px; left: -14px; width: 4px; height: 50px;"></div>
-            <!-- Right: Power / Side Button -->
-            <div class="btn-hardware" style="top: 160px; right: -14px; width: 4px; height: 75px;"></div>
-          </div>
-        </template>
-
-        <!-- Simulated Hardware Side Buttons (Landscape) -->
-        <template x-if="isLandscape && activeDevice.type !== 'tablet'">
-          <div>
-            <!-- Top: Action & Volume -->
-            <div class="btn-hardware" style="top: -14px; left: 100px; width: 26px; height: 4px;"></div>
-            <div class="btn-hardware" style="top: -14px; left: 145px; width: 50px; height: 4px;"></div>
-            <div class="btn-hardware" style="top: -14px; left: 205px; width: 50px; height: 4px;"></div>
-            <!-- Bottom: Power Button -->
-            <div class="btn-hardware" style="bottom: -14px; right: 160px; width: 75px; height: 4px;"></div>
-          </div>
-        </template>
-
-        <!-- Screen Surface / Viewport -->
-        <div 
-          class="relative w-full h-full overflow-hidden bg-white shadow-inner flex flex-col"
-          :style="`border-radius: ${innerRadius}px;`"
-        >
-          
-          <!-- Notch Styles -->
-          <!-- 1. Dynamic Island -->
-          <template x-if="activeDevice.type === 'dynamic-island' && !isLandscape">
-            <div class="dynamic-island">
-              <div class="camera-lens"></div>
-              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/20 border border-emerald-500/40"></div>
-            </div>
-          </template>
-
-          <!-- 2. Punch Hole (Android) -->
-          <template x-if="activeDevice.type === 'punch-hole' && !isLandscape">
-            <div class="punch-hole"></div>
-          </template>
-
-          <!-- 3. Classic Notch (iPhone 14/13) -->
-          <template x-if="activeDevice.type === 'notch' && !isLandscape">
-            <div class="classic-notch">
-              <div class="speaker-slit"></div>
-            </div>
-          </template>
-
-          <!-- Iframe Viewport Memuat Website -->
-          <iframe 
-            id="device-frame"
-            :src="currentUrl"
-            class="w-full h-full border-0 bg-white"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          ></iframe>
-
-          <!-- Home Indicator Pill (iOS) -->
-          <template x-if="activeDevice.platform === 'ios' && activeDevice.type !== 'classic-se'">
-            <div class="home-bar"></div>
-          </template>
-
-        </div>
-
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Embedded JS Controller -->
   <script src="preview.js"></script>
 </body>
 </html>

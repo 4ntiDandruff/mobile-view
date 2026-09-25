@@ -1,0 +1,285 @@
+/* content.css - Mobile View In-Page Studio Overlay */
+/* Seluruh styling terisolasi dengan prefix #mv- atau .mv- agar tidak merusak CSS situs host */
+
+#mv-studio-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483646 !important;
+  background: radial-gradient(circle at center, rgba(15, 23, 42, 0.96) 0%, rgba(7, 10, 19, 0.98) 100%) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  overflow: hidden !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  animation: mv-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes mv-fade-in {
+  from { opacity: 0; transform: scale(0.99); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Floating Top Workbench Bar */
+#mv-topbar {
+  width: calc(100% - 32px) !important;
+  max-width: 1100px !important;
+  height: 52px !important;
+  margin: 12px auto 6px auto !important;
+  background: rgba(24, 32, 47, 0.85) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 14px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+  z-index: 2147483647 !important;
+  box-sizing: border-box !important;
+}
+
+.mv-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.mv-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  padding-right: 12px !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.mv-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #e2e8f0 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: all 0.15s ease !important;
+  outline: none !important;
+}
+.mv-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  color: #ffffff !important;
+}
+.mv-btn-active {
+  background: rgba(56, 189, 248, 0.2) !important;
+  border-color: #38bdf8 !important;
+  color: #38bdf8 !important;
+}
+
+.mv-btn-close {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #f87171 !important;
+}
+.mv-btn-close:hover {
+  background: rgba(239, 68, 68, 0.3) !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+.mv-select {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #f1f5f9 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 6px 10px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+.mv-select option {
+  background: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+.mv-kbd {
+  font-size: 10px !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  padding: 1px 5px !important;
+  border-radius: 4px !important;
+  color: #94a3b8 !important;
+  font-family: monospace !important;
+}
+
+.mv-inspect-hint {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 11px !important;
+  color: #34d399 !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  padding: 5px 10px !important;
+  border-radius: 7px !important;
+  font-mono: monospace !important;
+}
+
+/* Canvas Area */
+#mv-canvas {
+  flex: 1 !important;
+  width: 100% !important;
+  height: calc(100% - 70px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  overflow: auto !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
+}
+
+/* Scaling Wrapper */
+#mv-scale-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform-origin: center center !important;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Authentic Phone Chassis */
+.mv-phone-frame {
+  position: relative !important;
+  background: #090a0d !important;
+  box-shadow: 
+    0 0 0 10px #1a1c23,
+    0 0 0 11px #333842,
+    0 30px 70px -15px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(0, 0, 0, 0.5) !important;
+  box-sizing: border-box !important;
+  transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease !important;
+}
+
+/* Hardware Side Buttons */
+.mv-btn-hw {
+  position: absolute !important;
+  background: #2b303c !important;
+  border-radius: 3px !important;
+  z-index: -1 !important;
+}
+
+/* Dynamic Island */
+.mv-dynamic-island {
+  position: absolute !important;
+  top: 11px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 118px !important;
+  height: 32px !important;
+  background: #000000 !important;
+  border-radius: 20px !important;
+  z-index: 20 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 10px !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+  pointer-events: none !important;
+}
+.mv-camera-lens {
+  width: 11px !important;
+  height: 11px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 35% 35%, #1e3a8a 0%, #050b14 70%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Punch-hole camera (Android) */
+.mv-punch-hole {
+  position: absolute !important;
+  top: 13px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 14px !important;
+  height: 14px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 35% 35%, #2563eb 0%, #030712 80%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+}
+
+/* Classic Notch */
+.mv-classic-notch {
+  position: absolute !important;
+  top: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 160px !important;
+  height: 26px !important;
+  background: #000000 !important;
+  border-bottom-left-radius: 16px !important;
+  border-bottom-right-radius: 16px !important;
+  z-index: 20 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  pointer-events: none !important;
+}
+.mv-speaker-slit {
+  width: 46px !important;
+  height: 4px !important;
+  background: #232730 !important;
+  border-radius: 3px !important;
+}
+
+/* Screen Viewport & Iframe */
+.mv-screen-container {
+  width: 100% !important;
+  height: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  box-sizing: border-box !important;
+}
+
+#mv-viewport-iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  display: block !important;
+}
+
+/* iOS Home Indicator Bar */
+.mv-home-bar {
+  position: absolute !important;
+  bottom: 8px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 135px !important;
+  height: 4px !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-radius: 4px !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+  backdrop-filter: blur(4px) !important;
+}

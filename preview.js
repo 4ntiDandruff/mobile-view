@@ -1,258 +1,214 @@
-/**
- * preview.js - Controller untuk Mobile View Studio
- * Zero build-step, reaktif, dan performa tinggi
- */
+// preview.js - Standalone Studio Controller (Vanilla JS, Zero-Build, Zero-CSP-Violation)
 
-const DEVICES = {
-  iphone15pro: {
-    name: 'iPhone 15 Pro',
-    category: 'Apple',
-    width: 393,
-    height: 852,
-    radius: 54,
-    bezel: 12,
-    type: 'dynamic-island',
-    platform: 'ios'
-  },
-  iphone15promax: {
-    name: 'iPhone 15 Pro Max',
-    category: 'Apple',
-    width: 430,
-    height: 932,
-    radius: 56,
-    bezel: 12,
-    type: 'dynamic-island',
-    platform: 'ios'
-  },
-  iphone14: {
-    name: 'iPhone 14 / 13',
-    category: 'Apple',
-    width: 390,
-    height: 844,
-    radius: 47,
-    bezel: 12,
-    type: 'notch',
-    platform: 'ios'
-  },
-  iphonese: {
-    name: 'iPhone SE (3rd Gen)',
-    category: 'Apple',
-    width: 375,
-    height: 667,
-    radius: 28,
-    bezel: 14,
-    type: 'classic-se',
-    platform: 'ios'
-  },
-  galaxys24: {
-    name: 'Samsung Galaxy S24',
-    category: 'Android',
-    width: 412,
-    height: 915,
-    radius: 42,
-    bezel: 10,
-    type: 'punch-hole',
-    platform: 'android'
-  },
-  pixel8: {
-    name: 'Google Pixel 8',
-    category: 'Android',
-    width: 412,
-    height: 892,
-    radius: 44,
-    bezel: 11,
-    type: 'punch-hole',
-    platform: 'android'
-  },
-  ipadmini: {
-    name: 'iPad Mini (6th Gen)',
-    category: 'Tablet',
-    width: 768,
-    height: 1024,
-    radius: 34,
-    bezel: 16,
-    type: 'tablet',
-    platform: 'tablet'
-  },
-  custom: {
-    name: 'Custom Ukuran',
-    category: 'Custom',
-    width: 375,
-    height: 812,
-    radius: 40,
-    bezel: 12,
-    type: 'punch-hole',
-    platform: 'custom'
-  }
-};
+(function () {
+  const DEVICES = {
+    iphone15pro: { name: 'iPhone 15 Pro', width: 393, height: 852, radius: 54, bezel: 12, notch: 'dynamic-island', platform: 'ios' },
+    iphone14: { name: 'iPhone 14', width: 390, height: 844, radius: 47, bezel: 12, notch: 'notch', platform: 'ios' },
+    iphonese: { name: 'iPhone SE', width: 375, height: 667, radius: 28, bezel: 14, notch: 'classic-se', platform: 'ios' },
+    galaxys24: { name: 'Galaxy S24', width: 412, height: 915, radius: 42, bezel: 10, notch: 'punch-hole', platform: 'android' },
+    pixel8: { name: 'Pixel 8', width: 412, height: 892, radius: 44, bezel: 11, notch: 'punch-hole', platform: 'android' },
+    ipadmini: { name: 'iPad Mini', width: 768, height: 1024, radius: 34, bezel: 16, notch: 'none', platform: 'tablet' }
+  };
 
-function mobileStudio() {
-  return {
-    urlInput: '',
-    currentUrl: '',
-    deviceKey: localStorage.getItem('mv_device') || 'iphone15pro',
-    devices: DEVICES,
+  let state = {
+    activeDeviceKey: localStorage.getItem('mv_device') || 'iphone15pro',
     isLandscape: localStorage.getItem('mv_landscape') === 'true',
     scaleMode: localStorage.getItem('mv_scale_mode') || 'fit',
     zoom: 1.0,
-    bezelTheme: localStorage.getItem('mv_bezel_theme') || 'black',
-    canvasBg: localStorage.getItem('mv_canvas_bg') || 'dark',
-    customW: parseInt(localStorage.getItem('mv_custom_w')) || 375,
-    customH: parseInt(localStorage.getItem('mv_custom_h')) || 812,
-    copiedTooltip: false,
-    isLoading: false,
-
-    init() {
-      // 1. Ekstrak URL dari query parameter
-      const params = new URLSearchParams(window.location.search);
-      let target = params.get('url');
-
-      if (!target || target === 'about:blank') {
-        target = 'http://localhost:8000';
-      }
-
-      // Pastikan ada skema protokol
-      if (!target.startsWith('http://') && !target.startsWith('https://') && !target.startsWith('file://')) {
-        target = 'https://' + target;
-      }
-
-      this.currentUrl = target;
-      this.urlInput = target;
-
-      // 2. Set listener resize untuk auto-fit
-      window.addEventListener('resize', () => {
-        if (this.scaleMode === 'fit') {
-          this.applyFitScale();
-        }
-      });
-
-      // 3. Shortcut keyboard: R untuk rotasi
-      window.addEventListener('keydown', (e) => {
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-        if (e.key === 'r' || e.key === 'R') {
-          this.toggleOrientation();
-        }
-      });
-
-      // Hitung skala awal
-      this.$nextTick(() => {
-        this.updateScale();
-      });
-    },
-
-    get activeDevice() {
-      if (this.deviceKey === 'custom') {
-        return {
-          ...DEVICES.custom,
-          width: this.customW,
-          height: this.customH
-        };
-      }
-      return DEVICES[this.deviceKey] || DEVICES.iphone15pro;
-    },
-
-    get screenWidth() {
-      const dev = this.activeDevice;
-      return this.isLandscape ? dev.height : dev.width;
-    },
-
-    get screenHeight() {
-      const dev = this.activeDevice;
-      return this.isLandscape ? dev.width : dev.height;
-    },
-
-    get frameRadius() {
-      const dev = this.activeDevice;
-      return dev.radius;
-    },
-
-    get innerRadius() {
-      const dev = this.activeDevice;
-      return Math.max(8, dev.radius - dev.bezel);
-    },
-
-    setDevice(key) {
-      this.deviceKey = key;
-      localStorage.setItem('mv_device', key);
-      this.updateScale();
-    },
-
-    toggleOrientation() {
-      this.isLandscape = !this.isLandscape;
-      localStorage.setItem('mv_landscape', this.isLandscape);
-      this.updateScale();
-    },
-
-    setScaleMode(mode) {
-      this.scaleMode = mode;
-      localStorage.setItem('mv_scale_mode', mode);
-      this.updateScale();
-    },
-
-    updateScale() {
-      if (this.scaleMode === 'fit') {
-        this.applyFitScale();
-      } else {
-        this.zoom = parseFloat(this.scaleMode);
-      }
-    },
-
-    applyFitScale() {
-      const containerHeight = window.innerHeight - 90; // kurangi header bar
-      const containerWidth = window.innerWidth - 60;
-      const totalDevHeight = this.screenHeight + (this.activeDevice.bezel * 2) + 40;
-      const totalDevWidth = this.screenWidth + (this.activeDevice.bezel * 2) + 40;
-
-      const scaleY = containerHeight / totalDevHeight;
-      const scaleX = containerWidth / totalDevWidth;
-      const bestScale = Math.min(scaleX, scaleY, 1.0);
-
-      // Batasi skala minimum 0.35 dan bulat ke 2 desimal
-      this.zoom = Math.max(0.35, Math.min(1.0, Math.round(bestScale * 100) / 100));
-    },
-
-    setBezelTheme(theme) {
-      this.bezelTheme = theme;
-      localStorage.setItem('mv_bezel_theme', theme);
-    },
-
-    setCanvasBg(bg) {
-      this.canvasBg = bg;
-      localStorage.setItem('mv_canvas_bg', bg);
-    },
-
-    submitUrl() {
-      let url = this.urlInput.trim();
-      if (!url) return;
-      if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('file://')) {
-        url = 'https://' + url;
-      }
-      this.urlInput = url;
-      this.currentUrl = url;
-      this.reloadFrame();
-    },
-
-    reloadFrame() {
-      this.isLoading = true;
-      const frame = document.getElementById('device-frame');
-      if (frame) {
-        frame.src = this.currentUrl;
-      }
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 600);
-    },
-
-    copyUrl() {
-      navigator.clipboard.writeText(this.currentUrl);
-      this.copiedTooltip = true;
-      setTimeout(() => {
-        this.copiedTooltip = false;
-      }, 1800);
-    },
-
-    openExternal() {
-      window.open(this.currentUrl, '_blank');
-    }
+    currentUrl: 'https://google.com'
   };
-}
+
+  function calculateFitScale(devW, devH) {
+    const availH = window.innerHeight - 90;
+    const availW = window.innerWidth - 40;
+    const best = Math.min(availH / devH, availW / devW, 1.0);
+    return Math.max(0.35, Math.min(1.0, Math.round(best * 100) / 100));
+  }
+
+  function updateView() {
+    const dev = DEVICES[state.activeDeviceKey] || DEVICES.iphone15pro;
+    const screenW = state.isLandscape ? dev.height : dev.width;
+    const screenH = state.isLandscape ? dev.width : dev.height;
+    const totalW = screenW + (dev.bezel * 2);
+    const totalH = screenH + (dev.bezel * 2);
+
+    const frameEl = document.getElementById('mv-phone-frame');
+    const screenContainer = document.getElementById('mv-screen-container');
+    const scaleWrapper = document.getElementById('mv-scale-wrapper');
+    const notchContainer = document.getElementById('mv-notch-container');
+    const hwButtonsContainer = document.getElementById('mv-hw-buttons');
+
+    if (!frameEl) return;
+
+    frameEl.style.width = totalW + 'px';
+    frameEl.style.height = totalH + 'px';
+    frameEl.style.borderRadius = dev.radius + 'px';
+    frameEl.style.padding = dev.bezel + 'px';
+
+    if (screenContainer) {
+      screenContainer.style.borderRadius = Math.max(8, dev.radius - dev.bezel) + 'px';
+    }
+
+    if (state.scaleMode === 'fit') {
+      state.zoom = calculateFitScale(totalW, totalH);
+    } else {
+      state.zoom = parseFloat(state.scaleMode) || 1.0;
+    }
+    scaleWrapper.style.transform = `scale(${state.zoom})`;
+
+    // Notch
+    if (notchContainer) {
+      notchContainer.innerHTML = '';
+      if (!state.isLandscape) {
+        if (dev.notch === 'dynamic-island') {
+          notchContainer.innerHTML = `
+            <div class="mv-dynamic-island">
+              <div class="mv-camera-lens"></div>
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: rgba(52, 211, 153, 0.25); border: 1px solid rgba(52, 211, 153, 0.4);"></div>
+            </div>
+          `;
+        } else if (dev.notch === 'punch-hole') {
+          notchContainer.innerHTML = `<div class="mv-punch-hole"></div>`;
+        } else if (dev.notch === 'notch') {
+          notchContainer.innerHTML = `
+            <div class="mv-classic-notch">
+              <div class="mv-speaker-slit"></div>
+            </div>
+          `;
+        }
+      }
+    }
+
+    // Side Buttons
+    if (hwButtonsContainer) {
+      hwButtonsContainer.innerHTML = '';
+      if (dev.platform !== 'tablet') {
+        if (!state.isLandscape) {
+          hwButtonsContainer.innerHTML = `
+            <div class="mv-btn-hw" style="top: 90px; left: -14px; width: 4px; height: 26px;"></div>
+            <div class="mv-btn-hw" style="top: 130px; left: -14px; width: 4px; height: 48px;"></div>
+            <div class="mv-btn-hw" style="top: 190px; left: -14px; width: 4px; height: 48px;"></div>
+            <div class="mv-btn-hw" style="top: 140px; right: -14px; width: 4px; height: 70px;"></div>
+          `;
+        } else {
+          hwButtonsContainer.innerHTML = `
+            <div class="mv-btn-hw" style="top: -14px; left: 90px; width: 26px; height: 4px;"></div>
+            <div class="mv-btn-hw" style="top: -14px; left: 130px; width: 48px; height: 4px;"></div>
+            <div class="mv-btn-hw" style="top: -14px; left: 190px; width: 48px; height: 4px;"></div>
+            <div class="mv-btn-hw" style="bottom: -14px; right: 140px; width: 70px; height: 4px;"></div>
+          `;
+        }
+      }
+    }
+
+    // Toolbar status
+    const rotBtn = document.getElementById('rot-btn');
+    if (rotBtn) rotBtn.classList.toggle('mv-btn-active', state.isLandscape);
+
+    const fitBtn = document.getElementById('fit-btn');
+    const z75Btn = document.getElementById('z75-btn');
+    const z100Btn = document.getElementById('z100-btn');
+
+    if (fitBtn) fitBtn.classList.toggle('mv-btn-active', state.scaleMode === 'fit');
+    if (z75Btn) z75Btn.classList.toggle('mv-btn-active', state.scaleMode === '0.75');
+    if (z100Btn) z100Btn.classList.toggle('mv-btn-active', state.scaleMode === '1.0');
+  }
+
+  // URL Parsing
+  const params = new URLSearchParams(window.location.search);
+  let target = params.get('url');
+  if (target && target !== 'about:blank') {
+    if (!target.startsWith('http://') && !target.startsWith('https://') && !target.startsWith('file://')) {
+      target = 'https://' + target;
+    }
+    state.currentUrl = target;
+  }
+
+  const urlInput = document.getElementById('url-input');
+  const iframe = document.getElementById('mv-viewport-iframe');
+  if (urlInput) urlInput.value = state.currentUrl;
+  if (iframe) iframe.src = state.currentUrl;
+
+  // Bindings
+  const urlForm = document.getElementById('url-form');
+  if (urlForm) {
+    urlForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let val = urlInput.value.trim();
+      if (!val) return;
+      if (!val.startsWith('http://') && !val.startsWith('https://') && !val.startsWith('file://')) {
+        val = 'https://' + val;
+      }
+      urlInput.value = val;
+      state.currentUrl = val;
+      iframe.src = val;
+    });
+  }
+
+  const deviceSelect = document.getElementById('device-select');
+  if (deviceSelect) {
+    deviceSelect.value = state.activeDeviceKey;
+    deviceSelect.addEventListener('change', (e) => {
+      state.activeDeviceKey = e.target.value;
+      localStorage.setItem('mv_device', state.activeDeviceKey);
+      updateView();
+    });
+  }
+
+  const rotBtn = document.getElementById('rot-btn');
+  if (rotBtn) {
+    rotBtn.addEventListener('click', () => {
+      state.isLandscape = !state.isLandscape;
+      localStorage.setItem('mv_landscape', state.isLandscape);
+      updateView();
+    });
+  }
+
+  const fitBtn = document.getElementById('fit-btn');
+  if (fitBtn) {
+    fitBtn.addEventListener('click', () => {
+      state.scaleMode = 'fit';
+      localStorage.setItem('mv_scale_mode', 'fit');
+      updateView();
+    });
+  }
+
+  const z75Btn = document.getElementById('z75-btn');
+  if (z75Btn) {
+    z75Btn.addEventListener('click', () => {
+      state.scaleMode = '0.75';
+      localStorage.setItem('mv_scale_mode', '0.75');
+      updateView();
+    });
+  }
+
+  const z100Btn = document.getElementById('z100-btn');
+  if (z100Btn) {
+    z100Btn.addEventListener('click', () => {
+      state.scaleMode = '1.0';
+      localStorage.setItem('mv_scale_mode', '1.0');
+      updateView();
+    });
+  }
+
+  const reloadBtn = document.getElementById('reload-btn');
+  if (reloadBtn) {
+    reloadBtn.addEventListener('click', () => {
+      iframe.src = state.currentUrl;
+    });
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.target.tagName !== 'INPUT' && (e.key === 'r' || e.key === 'R')) {
+      state.isLandscape = !state.isLandscape;
+      localStorage.setItem('mv_landscape', state.isLandscape);
+      updateView();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (state.scaleMode === 'fit') updateView();
+  });
+
+  updateView();
+})();

@@ -1,51 +1,51 @@
 // background.js - Mobile View Service Worker (Manifest V3)
 
 /**
- * Membuka tab studio Mobile View dengan URL target
+ * Mengaktifkan / Menutup (Toggle) Mobile View pada tab aktif
  */
-async function launchMobileView(targetUrl) {
-  let url = targetUrl || '';
+async function toggleTabMobileView(tab) {
+  if (!tab || !tab.id) return;
+  const url = tab.url || '';
 
-  // Validasi URL
-  if (
-    !url ||
-    url.startsWith('chrome://') ||
-    url.startsWith('chrome-extension://') ||
-    url.startsWith('edge://') ||
-    url.startsWith('about:')
-  ) {
-    url = 'https://google.com';
+  // Halaman web standar (localhost, intranet, http/https, file)
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('file://')) {
+    try {
+      // Kirim sinyal toggle ke content.js
+      await chrome.tabs.sendMessage(tab.id, { action: 'toggle_mobile_view' });
+    } catch (err) {
+      // Jika tab sudah dibuka sebelum ekstensi di-load/reload, suntik script on-the-fly
+      try {
+        await chrome.scripting.insertCSS({
+          target: { tabId: tab.id },
+          files: ['content.css']
+        });
+        await chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ['content.js']
+        });
+        await chrome.tabs.sendMessage(tab.id, { action: 'toggle_mobile_view' });
+      } catch (injectErr) {
+        console.error('[Mobile View] Gagal injeksi script:', injectErr);
+      }
+    }
+  } else {
+    // Halaman internal browser (chrome:// atau edge://) yang diproteksi kernel Chromium
+    const previewUrl = chrome.runtime.getURL('preview.html') + '?url=' + encodeURIComponent('https://google.com');
+    await chrome.tabs.create({ url: previewUrl });
   }
-
-  const previewBase = chrome.runtime.getURL('preview.html');
-  const previewUrl = `${previewBase}?url=${encodeURIComponent(url)}`;
-  await chrome.tabs.create({ url: previewUrl });
 }
 
-// 1. Tangani Klik Ikon Toolbar
+// 1. Tangani Klik Ikon Toolbar (Toggle ON/OFF)
 chrome.action.onClicked.addListener(async (tab) => {
-  if (tab && tab.url) {
-    // Jika sedang di dalam halaman preview.html, jangan bungkus lagi
-    if (tab.url.startsWith(chrome.runtime.getURL('preview.html'))) {
-      return;
-    }
-    await launchMobileView(tab.url);
-  } else {
-    await launchMobileView('');
-  }
+  await toggleTabMobileView(tab);
 });
 
-// 2. Tangani Shortcut Keyboard (Alt+M)
+// 2. Tangani Shortcut Keyboard Alt+M (Toggle ON/OFF)
 chrome.commands.onCommand.addListener(async (command) => {
   if (command === 'open-mobile-view') {
     const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-    if (tab && tab.url) {
-      if (tab.url.startsWith(chrome.runtime.getURL('preview.html'))) {
-        return;
-      }
-      await launchMobileView(tab.url);
-    } else {
-      await launchMobileView('');
+    if (tab) {
+      await toggleTabMobileView(tab);
     }
   }
 });
@@ -54,14 +54,13 @@ chrome.commands.onCommand.addListener(async (command) => {
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: 'mobile-view-context',
-    title: 'Buka di Mobile View (Alt+M)',
-    contexts: ['page', 'link']
+    title: 'Toggle Mobile View (Alt+M)',
+    contexts: ['page']
   });
 });
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId === 'mobile-view-context') {
-    const targetUrl = info.linkUrl || info.pageUrl || (tab && tab.url) || '';
-    await launchMobileView(targetUrl);
+  if (info.menuItemId === 'mobile-view-context' && tab) {
+    await toggleTabMobileView(tab);
   }
 });
