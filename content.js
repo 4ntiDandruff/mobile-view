@@ -1,4 +1,4 @@
-// content.js - Mobile View Liquid Apple Proportional Edition (v2.3)
+// content.js - Mobile View Apple Studio Edition (v2.4)
 
 (function () {
   // 1. Sekring Anti-Rekursi: Jangan pernah jalan di dalam iframe
@@ -55,6 +55,7 @@
     activeDeviceKey: localStorage.getItem('mv_device') || 'iphone15pro',
     isLandscape: localStorage.getItem('mv_landscape') === 'true',
     scaleMode: localStorage.getItem('mv_scale_mode') || 'fit',
+    showFrame: localStorage.getItem('mv_frame') !== 'false',
     zoom: 1.0,
     originalOverflowHtml: '',
     originalOverflowBody: ''
@@ -64,7 +65,7 @@
    * Menghitung zoom scale adaptif agar frame pas dengan monitor
    */
   function calculateFitScale(devW, devH) {
-    const availH = window.innerHeight - 80;
+    const availH = window.innerHeight - 78;
     const availW = window.innerWidth - 32;
     const scaleH = availH / devH;
     const scaleW = availW / devW;
@@ -82,23 +83,28 @@
     const dev = DEVICES[state.activeDeviceKey] || DEVICES.iphone15pro;
     const screenW = state.isLandscape ? dev.height : dev.width;
     const screenH = state.isLandscape ? dev.width : dev.height;
-    const totalW = screenW + (dev.bezel * 2);
-    const totalH = screenH + (dev.bezel * 2);
-    const innerRadius = Math.max(6, dev.radius - dev.bezel);
+    const currentBezel = state.showFrame ? dev.bezel : 0;
+    const totalW = screenW + (currentBezel * 2);
+    const totalH = screenH + (currentBezel * 2);
+    const innerRadius = Math.max(6, dev.radius - currentBezel);
 
     const frameEl = document.getElementById('mv-phone-frame');
     const screenContainer = document.getElementById('mv-screen-container');
     const scaleWrapper = document.getElementById('mv-scale-wrapper');
     const hwButtonsContainer = document.getElementById('mv-hw-buttons');
     const dimBadge = document.getElementById('mv-dim-badge');
+    const frameToggleBtn = document.getElementById('mv-frame-btn');
 
     if (!frameEl || !scaleWrapper) return;
+
+    // Toggle class frameless
+    scaleWrapper.classList.toggle('mv-frameless', !state.showFrame);
 
     // 1. Terapkan Dimensi & Radius Presisi
     frameEl.style.width = totalW + 'px';
     frameEl.style.height = totalH + 'px';
     frameEl.style.borderRadius = dev.radius + 'px';
-    frameEl.style.padding = dev.bezel + 'px';
+    frameEl.style.padding = currentBezel + 'px';
 
     if (screenContainer) {
       screenContainer.style.borderRadius = innerRadius + 'px';
@@ -114,13 +120,13 @@
 
     // 3. Update Badge Dimensi Monospace
     if (dimBadge) {
-      dimBadge.textContent = `${screenW} × ${screenH} px`;
+      dimBadge.textContent = `${screenW} × ${screenH}`;
     }
 
     // 4. Tombol Fisik Samping (Hardware Buttons di Sisi Luar Bezel)
     if (hwButtonsContainer) {
       hwButtonsContainer.innerHTML = '';
-      if (dev.platform !== 'tablet') {
+      if (dev.platform !== 'tablet' && state.showFrame) {
         if (!state.isLandscape) {
           hwButtonsContainer.innerHTML = `
             <div class="mv-btn-hw" style="top: 80px; left: -7px; width: 3px; height: 24px;"></div>
@@ -155,6 +161,10 @@
       }
     }
 
+    if (frameToggleBtn) {
+      frameToggleBtn.classList.toggle('mv-btn-active', state.showFrame);
+    }
+
     const fitBtn = document.getElementById('mv-fit-btn');
     const z100Btn = document.getElementById('mv-z100-btn');
 
@@ -175,7 +185,7 @@
   }
 
   /**
-   * Membuat dan Memunculkan Overlay Studio Liquid Apple Proporsional
+   * Membuat dan Memunculkan Overlay Studio Apple Studio Edition
    */
   function openMobileView() {
     if (document.getElementById('mv-studio-overlay')) return;
@@ -188,7 +198,7 @@
     const overlay = document.createElement('div');
     overlay.id = 'mv-studio-overlay';
 
-    // HTML Struktur Overlay Proporsional
+    // HTML Struktur Overlay Apple Studio
     overlay.innerHTML = `
       <!-- Topbar Studio (Cupertino Frosted Crystal Island) -->
       <div id="mv-topbar">
@@ -219,9 +229,9 @@
           </div>
         </div>
 
-        <!-- Center: Metrics + Rotate + Reload -->
+        <!-- Center: Metrics + Rotate + Frame Toggle + Reload -->
         <div class="mv-group">
-          <div id="mv-dim-badge" class="mv-dim-pill">393 × 852 px</div>
+          <div id="mv-dim-badge" class="mv-dim-pill">393 × 852</div>
 
           <!-- Rotate Button -->
           <button id="mv-rot-btn" class="mv-btn ${state.isLandscape ? 'mv-btn-active' : ''}" title="Putar Layar (Tekan 'R')">
@@ -230,6 +240,15 @@
             </svg>
             <span>Putar</span>
             <span class="mv-kbd">R</span>
+          </button>
+
+          <!-- Frame On/Off Toggle Button -->
+          <button id="mv-frame-btn" class="mv-btn ${state.showFrame ? 'mv-btn-active' : ''}" title="Saklar Bingkai HP (Frame ON/OFF)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <rect width="18" height="18" x="3" y="3" rx="4"/>
+              <path d="M7 7h10v10H7z" opacity="0.5"/>
+            </svg>
+            <span>Bingkai</span>
           </button>
 
           <!-- Reload Button -->
@@ -266,6 +285,10 @@
       <!-- Canvas Area (Clean Floating Center) -->
       <div id="mv-canvas">
         <div id="mv-scale-wrapper">
+          <!-- Ambient Diffuse Glow -->
+          <div class="mv-ambient-glow"></div>
+
+          <!-- Phone Chassis -->
           <div id="mv-phone-frame" class="mv-phone-frame">
             <!-- Hardware Buttons -->
             <div id="mv-hw-buttons"></div>
@@ -294,6 +317,12 @@
     document.getElementById('mv-rot-btn').addEventListener('click', () => {
       state.isLandscape = !state.isLandscape;
       localStorage.setItem('mv_landscape', state.isLandscape);
+      updateChassisView();
+    });
+
+    document.getElementById('mv-frame-btn').addEventListener('click', () => {
+      state.showFrame = !state.showFrame;
+      localStorage.setItem('mv_frame', state.showFrame);
       updateChassisView();
     });
 
