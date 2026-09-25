@@ -1,4 +1,4 @@
-// content.js - Mobile View In-Page Studio Overlay (Manifest V3)
+// content.js - Mobile View Liquid Apple Edition (v2.1)
 
 (function () {
   // 1. Sekring Anti-Rekursi: Jangan pernah jalan di dalam iframe
@@ -19,7 +19,6 @@
       height: 852,
       radius: 54,
       bezel: 12,
-      notch: 'dynamic-island',
       platform: 'ios'
     },
     iphone14: {
@@ -28,7 +27,6 @@
       height: 844,
       radius: 47,
       bezel: 12,
-      notch: 'notch',
       platform: 'ios'
     },
     iphonese: {
@@ -36,8 +34,7 @@
       width: 375,
       height: 667,
       radius: 28,
-      bezel: 14,
-      notch: 'classic-se',
+      bezel: 12,
       platform: 'ios'
     },
     galaxys24: {
@@ -46,7 +43,6 @@
       height: 915,
       radius: 42,
       bezel: 10,
-      notch: 'punch-hole',
       platform: 'android'
     },
     pixel8: {
@@ -55,16 +51,14 @@
       height: 892,
       radius: 44,
       bezel: 11,
-      notch: 'punch-hole',
       platform: 'android'
     },
     ipadmini: {
       name: 'iPad Mini (6th Gen)',
       width: 768,
       height: 1024,
-      radius: 34,
+      radius: 32,
       bezel: 16,
-      notch: 'none',
       platform: 'tablet'
     }
   };
@@ -79,7 +73,7 @@
   };
 
   /**
-   * Menghitung zoom scale agar frame pas dengan monitor
+   * Menghitung zoom scale adaptif agar frame pas dengan monitor
    */
   function calculateFitScale(devW, devH) {
     const availH = window.innerHeight - 90;
@@ -91,7 +85,7 @@
   }
 
   /**
-   * Update dimensi dan tampilan visual frame HP
+   * Update geometri dan tampilan visual frame HP (Bebas Obstruksi)
    */
   function updateChassisView() {
     const overlay = document.getElementById('mv-studio-overlay');
@@ -102,17 +96,16 @@
     const screenH = state.isLandscape ? dev.width : dev.height;
     const totalW = screenW + (dev.bezel * 2);
     const totalH = screenH + (dev.bezel * 2);
-    const innerRadius = Math.max(8, dev.radius - dev.bezel);
+    const innerRadius = Math.max(6, dev.radius - dev.bezel);
 
     const frameEl = document.getElementById('mv-phone-frame');
     const screenContainer = document.getElementById('mv-screen-container');
     const scaleWrapper = document.getElementById('mv-scale-wrapper');
-    const notchContainer = document.getElementById('mv-notch-container');
     const hwButtonsContainer = document.getElementById('mv-hw-buttons');
 
     if (!frameEl || !scaleWrapper) return;
 
-    // 1. Terapkan Dimensi
+    // 1. Terapkan Dimensi & Radius
     frameEl.style.width = totalW + 'px';
     frameEl.style.height = totalH + 'px';
     frameEl.style.borderRadius = dev.radius + 'px';
@@ -122,7 +115,7 @@
       screenContainer.style.borderRadius = innerRadius + 'px';
     }
 
-    // 2. Hitung Skala Zoom
+    // 2. Skala Zoom
     if (state.scaleMode === 'fit') {
       state.zoom = calculateFitScale(totalW, totalH);
     } else {
@@ -130,30 +123,7 @@
     }
     scaleWrapper.style.transform = `scale(${state.zoom})`;
 
-    // 3. Render Notch / Dynamic Island
-    if (notchContainer) {
-      notchContainer.innerHTML = '';
-      if (!state.isLandscape) {
-        if (dev.notch === 'dynamic-island') {
-          notchContainer.innerHTML = `
-            <div class="mv-dynamic-island">
-              <div class="mv-camera-lens"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: rgba(52, 211, 153, 0.25); border: 1px solid rgba(52, 211, 153, 0.4);"></div>
-            </div>
-          `;
-        } else if (dev.notch === 'punch-hole') {
-          notchContainer.innerHTML = `<div class="mv-punch-hole"></div>`;
-        } else if (dev.notch === 'notch') {
-          notchContainer.innerHTML = `
-            <div class="mv-classic-notch">
-              <div class="mv-speaker-slit"></div>
-            </div>
-          `;
-        }
-      }
-    }
-
-    // 4. Render Tombol Fisik Samping
+    // 3. Tombol Fisik Samping (Hardware Buttons di Sisi Luar Bezel)
     if (hwButtonsContainer) {
       hwButtonsContainer.innerHTML = '';
       if (dev.platform !== 'tablet') {
@@ -175,23 +145,19 @@
       }
     }
 
-    // 5. Update Status Tombol Toolbar
+    // 4. Update Status Tombol Toolbar
     const rotBtn = document.getElementById('mv-rot-btn');
     if (rotBtn) {
-      if (state.isLandscape) {
-        rotBtn.classList.add('mv-btn-active');
-      } else {
-        rotBtn.classList.remove('mv-btn-active');
-      }
+      rotBtn.classList.toggle('mv-btn-active', state.isLandscape);
     }
 
     const fitBtn = document.getElementById('mv-fit-btn');
     const z75Btn = document.getElementById('mv-z75-btn');
     const z100Btn = document.getElementById('mv-z100-btn');
 
-    if (fitBtn) fitBtn.classList.toggle('mv-btn-active', state.scaleMode === 'fit');
-    if (z75Btn) z75Btn.classList.toggle('mv-btn-active', state.scaleMode === '0.75');
-    if (z100Btn) z100Btn.classList.toggle('mv-btn-active', state.scaleMode === '1.0');
+    if (fitBtn) fitBtn.classList.toggle('mv-active', state.scaleMode === 'fit');
+    if (z75Btn) z75Btn.classList.toggle('mv-active', state.scaleMode === '0.75');
+    if (z100Btn) z100Btn.classList.toggle('mv-active', state.scaleMode === '1.0');
   }
 
   /**
@@ -207,7 +173,7 @@
   }
 
   /**
-   * Membuat dan Memunculkan Overlay Studio
+   * Membuat dan Memunculkan Overlay Studio Liquid Apple
    */
   function openMobileView() {
     if (document.getElementById('mv-studio-overlay')) return;
@@ -222,12 +188,12 @@
 
     // HTML Struktur Overlay
     overlay.innerHTML = `
-      <!-- Topbar Studio -->
+      <!-- Topbar Studio (Cupertino Frosted Crystal) -->
       <div id="mv-topbar">
         <!-- Brand & Preset Selector -->
         <div class="mv-group">
           <div class="mv-brand">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <rect width="14" height="20" x="5" y="2" rx="3" ry="3"/>
               <path d="M12 18h.01"/>
             </svg>
@@ -245,7 +211,7 @@
 
           <!-- Rotate Button -->
           <button id="mv-rot-btn" class="mv-btn ${state.isLandscape ? 'mv-btn-active' : ''}" title="Putar Layar (Tekan 'R')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
             </svg>
             <span>Putar</span>
@@ -253,27 +219,24 @@
           </button>
         </div>
 
-        <!-- Center: Inspect Hint -->
+        <!-- Center: Primary Active Radar Beacon Hint -->
         <div class="mv-inspect-hint">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="16 18 22 12 16 6"/>
-            <polyline points="8 6 2 12 8 18"/>
-          </svg>
+          <div class="mv-beacon"></div>
           <span>Klik kanan di layar HP ➜ Inspect (F12)</span>
         </div>
 
-        <!-- Right: Zoom & Close Button -->
+        <!-- Right: Neomorphic Segmented Zoom & Close Button -->
         <div class="mv-group">
-          <!-- Zoom Presets -->
-          <div style="display: flex; gap: 3px; background: rgba(0,0,0,0.3); padding: 2px; border-radius: 8px;">
-            <button id="mv-fit-btn" class="mv-btn ${state.scaleMode === 'fit' ? 'mv-btn-active' : ''}" style="padding: 4px 8px; font-size: 11px;">Fit</button>
-            <button id="mv-z75-btn" class="mv-btn ${state.scaleMode === '0.75' ? 'mv-btn-active' : ''}" style="padding: 4px 8px; font-size: 11px;">75%</button>
-            <button id="mv-z100-btn" class="mv-btn ${state.scaleMode === '1.0' ? 'mv-btn-active' : ''}" style="padding: 4px 8px; font-size: 11px;">100%</button>
+          <!-- Neomorphic Segmented Track -->
+          <div class="mv-neo-groove">
+            <button id="mv-fit-btn" class="mv-tab-pill ${state.scaleMode === 'fit' ? 'mv-active' : ''}">Fit</button>
+            <button id="mv-z75-btn" class="mv-tab-pill ${state.scaleMode === '0.75' ? 'mv-active' : ''}">75%</button>
+            <button id="mv-z100-btn" class="mv-tab-pill ${state.scaleMode === '1.0' ? 'mv-active' : ''}">100%</button>
           </div>
 
           <!-- Reload Iframe Button -->
-          <button id="mv-reload-btn" class="mv-btn" title="Segarkan Layar HP">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <button id="mv-reload-btn" class="mv-btn" title="Segarkan Halaman">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
               <path d="M3 3v5h5"/>
               <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
@@ -282,8 +245,8 @@
           </button>
 
           <!-- Close / Back to Desktop -->
-          <button id="mv-close-btn" class="mv-btn mv-btn-close" title="Kembali ke Tampilan Desktop (Esc / Alt+M)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <button id="mv-close-btn" class="mv-btn mv-btn-close" title="Kembali ke Desktop (Esc / Alt+M)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="18" y1="6" x2="6" y2="18"/>
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
@@ -300,16 +263,9 @@
             <!-- Hardware Buttons -->
             <div id="mv-hw-buttons"></div>
 
-            <!-- Screen Viewport -->
+            <!-- Screen Viewport (100% Bersih Tanpa Obstruksi Kamera) -->
             <div id="mv-screen-container" class="mv-screen-container">
-              <!-- Notch Container -->
-              <div id="mv-notch-container"></div>
-
-              <!-- Iframe Memuat Halaman Asli -->
               <iframe id="mv-viewport-iframe" src="${window.location.href}"></iframe>
-
-              <!-- Home Bar (iOS) -->
-              <div class="mv-home-bar"></div>
             </div>
           </div>
         </div>

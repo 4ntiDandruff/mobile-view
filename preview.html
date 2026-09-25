@@ -13,9 +13,9 @@
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background: #0b0f17;
-      color: #e2e8f0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #07090e;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", system-ui, sans-serif;
     }
     #mv-studio-standalone {
       width: 100%;
@@ -28,7 +28,7 @@
       align-items: center;
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
+      border-radius: 12px;
       padding: 3px 8px;
       gap: 6px;
       flex: 1;
@@ -45,13 +45,13 @@
     }
   </style>
 </head>
-<body>
+<body id="mv-studio-overlay">
   <div id="mv-studio-standalone">
     <!-- Standalone Header -->
     <div id="mv-topbar">
       <div class="mv-group">
         <div class="mv-brand">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <rect width="14" height="20" x="5" y="2" rx="3" ry="3"/>
             <path d="M12 18h.01"/>
           </svg>
@@ -61,7 +61,7 @@
         <!-- URL Input -->
         <form id="url-form" class="mv-url-form">
           <input type="text" id="url-input" class="mv-url-input" placeholder="https://..." value="https://google.com">
-          <button type="submit" class="mv-btn" style="padding: 2px 6px; font-size: 11px;">Muat</button>
+          <button type="submit" class="mv-btn" style="padding: 2px 8px; font-size: 11px;">Muat</button>
         </form>
 
         <!-- Device Dropdown -->
@@ -76,7 +76,7 @@
 
         <!-- Rotate Button -->
         <button id="rot-btn" class="mv-btn" title="Putar Layar (R)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
           </svg>
           <span>Putar</span>
@@ -87,17 +87,18 @@
       <!-- Right: Inspect Hint & Zoom -->
       <div class="mv-group">
         <div class="mv-inspect-hint">
+          <div class="mv-beacon"></div>
           <span>Klik kanan di layar HP ➜ Inspect (F12)</span>
         </div>
 
-        <div style="display: flex; gap: 3px; background: rgba(0,0,0,0.3); padding: 2px; border-radius: 8px;">
-          <button id="fit-btn" class="mv-btn mv-btn-active" style="padding: 4px 8px; font-size: 11px;">Fit</button>
-          <button id="z75-btn" class="mv-btn" style="padding: 4px 8px; font-size: 11px;">75%</button>
-          <button id="z100-btn" class="mv-btn" style="padding: 4px 8px; font-size: 11px;">100%</button>
+        <div class="mv-neo-groove">
+          <button id="fit-btn" class="mv-tab-pill mv-active">Fit</button>
+          <button id="z75-btn" class="mv-tab-pill">75%</button>
+          <button id="z100-btn" class="mv-tab-pill">100%</button>
         </div>
 
-        <button id="reload-btn" class="mv-btn" title="Segarkan">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button id="reload-btn" class="mv-btn" title="Segarkan Halaman">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
             <path d="M3 3v5h5"/>
             <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
@@ -113,9 +114,7 @@
         <div id="mv-phone-frame" class="mv-phone-frame">
           <div id="mv-hw-buttons"></div>
           <div id="mv-screen-container" class="mv-screen-container">
-            <div id="mv-notch-container"></div>
             <iframe id="mv-viewport-iframe" src="https://google.com"></iframe>
-            <div class="mv-home-bar"></div>
           </div>
         </div>
       </div>

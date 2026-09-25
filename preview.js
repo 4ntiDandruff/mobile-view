@@ -1,13 +1,13 @@
-// preview.js - Standalone Studio Controller (Vanilla JS, Zero-Build, Zero-CSP-Violation)
+// preview.js - Standalone Studio Controller (Liquid Apple Edition v2.1)
 
 (function () {
   const DEVICES = {
-    iphone15pro: { name: 'iPhone 15 Pro', width: 393, height: 852, radius: 54, bezel: 12, notch: 'dynamic-island', platform: 'ios' },
-    iphone14: { name: 'iPhone 14', width: 390, height: 844, radius: 47, bezel: 12, notch: 'notch', platform: 'ios' },
-    iphonese: { name: 'iPhone SE', width: 375, height: 667, radius: 28, bezel: 14, notch: 'classic-se', platform: 'ios' },
-    galaxys24: { name: 'Galaxy S24', width: 412, height: 915, radius: 42, bezel: 10, notch: 'punch-hole', platform: 'android' },
-    pixel8: { name: 'Pixel 8', width: 412, height: 892, radius: 44, bezel: 11, notch: 'punch-hole', platform: 'android' },
-    ipadmini: { name: 'iPad Mini', width: 768, height: 1024, radius: 34, bezel: 16, notch: 'none', platform: 'tablet' }
+    iphone15pro: { name: 'iPhone 15 Pro', width: 393, height: 852, radius: 54, bezel: 12, platform: 'ios' },
+    iphone14: { name: 'iPhone 14', width: 390, height: 844, radius: 47, bezel: 12, platform: 'ios' },
+    iphonese: { name: 'iPhone SE', width: 375, height: 667, radius: 28, bezel: 12, platform: 'ios' },
+    galaxys24: { name: 'Galaxy S24', width: 412, height: 915, radius: 42, bezel: 10, platform: 'android' },
+    pixel8: { name: 'Pixel 8', width: 412, height: 892, radius: 44, bezel: 11, platform: 'android' },
+    ipadmini: { name: 'iPad Mini', width: 768, height: 1024, radius: 32, bezel: 16, platform: 'tablet' }
   };
 
   let state = {
@@ -35,7 +35,6 @@
     const frameEl = document.getElementById('mv-phone-frame');
     const screenContainer = document.getElementById('mv-screen-container');
     const scaleWrapper = document.getElementById('mv-scale-wrapper');
-    const notchContainer = document.getElementById('mv-notch-container');
     const hwButtonsContainer = document.getElementById('mv-hw-buttons');
 
     if (!frameEl) return;
@@ -46,7 +45,7 @@
     frameEl.style.padding = dev.bezel + 'px';
 
     if (screenContainer) {
-      screenContainer.style.borderRadius = Math.max(8, dev.radius - dev.bezel) + 'px';
+      screenContainer.style.borderRadius = Math.max(6, dev.radius - dev.bezel) + 'px';
     }
 
     if (state.scaleMode === 'fit') {
@@ -56,30 +55,7 @@
     }
     scaleWrapper.style.transform = `scale(${state.zoom})`;
 
-    // Notch
-    if (notchContainer) {
-      notchContainer.innerHTML = '';
-      if (!state.isLandscape) {
-        if (dev.notch === 'dynamic-island') {
-          notchContainer.innerHTML = `
-            <div class="mv-dynamic-island">
-              <div class="mv-camera-lens"></div>
-              <div style="width: 10px; height: 10px; border-radius: 50%; background: rgba(52, 211, 153, 0.25); border: 1px solid rgba(52, 211, 153, 0.4);"></div>
-            </div>
-          `;
-        } else if (dev.notch === 'punch-hole') {
-          notchContainer.innerHTML = `<div class="mv-punch-hole"></div>`;
-        } else if (dev.notch === 'notch') {
-          notchContainer.innerHTML = `
-            <div class="mv-classic-notch">
-              <div class="mv-speaker-slit"></div>
-            </div>
-          `;
-        }
-      }
-    }
-
-    // Side Buttons
+    // Side Buttons (Hardware)
     if (hwButtonsContainer) {
       hwButtonsContainer.innerHTML = '';
       if (dev.platform !== 'tablet') {
@@ -109,9 +85,9 @@
     const z75Btn = document.getElementById('z75-btn');
     const z100Btn = document.getElementById('z100-btn');
 
-    if (fitBtn) fitBtn.classList.toggle('mv-btn-active', state.scaleMode === 'fit');
-    if (z75Btn) z75Btn.classList.toggle('mv-btn-active', state.scaleMode === '0.75');
-    if (z100Btn) z100Btn.classList.toggle('mv-btn-active', state.scaleMode === '1.0');
+    if (fitBtn) fitBtn.classList.toggle('mv-active', state.scaleMode === 'fit');
+    if (z75Btn) z75Btn.classList.toggle('mv-active', state.scaleMode === '0.75');
+    if (z100Btn) z100Btn.classList.toggle('mv-active', state.scaleMode === '1.0');
   }
 
   // URL Parsing
