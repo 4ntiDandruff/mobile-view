@@ -1,4 +1,5 @@
-// content.js - Mobile View Liquid Apple UI Edition (v2.5)
+// content.js - Mobile View Liquid Apple UI Edition (v2.7)
+// 100% Konsisten dengan preview.js (Standalone Studio)
 
 (function () {
   // 1. Sekring Anti-Rekursi: Jangan pernah jalan di dalam iframe
@@ -105,7 +106,7 @@
     // Toggle class frameless
     scaleWrapper.classList.toggle('mv-frameless', !state.showFrame);
 
-    // 1. Terapkan Dimensi & Radius Presisi
+    // 1. Terapkan Dimensi & Radius Presisi (Concentric Radii)
     frameEl.style.width = totalW + 'px';
     frameEl.style.height = totalH + 'px';
     frameEl.style.borderRadius = dev.radius + 'px';
@@ -171,10 +172,10 @@
     }
 
     if (themeBtn) {
-      themeBtn.innerHTML = state.theme === 'light' 
-        ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`
-        : `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
-      themeBtn.title = state.theme === 'light' ? 'Beralih ke Mode Gelap' : 'Beralih ke Mode Terang (Apple Platinum)';
+      const sunIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
+      const moonIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
+      themeBtn.innerHTML = `${state.theme === 'light' ? moonIcon : sunIcon}<span class="mv-kbd">T</span>`;
+      themeBtn.title = state.theme === 'light' ? "Beralih ke Mode Gelap (Tekan 'T')" : "Beralih ke Mode Terang (Tekan 'T')";
     }
 
     const fitBtn = document.getElementById('mv-fit-btn');
@@ -213,7 +214,7 @@
       overlay.classList.add('mv-theme-light');
     }
 
-    // HTML Struktur Overlay Liquid Apple
+    // HTML Struktur Overlay Liquid Apple (100% Identik dengan preview.html)
     overlay.innerHTML = `
       <!-- Topbar Studio (Cupertino Frosted Crystal Island) -->
       <div id="mv-topbar">
@@ -258,12 +259,13 @@
           </button>
 
           <!-- Frame On/Off Toggle Button -->
-          <button id="mv-frame-btn" class="mv-btn ${state.showFrame ? 'mv-btn-active' : ''}" title="Saklar Bingkai HP (Frame ON/OFF)">
+          <button id="mv-frame-btn" class="mv-btn ${state.showFrame ? 'mv-btn-active' : ''}" title="Saklar Bingkai HP (Tekan 'F')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <rect width="18" height="18" x="3" y="3" rx="4"/>
               <path d="M7 7h10v10H7z" opacity="0.5"/>
             </svg>
             <span>Bingkai</span>
+            <span class="mv-kbd">F</span>
           </button>
 
           <!-- Reload Button -->
@@ -286,11 +288,12 @@
           </div>
 
           <!-- Cupertino Theme Toggle (Light / Dark) -->
-          <button id="mv-theme-btn" class="mv-btn" title="Ganti Tema (Terang / Gelap)">
+          <button id="mv-theme-btn" class="mv-btn" title="Ganti Tema (Tekan 'T')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <circle cx="12" cy="12" r="4"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
             </svg>
+            <span class="mv-kbd">T</span>
           </button>
 
           <!-- Close / Back to Desktop -->
@@ -403,24 +406,30 @@
     }
   }
 
-  // 2. Global Keyboard Shortcuts
+  // 2. Global Keyboard Shortcuts: Esc (close), R (rotate), F (frame), T (theme)
   window.addEventListener('keydown', (e) => {
-    // Tombol Esc untuk menutup overlay
+    const overlay = document.getElementById('mv-studio-overlay');
+    if (!overlay) return;
+
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
     if (e.key === 'Escape') {
-      const existing = document.getElementById('mv-studio-overlay');
-      if (existing) {
-        closeMobileView();
-      }
+      closeMobileView();
       return;
     }
 
-    // Tombol R untuk rotasi saat overlay aktif
-    if ((e.key === 'r' || e.key === 'R') && document.getElementById('mv-studio-overlay')) {
-      if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-        state.isLandscape = !state.isLandscape;
-        localStorage.setItem('mv_landscape', state.isLandscape);
-        updateChassisView();
-      }
+    if (e.key === 'r' || e.key === 'R') {
+      state.isLandscape = !state.isLandscape;
+      localStorage.setItem('mv_landscape', state.isLandscape);
+      updateChassisView();
+    } else if (e.key === 'f' || e.key === 'F') {
+      state.showFrame = !state.showFrame;
+      localStorage.setItem('mv_frame', state.showFrame);
+      updateChassisView();
+    } else if (e.key === 't' || e.key === 'T') {
+      state.theme = state.theme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('mv_theme', state.theme);
+      updateChassisView();
     }
   });
 
