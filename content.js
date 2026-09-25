@@ -1,4 +1,4 @@
-// content.js - Mobile View Liquid Apple Ultra-Enak Edition (v2.2)
+// content.js - Mobile View Liquid Apple Proportional Edition (v2.3)
 
 (function () {
   // 1. Sekring Anti-Rekursi: Jangan pernah jalan di dalam iframe
@@ -15,11 +15,11 @@
   const DEVICES = {
     iphone15pro: {
       name: 'iPhone 15 Pro',
-      shortName: 'iPhone 15',
+      shortName: 'iPhone 15 Pro',
       width: 393,
       height: 852,
-      radius: 54,
-      bezel: 12,
+      radius: 26,
+      bezel: 7,
       platform: 'ios'
     },
     galaxys24: {
@@ -27,8 +27,8 @@
       shortName: 'Galaxy S24',
       width: 412,
       height: 915,
-      radius: 42,
-      bezel: 10,
+      radius: 22,
+      bezel: 6,
       platform: 'android'
     },
     iphonese: {
@@ -36,26 +36,8 @@
       shortName: 'iPhone SE',
       width: 375,
       height: 667,
-      radius: 28,
-      bezel: 12,
-      platform: 'ios'
-    },
-    pixel8: {
-      name: 'Google Pixel 8',
-      shortName: 'Pixel 8',
-      width: 412,
-      height: 892,
-      radius: 44,
-      bezel: 11,
-      platform: 'android'
-    },
-    iphone14: {
-      name: 'iPhone 14 / 13',
-      shortName: 'iPhone 14',
-      width: 390,
-      height: 844,
-      radius: 47,
-      bezel: 12,
+      radius: 18,
+      bezel: 7,
       platform: 'ios'
     },
     ipadmini: {
@@ -63,8 +45,8 @@
       shortName: 'iPad Mini',
       width: 768,
       height: 1024,
-      radius: 32,
-      bezel: 16,
+      radius: 20,
+      bezel: 8,
       platform: 'tablet'
     }
   };
@@ -82,12 +64,12 @@
    * Menghitung zoom scale adaptif agar frame pas dengan monitor
    */
   function calculateFitScale(devW, devH) {
-    const availH = window.innerHeight - 90;
-    const availW = window.innerWidth - 40;
+    const availH = window.innerHeight - 80;
+    const availW = window.innerWidth - 32;
     const scaleH = availH / devH;
     const scaleW = availW / devW;
-    const best = Math.min(scaleH, scaleW, 1.0);
-    return Math.max(0.35, Math.min(1.0, Math.round(best * 100) / 100));
+    const best = Math.min(scaleH, scaleW);
+    return Math.min(1.0, Math.max(0.3, Math.round(best * 100) / 100));
   }
 
   /**
@@ -112,7 +94,7 @@
 
     if (!frameEl || !scaleWrapper) return;
 
-    // 1. Terapkan Dimensi & Radius
+    // 1. Terapkan Dimensi & Radius Presisi
     frameEl.style.width = totalW + 'px';
     frameEl.style.height = totalH + 'px';
     frameEl.style.borderRadius = dev.radius + 'px';
@@ -122,7 +104,7 @@
       screenContainer.style.borderRadius = innerRadius + 'px';
     }
 
-    // 2. Skala Zoom
+    // 2. Skala Zoom Adaptif
     if (state.scaleMode === 'fit') {
       state.zoom = calculateFitScale(totalW, totalH);
     } else {
@@ -141,17 +123,17 @@
       if (dev.platform !== 'tablet') {
         if (!state.isLandscape) {
           hwButtonsContainer.innerHTML = `
-            <div class="mv-btn-hw" style="top: 90px; left: -14px; width: 4px; height: 26px;"></div>
-            <div class="mv-btn-hw" style="top: 130px; left: -14px; width: 4px; height: 48px;"></div>
-            <div class="mv-btn-hw" style="top: 190px; left: -14px; width: 4px; height: 48px;"></div>
-            <div class="mv-btn-hw" style="top: 140px; right: -14px; width: 4px; height: 70px;"></div>
+            <div class="mv-btn-hw" style="top: 80px; left: -7px; width: 3px; height: 24px;"></div>
+            <div class="mv-btn-hw" style="top: 115px; left: -7px; width: 3px; height: 42px;"></div>
+            <div class="mv-btn-hw" style="top: 168px; left: -7px; width: 3px; height: 42px;"></div>
+            <div class="mv-btn-hw" style="top: 125px; right: -7px; width: 3px; height: 65px;"></div>
           `;
         } else {
           hwButtonsContainer.innerHTML = `
-            <div class="mv-btn-hw" style="top: -14px; left: 90px; width: 26px; height: 4px;"></div>
-            <div class="mv-btn-hw" style="top: -14px; left: 130px; width: 48px; height: 4px;"></div>
-            <div class="mv-btn-hw" style="top: -14px; left: 190px; width: 48px; height: 4px;"></div>
-            <div class="mv-btn-hw" style="bottom: -14px; right: 140px; width: 70px; height: 4px;"></div>
+            <div class="mv-btn-hw" style="top: -7px; left: 80px; width: 24px; height: 3px;"></div>
+            <div class="mv-btn-hw" style="top: -7px; left: 115px; width: 42px; height: 3px;"></div>
+            <div class="mv-btn-hw" style="top: -7px; left: 168px; width: 42px; height: 3px;"></div>
+            <div class="mv-btn-hw" style="bottom: -7px; right: 125px; width: 65px; height: 3px;"></div>
           `;
         }
       }
@@ -174,11 +156,9 @@
     }
 
     const fitBtn = document.getElementById('mv-fit-btn');
-    const z75Btn = document.getElementById('mv-z75-btn');
     const z100Btn = document.getElementById('mv-z100-btn');
 
     if (fitBtn) fitBtn.classList.toggle('mv-active', state.scaleMode === 'fit');
-    if (z75Btn) z75Btn.classList.toggle('mv-active', state.scaleMode === '0.75');
     if (z100Btn) z100Btn.classList.toggle('mv-active', state.scaleMode === '1.0');
   }
 
@@ -195,7 +175,7 @@
   }
 
   /**
-   * Membuat dan Memunculkan Overlay Studio Liquid Apple Ultra-Enak
+   * Membuat dan Memunculkan Overlay Studio Liquid Apple Proporsional
    */
   function openMobileView() {
     if (document.getElementById('mv-studio-overlay')) return;
@@ -208,14 +188,14 @@
     const overlay = document.createElement('div');
     overlay.id = 'mv-studio-overlay';
 
-    // HTML Struktur Overlay
+    // HTML Struktur Overlay Proporsional
     overlay.innerHTML = `
-      <!-- Topbar Studio (Cupertino Frosted Crystal) -->
+      <!-- Topbar Studio (Cupertino Frosted Crystal Island) -->
       <div id="mv-topbar">
         <!-- Brand & Quick Device Segmented Chips -->
         <div class="mv-group">
           <div class="mv-brand">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <rect width="14" height="20" x="5" y="2" rx="3" ry="3"/>
               <path d="M12 18h.01"/>
             </svg>
@@ -237,48 +217,43 @@
               iPad
             </button>
           </div>
+        </div>
+
+        <!-- Center: Metrics + Rotate + Reload -->
+        <div class="mv-group">
+          <div id="mv-dim-badge" class="mv-dim-pill">393 × 852 px</div>
 
           <!-- Rotate Button -->
           <button id="mv-rot-btn" class="mv-btn ${state.isLandscape ? 'mv-btn-active' : ''}" title="Putar Layar (Tekan 'R')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
             </svg>
             <span>Putar</span>
             <span class="mv-kbd">R</span>
           </button>
 
-          <!-- Real-Time Dimension Pill -->
-          <div id="mv-dim-badge" class="mv-dim-pill">393 × 852 px</div>
-        </div>
-
-        <!-- Center: Primary Active Radar Beacon Hint -->
-        <div class="mv-inspect-hint">
-          <div class="mv-beacon"></div>
-          <span>Klik kanan di layar HP ➜ Inspect (F12)</span>
-        </div>
-
-        <!-- Right: Segmented Zoom, Reload, & Close -->
-        <div class="mv-group">
-          <!-- Neomorphic Segmented Track for Zoom -->
-          <div class="mv-neo-groove">
-            <button id="mv-fit-btn" class="mv-tab-pill ${state.scaleMode === 'fit' ? 'mv-active' : ''}">Fit</button>
-            <button id="mv-z75-btn" class="mv-tab-pill ${state.scaleMode === '0.75' ? 'mv-active' : ''}">75%</button>
-            <button id="mv-z100-btn" class="mv-tab-pill ${state.scaleMode === '1.0' ? 'mv-active' : ''}">100%</button>
-          </div>
-
-          <!-- Reload Button with Rotation -->
-          <button id="mv-reload-btn" class="mv-btn" title="Segarkan Halaman (Reload)">
-            <svg id="mv-reload-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <!-- Reload Button -->
+          <button id="mv-reload-btn" class="mv-btn" title="Segarkan Layar">
+            <svg id="mv-reload-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
               <path d="M3 3v5h5"/>
               <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
               <path d="M16 21h5v-5"/>
             </svg>
           </button>
+        </div>
+
+        <!-- Right: Segmented Zoom & Close -->
+        <div class="mv-group">
+          <!-- Neomorphic Segmented Track for Zoom -->
+          <div class="mv-neo-groove">
+            <button id="mv-fit-btn" class="mv-tab-pill ${state.scaleMode === 'fit' ? 'mv-active' : ''}">Fit</button>
+            <button id="mv-z100-btn" class="mv-tab-pill ${state.scaleMode === '1.0' ? 'mv-active' : ''}">100%</button>
+          </div>
 
           <!-- Close / Back to Desktop -->
           <button id="mv-close-btn" class="mv-btn mv-btn-close" title="Kembali ke Desktop (Esc / Alt+M)">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="18" y1="6" x2="6" y2="18"/>
               <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
@@ -288,7 +263,7 @@
         </div>
       </div>
 
-      <!-- Canvas Area -->
+      <!-- Canvas Area (Clean Floating Center) -->
       <div id="mv-canvas">
         <div id="mv-scale-wrapper">
           <div id="mv-phone-frame" class="mv-phone-frame">
@@ -325,12 +300,6 @@
     document.getElementById('mv-fit-btn').addEventListener('click', () => {
       state.scaleMode = 'fit';
       localStorage.setItem('mv_scale_mode', 'fit');
-      updateChassisView();
-    });
-
-    document.getElementById('mv-z75-btn').addEventListener('click', () => {
-      state.scaleMode = '0.75';
-      localStorage.setItem('mv_scale_mode', '0.75');
       updateChassisView();
     });
 
