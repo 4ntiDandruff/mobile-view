@@ -1,4 +1,4 @@
-// content.js - Mobile View Liquid Apple Edition (v2.1)
+// content.js - Mobile View Liquid Apple Ultra-Enak Edition (v2.2)
 
 (function () {
   // 1. Sekring Anti-Rekursi: Jangan pernah jalan di dalam iframe
@@ -6,7 +6,7 @@
     return;
   }
 
-  // Jika script sudah pernah di-injeksi, hindari duplikasi listener
+  // Hindari duplikasi inisialisasi
   if (window.__MOBILE_VIEW_INITIALIZED__) {
     return;
   }
@@ -15,46 +15,52 @@
   const DEVICES = {
     iphone15pro: {
       name: 'iPhone 15 Pro',
+      shortName: 'iPhone 15',
       width: 393,
       height: 852,
       radius: 54,
       bezel: 12,
       platform: 'ios'
     },
-    iphone14: {
-      name: 'iPhone 14 / 13',
-      width: 390,
-      height: 844,
-      radius: 47,
-      bezel: 12,
-      platform: 'ios'
-    },
-    iphonese: {
-      name: 'iPhone SE (3rd Gen)',
-      width: 375,
-      height: 667,
-      radius: 28,
-      bezel: 12,
-      platform: 'ios'
-    },
     galaxys24: {
       name: 'Samsung Galaxy S24',
+      shortName: 'Galaxy S24',
       width: 412,
       height: 915,
       radius: 42,
       bezel: 10,
       platform: 'android'
     },
+    iphonese: {
+      name: 'iPhone SE (3rd Gen)',
+      shortName: 'iPhone SE',
+      width: 375,
+      height: 667,
+      radius: 28,
+      bezel: 12,
+      platform: 'ios'
+    },
     pixel8: {
       name: 'Google Pixel 8',
+      shortName: 'Pixel 8',
       width: 412,
       height: 892,
       radius: 44,
       bezel: 11,
       platform: 'android'
     },
+    iphone14: {
+      name: 'iPhone 14 / 13',
+      shortName: 'iPhone 14',
+      width: 390,
+      height: 844,
+      radius: 47,
+      bezel: 12,
+      platform: 'ios'
+    },
     ipadmini: {
       name: 'iPad Mini (6th Gen)',
+      shortName: 'iPad Mini',
       width: 768,
       height: 1024,
       radius: 32,
@@ -102,6 +108,7 @@
     const screenContainer = document.getElementById('mv-screen-container');
     const scaleWrapper = document.getElementById('mv-scale-wrapper');
     const hwButtonsContainer = document.getElementById('mv-hw-buttons');
+    const dimBadge = document.getElementById('mv-dim-badge');
 
     if (!frameEl || !scaleWrapper) return;
 
@@ -123,7 +130,12 @@
     }
     scaleWrapper.style.transform = `scale(${state.zoom})`;
 
-    // 3. Tombol Fisik Samping (Hardware Buttons di Sisi Luar Bezel)
+    // 3. Update Badge Dimensi Monospace
+    if (dimBadge) {
+      dimBadge.textContent = `${screenW} × ${screenH} px`;
+    }
+
+    // 4. Tombol Fisik Samping (Hardware Buttons di Sisi Luar Bezel)
     if (hwButtonsContainer) {
       hwButtonsContainer.innerHTML = '';
       if (dev.platform !== 'tablet') {
@@ -145,10 +157,20 @@
       }
     }
 
-    // 4. Update Status Tombol Toolbar
+    // 5. Update Status Active Segmented Pills
+    document.querySelectorAll('.mv-dev-chip').forEach(btn => {
+      const key = btn.getAttribute('data-dev');
+      btn.classList.toggle('mv-active', key === state.activeDeviceKey);
+    });
+
     const rotBtn = document.getElementById('mv-rot-btn');
     if (rotBtn) {
       rotBtn.classList.toggle('mv-btn-active', state.isLandscape);
+      const rotIcon = rotBtn.querySelector('svg');
+      if (rotIcon) {
+        rotIcon.style.transform = state.isLandscape ? 'rotate(90deg)' : 'rotate(0deg)';
+        rotIcon.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+      }
     }
 
     const fitBtn = document.getElementById('mv-fit-btn');
@@ -173,7 +195,7 @@
   }
 
   /**
-   * Membuat dan Memunculkan Overlay Studio Liquid Apple
+   * Membuat dan Memunculkan Overlay Studio Liquid Apple Ultra-Enak
    */
   function openMobileView() {
     if (document.getElementById('mv-studio-overlay')) return;
@@ -190,24 +212,31 @@
     overlay.innerHTML = `
       <!-- Topbar Studio (Cupertino Frosted Crystal) -->
       <div id="mv-topbar">
-        <!-- Brand & Preset Selector -->
+        <!-- Brand & Quick Device Segmented Chips -->
         <div class="mv-group">
           <div class="mv-brand">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <rect width="14" height="20" x="5" y="2" rx="3" ry="3"/>
               <path d="M12 18h.01"/>
             </svg>
             <span>Mobile View</span>
           </div>
 
-          <!-- Device Dropdown -->
-          <select id="mv-device-select" class="mv-select">
-            ${Object.keys(DEVICES).map(key => `
-              <option value="${key}" ${key === state.activeDeviceKey ? 'selected' : ''}>
-                ${DEVICES[key].name} (${DEVICES[key].width}×${DEVICES[key].height})
-              </option>
-            `).join('')}
-          </select>
+          <!-- Quick 1-Click Segmented Devices (Concentric Radii) -->
+          <div class="mv-neo-groove">
+            <button class="mv-tab-pill mv-dev-chip ${state.activeDeviceKey === 'iphone15pro' ? 'mv-active' : ''}" data-dev="iphone15pro">
+              iPhone 15 Pro
+            </button>
+            <button class="mv-tab-pill mv-dev-chip ${state.activeDeviceKey === 'galaxys24' ? 'mv-active' : ''}" data-dev="galaxys24">
+              Galaxy S24
+            </button>
+            <button class="mv-tab-pill mv-dev-chip ${state.activeDeviceKey === 'iphonese' ? 'mv-active' : ''}" data-dev="iphonese">
+              SE
+            </button>
+            <button class="mv-tab-pill mv-dev-chip ${state.activeDeviceKey === 'ipadmini' ? 'mv-active' : ''}" data-dev="ipadmini">
+              iPad
+            </button>
+          </div>
 
           <!-- Rotate Button -->
           <button id="mv-rot-btn" class="mv-btn ${state.isLandscape ? 'mv-btn-active' : ''}" title="Putar Layar (Tekan 'R')">
@@ -217,6 +246,9 @@
             <span>Putar</span>
             <span class="mv-kbd">R</span>
           </button>
+
+          <!-- Real-Time Dimension Pill -->
+          <div id="mv-dim-badge" class="mv-dim-pill">393 × 852 px</div>
         </div>
 
         <!-- Center: Primary Active Radar Beacon Hint -->
@@ -225,18 +257,18 @@
           <span>Klik kanan di layar HP ➜ Inspect (F12)</span>
         </div>
 
-        <!-- Right: Neomorphic Segmented Zoom & Close Button -->
+        <!-- Right: Segmented Zoom, Reload, & Close -->
         <div class="mv-group">
-          <!-- Neomorphic Segmented Track -->
+          <!-- Neomorphic Segmented Track for Zoom -->
           <div class="mv-neo-groove">
             <button id="mv-fit-btn" class="mv-tab-pill ${state.scaleMode === 'fit' ? 'mv-active' : ''}">Fit</button>
             <button id="mv-z75-btn" class="mv-tab-pill ${state.scaleMode === '0.75' ? 'mv-active' : ''}">75%</button>
             <button id="mv-z100-btn" class="mv-tab-pill ${state.scaleMode === '1.0' ? 'mv-active' : ''}">100%</button>
           </div>
 
-          <!-- Reload Iframe Button -->
-          <button id="mv-reload-btn" class="mv-btn" title="Segarkan Halaman">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <!-- Reload Button with Rotation -->
+          <button id="mv-reload-btn" class="mv-btn" title="Segarkan Halaman (Reload)">
+            <svg id="mv-reload-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
               <path d="M3 3v5h5"/>
               <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
@@ -274,11 +306,14 @@
 
     document.body.appendChild(overlay);
 
-    // Event Bindings
-    document.getElementById('mv-device-select').addEventListener('change', (e) => {
-      state.activeDeviceKey = e.target.value;
-      localStorage.setItem('mv_device', state.activeDeviceKey);
-      updateChassisView();
+    // Event Bindings untuk Quick Device Chips
+    document.querySelectorAll('.mv-dev-chip').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const key = e.currentTarget.getAttribute('data-dev');
+        state.activeDeviceKey = key;
+        localStorage.setItem('mv_device', key);
+        updateChassisView();
+      });
     });
 
     document.getElementById('mv-rot-btn').addEventListener('click', () => {
@@ -306,6 +341,15 @@
     });
 
     document.getElementById('mv-reload-btn').addEventListener('click', () => {
+      const svg = document.getElementById('mv-reload-svg');
+      if (svg) {
+        svg.style.transform = 'rotate(360deg)';
+        svg.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        setTimeout(() => {
+          svg.style.transition = 'none';
+          svg.style.transform = 'rotate(0deg)';
+        }, 400);
+      }
       const iframe = document.getElementById('mv-viewport-iframe');
       if (iframe) {
         iframe.src = window.location.href;

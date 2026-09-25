@@ -1,5 +1,5 @@
-/* content.css - Mobile View Liquid Apple UI Edition (v2.1) */
-/* Desain Cupertino Crystal Glass, Neomorphic Insets, dan Bebas Obstruksi Kamera */
+/* content.css - Mobile View Liquid Apple Ultra-Enak Edition (v2.2) */
+/* Cupertino Frosted Crystal, Concentric Radii, Zero-Obstruction, & Damped Springs */
 
 #mv-studio-overlay {
   position: fixed !important;
@@ -8,7 +8,7 @@
   background-color: #07090e !important;
   background-image: 
     radial-gradient(at 0% 0%, rgba(94, 92, 230, 0.18) 0px, transparent 45%),
-    radial-gradient(at 100% 0%, rgba(0, 113, 227, 0.20) 0px, transparent 45%),
+    radial-gradient(at 100% 0%, rgba(0, 113, 227, 0.22) 0px, transparent 45%),
     radial-gradient(at 50% 30%, rgba(255, 159, 10, 0.08) 0px, transparent 50%),
     radial-gradient(at 100% 100%, rgba(48, 209, 88, 0.14) 0px, transparent 50%),
     radial-gradient(at 0% 100%, rgba(255, 55, 95, 0.12) 0px, transparent 45%) !important;
@@ -27,6 +27,8 @@
   padding: 0 !important;
   margin: 0 !important;
   animation: mv-spring-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
 }
 
 @keyframes mv-spring-in {
@@ -34,35 +36,36 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-/* Cupertino Crystal Topbar */
+/* Cupertino Crystal Topbar (Floating Island) */
 #mv-topbar {
-  width: calc(100% - 32px) !important;
-  max-width: 1040px !important;
+  width: calc(100% - 28px) !important;
+  max-width: 1120px !important;
   height: 52px !important;
-  margin: 14px auto 6px auto !important;
-  background: rgba(18, 24, 38, 0.82) !important;
+  margin: 12px auto 4px auto !important;
+  background: rgba(17, 24, 39, 0.84) !important;
   backdrop-filter: blur(32px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.13) !important;
   border-radius: 18px !important;
   box-shadow: 
     0 1px 2px rgba(0, 0, 0, 0.04),
-    0 12px 32px -4px rgba(0, 0, 0, 0.5),
+    0 14px 34px -4px rgba(0, 0, 0, 0.55),
     0 8px 24px -4px rgba(0, 113, 227, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   padding: 0 12px !important;
   z-index: 2147483647 !important;
   box-sizing: border-box !important;
+  gap: 8px !important;
 }
 
 .mv-group {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  gap: 7px !important;
 }
 
 /* Liquid Pool Brand Capsule */
@@ -72,41 +75,87 @@
   gap: 7px !important;
   color: #38bdf8 !important;
   font-weight: 700 !important;
-  font-size: 11.5px !important;
+  font-size: 11px !important;
   letter-spacing: 0.6px !important;
   text-transform: uppercase !important;
   padding: 4px 10px !important;
   border-radius: 9999px !important;
   background: rgba(56, 189, 248, 0.12) !important;
   border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.1) !important;
+  flex-shrink: 0 !important;
 }
 
-/* Tactile Cupertino Buttons */
+/* Neomorphic Recessed Groove (Track Well) */
+.mv-neo-groove {
+  background: rgba(0, 0, 0, 0.38) !important;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.35), 
+    inset 0 1px 1px rgba(0, 0, 0, 0.25), 
+    0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+  padding: 3px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+}
+
+/* Segmented Tab Pill */
+.mv-tab-pill {
+  padding: 4px 10px !important;
+  border-radius: 9px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: color 120ms ease, background-color 120ms ease, box-shadow 120ms ease, transform 120ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  outline: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  white-space: nowrap !important;
+}
+.mv-tab-pill:hover {
+  color: #ffffff !important;
+}
+.mv-tab-pill:active {
+  transform: scale(0.96) !important;
+}
+.mv-tab-pill.mv-active {
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Tactile Icon Button */
 .mv-btn {
   background: rgba(255, 255, 255, 0.07) !important;
-  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border: 1px solid rgba(255, 255, 255, 0.11) !important;
   color: #f1f5f9 !important;
-  font-size: 12px !important;
+  font-size: 11.5px !important;
   font-weight: 600 !important;
-  padding: 6px 12px !important;
-  border-radius: 12px !important;
+  padding: 5px 11px !important;
+  border-radius: 11px !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
-  transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1), background-color 120ms ease, border-color 120ms ease !important;
+  gap: 5px !important;
+  transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1), background-color 120ms ease, border-color 120ms ease, color 120ms ease !important;
   outline: none !important;
-  min-height: 34px !important;
+  min-height: 32px !important;
   box-sizing: border-box !important;
+  white-space: nowrap !important;
 }
 .mv-btn:hover {
   background: rgba(255, 255, 255, 0.13) !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
   color: #ffffff !important;
 }
 .mv-btn:active {
-  transform: scale(0.96) !important;
-  transition-duration: 75ms !important;
+  transform: scale(0.95) !important;
 }
 .mv-btn-active {
   background: rgba(0, 113, 227, 0.25) !important;
@@ -121,44 +170,22 @@
   color: #fca5a5 !important;
 }
 .mv-btn-close:hover {
-  background: rgba(239, 68, 68, 0.25) !important;
+  background: rgba(239, 68, 68, 0.26) !important;
   border-color: #ef4444 !important;
   color: #ffffff !important;
 }
 
-/* Cupertino Dropdown Select */
-.mv-select {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  color: #f8fafc !important;
-  font-size: 12px !important;
+/* Live Dimension Capsule */
+.mv-dim-pill {
+  font-family: ui-monospace, "SF Mono", monospace !important;
+  font-variant-numeric: tabular-nums !important;
+  font-size: 10.5px !important;
   font-weight: 600 !important;
-  padding: 6px 12px !important;
-  border-radius: 12px !important;
-  cursor: pointer !important;
-  outline: none !important;
-  min-height: 34px !important;
-  transition: border-color 140ms ease !important;
-}
-.mv-select:focus {
-  border-color: #0071e3 !important;
-  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2) !important;
-}
-.mv-select option {
-  background: #0f172a !important;
-  color: #f8fafc !important;
-}
-
-/* Keyboard Tag */
-.mv-kbd {
-  font-size: 9.5px !important;
-  background: rgba(0, 0, 0, 0.4) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  padding: 1px 5px !important;
-  border-radius: 5px !important;
   color: #94a3b8 !important;
-  font-family: ui-monospace, monospace !important;
-  font-weight: 700 !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 3px 8px !important;
+  border-radius: 8px !important;
 }
 
 /* Primary Active Radar Beacon Hint */
@@ -171,9 +198,10 @@
   color: #34d399 !important;
   background: rgba(52, 211, 153, 0.10) !important;
   border: 1px solid rgba(52, 211, 153, 0.22) !important;
-  padding: 5px 12px !important;
+  padding: 4px 11px !important;
   border-radius: 9999px !important;
   letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
 }
 .mv-beacon {
   width: 6px !important;
@@ -189,53 +217,28 @@
   100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
 }
 
-/* Neomorphic Segmented Track (Concentric Radii) */
-.mv-neo-groove {
-  background: rgba(0, 0, 0, 0.35) !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 12px !important;
-  padding: 3px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 2px !important;
-}
-
-.mv-tab-pill {
-  padding: 4px 10px !important;
-  border-radius: 9px !important;
-  font-size: 11px !important;
-  font-weight: 600 !important;
-  color: #94a3b8 !important;
-  background: transparent !important;
-  border: none !important;
-  cursor: pointer !important;
-  transition: all 140ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-  outline: none !important;
-}
-.mv-tab-pill:hover {
-  color: #ffffff !important;
-}
-.mv-tab-pill:active {
-  transform: scale(0.96) !important;
-}
-.mv-tab-pill.mv-active {
-  background: #0071e3 !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+.mv-kbd {
+  font-size: 9.5px !important;
+  background: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  padding: 1px 5px !important;
+  border-radius: 5px !important;
+  color: #cbd5e1 !important;
+  font-family: ui-monospace, monospace !important;
+  font-weight: 700 !important;
 }
 
 /* Canvas Area */
 #mv-canvas {
   flex: 1 !important;
   width: 100% !important;
-  height: calc(100% - 72px) !important;
+  height: calc(100% - 70px) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   position: relative !important;
   overflow: auto !important;
-  padding: 24px !important;
+  padding: 20px !important;
   box-sizing: border-box !important;
 }
 
@@ -245,21 +248,21 @@
   align-items: center !important;
   justify-content: center !important;
   transform-origin: center center !important;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-/* Authentic Titanium Phone Chassis (Zero Obstruction, Chamfer Rim) */
+/* Authentic Titanium Phone Chassis (Zero Obstruction, Precision Chamfer) */
 .mv-phone-frame {
   position: relative !important;
   background: #141720 !important;
   box-shadow: 
     0 0 0 11px #1a1e28,
     0 0 0 12px #323846,
-    0 30px 80px -15px rgba(0, 0, 0, 0.85),
-    0 0 45px rgba(0, 0, 0, 0.5),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+    0 35px 85px -15px rgba(0, 0, 0, 0.85),
+    0 0 45px rgba(0, 113, 227, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18) !important;
   box-sizing: border-box !important;
-  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1), height 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 /* Hardware Side Buttons */
@@ -279,7 +282,7 @@
   overflow: hidden !important;
   background: #ffffff !important;
   box-sizing: border-box !important;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18) !important;
 }
 
 #mv-viewport-iframe {
