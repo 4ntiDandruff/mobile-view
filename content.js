@@ -1,4 +1,4 @@
-// content.js - Mobile View Liquid Apple UI Edition (v2.7)
+// content.js - Mobile View Liquid Apple UI Edition (v3.1)
 // 100% Konsisten dengan preview.js (Standalone Studio)
 
 (function () {
@@ -67,7 +67,7 @@
    * Menghitung zoom scale adaptif agar frame pas dengan monitor
    */
   function calculateFitScale(devW, devH) {
-    const availH = window.innerHeight - 78;
+    const availH = window.innerHeight - 84;
     const availW = window.innerWidth - 32;
     const scaleH = availH / devH;
     const scaleW = availW / devW;
@@ -124,9 +124,9 @@
     }
     scaleWrapper.style.transform = `scale(${state.zoom})`;
 
-    // 3. Update Badge Dimensi Monospace
+    // 3. Update Badge Dimensi Monospace dengan Live Beacon Dot
     if (dimBadge) {
-      dimBadge.textContent = `${screenW} × ${screenH} px`;
+      dimBadge.innerHTML = `<span class="mv-dim-dot"></span><span>${screenW} × ${screenH} px</span>`;
     }
 
     // 4. Tombol Fisik Samping (Hardware Buttons di Sisi Luar Bezel)
@@ -247,7 +247,7 @@
 
         <!-- Center: Metrics + Rotate + Frame Toggle + Reload -->
         <div class="mv-group">
-          <div id="mv-dim-badge" class="mv-dim-pill">393 × 852 px</div>
+          <div id="mv-dim-badge" class="mv-dim-pill"><span class="mv-dim-dot"></span><span>393 × 852 px</span></div>
 
           <!-- Rotate Button -->
           <button id="mv-rot-btn" class="mv-btn ${state.isLandscape ? 'mv-btn-active' : ''}" title="Putar Layar (Tekan 'R')">
@@ -374,11 +374,11 @@
       const svg = document.getElementById('mv-reload-svg');
       if (svg) {
         svg.style.transform = 'rotate(360deg)';
-        svg.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        svg.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
         setTimeout(() => {
           svg.style.transition = 'none';
           svg.style.transform = 'rotate(0deg)';
-        }, 400);
+        }, 450);
       }
       const iframe = document.getElementById('mv-viewport-iframe');
       if (iframe) {

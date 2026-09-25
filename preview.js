@@ -1,4 +1,4 @@
-// preview.js - Standalone Studio Controller (Liquid Apple Unified v2.7)
+// preview.js - Standalone Studio Controller (Liquid Apple Unified v3.1)
 // 100% Konsisten dengan content.js (In-Page Overlay)
 
 (function () {
@@ -54,6 +54,7 @@
     zoom: 1.0,
     currentUrl: 'https://google.com'
   };
+
   let target = params.get('url');
   if (target && target !== 'about:blank') {
     if (!target.startsWith('http://') && !target.startsWith('https://') && !target.startsWith('file://')) {
@@ -63,7 +64,7 @@
   }
 
   function calculateFitScale(devW, devH) {
-    const availH = window.innerHeight - 78;
+    const availH = window.innerHeight - 84;
     const availW = window.innerWidth - 32;
     const scaleH = availH / devH;
     const scaleW = availW / devW;
@@ -117,9 +118,9 @@
     }
     scaleWrapper.style.transform = `scale(${state.zoom})`;
 
-    // 3. Update Badge Dimensi Monospace
+    // 3. Update Badge Dimensi Monospace dengan Live Beacon Dot
     if (dimBadge) {
-      dimBadge.textContent = `${screenW} × ${screenH} px`;
+      dimBadge.innerHTML = `<span class="mv-dim-dot"></span><span>${screenW} × ${screenH} px</span>`;
     }
 
     // 4. Tombol Fisik Samping (Hardware Buttons di Sisi Luar Bezel)
@@ -245,11 +246,11 @@
       const svg = document.getElementById('mv-reload-svg');
       if (svg) {
         svg.style.transform = 'rotate(360deg)';
-        svg.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        svg.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
         setTimeout(() => {
           svg.style.transition = 'none';
           svg.style.transform = 'rotate(0deg)';
-        }, 400);
+        }, 450);
       }
       if (iframe) {
         iframe.src = state.currentUrl;

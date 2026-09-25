@@ -1,5 +1,5 @@
-/* content.css - Mobile View Unified Design System (v3.0) */
-/* Single Source of Truth: Maximum Tactile Contrast Apple Cupertino Surface */
+/* content.css - Mobile View Ultra-Enak Tactile Edition (v3.1) */
+/* Single Source of Truth: Liquid Apple UI v2.7 + Make-Interfaces-Feel-Better */
 
 :root {
   --apple-blue: #0071E3;
@@ -11,18 +11,18 @@
   --apple-teal: #64D2FF;
 
   /* ========================================================
-     DARK OBSIDIAN THEME (MAXIMUM CONTRAST & TACTILE CLARITY)
+     DARK OBSIDIAN THEME (TACTILE DEPTH & LUMINOUS ACCENTS)
      ======================================================== */
   --bg-page: #07090E;
   --text-primary: #FFFFFF;
   --text-secondary: #F1F5F9;
-  --topbar-bg: rgba(13, 17, 28, 0.95);
-  --topbar-border: rgba(255, 255, 255, 0.25);
+  --topbar-bg: rgba(13, 17, 28, 0.94);
+  --topbar-border: rgba(255, 255, 255, 0.22);
   --topbar-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.85), 0 8px 24px -4px rgba(0, 113, 227, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 
-  /* Neomorphic Groove Track */
+  /* Neomorphic Groove Track (Concentric 12px) */
   --groove-bg: rgba(0, 0, 0, 0.75);
-  --groove-border: rgba(255, 255, 255, 0.24);
+  --groove-border: rgba(255, 255, 255, 0.22);
   --groove-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.80), 0 1px 0 rgba(255, 255, 255, 0.15);
 
   /* Segmented Inactive Tab */
@@ -30,26 +30,26 @@
   --tab-inactive-hover-bg: rgba(255, 255, 255, 0.18);
   --tab-inactive-hover-color: #FFFFFF;
 
-  /* Segmented Active Pill */
+  /* Segmented Active Pill (Elevated Convex) */
   --tab-active-bg: #0071E3;
   --tab-active-text: #FFFFFF;
   --tab-active-border: rgba(255, 255, 255, 0.40);
-  --tab-active-shadow: 0 2px 14px rgba(0, 113, 227, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.50);
+  --tab-active-shadow: 0 3px 14px rgba(0, 113, 227, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.50);
 
-  /* Standard Tactile Button (.mv-btn) - High Contrast Plate */
-  --pill-bg: rgba(255, 255, 255, 0.20);
-  --pill-border: rgba(255, 255, 255, 0.35);
+  /* Standard Tactile Button (.mv-btn) - Elevated Acrylic Plate */
+  --pill-bg: rgba(255, 255, 255, 0.18);
+  --pill-border: rgba(255, 255, 255, 0.32);
   --pill-text: #FFFFFF;
   --pill-shadow: 0 3px 8px rgba(0, 0, 0, 0.60), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 
-  /* Active Tactile Button (.mv-btn.mv-btn-active) - Vivid Apple Blue */
+  /* Active Tactile Button (.mv-btn.mv-btn-active) - Electric Apple Blue */
   --pill-active-bg: #0071E3;
   --pill-active-border: #60A5FA;
   --pill-active-text: #FFFFFF;
-  --pill-active-shadow: 0 3px 16px rgba(0, 113, 227, 0.90), inset 0 1px 0 rgba(255, 255, 255, 0.50);
+  --pill-active-shadow: 0 4px 16px rgba(0, 113, 227, 0.90), inset 0 1px 0 rgba(255, 255, 255, 0.55);
 
-  /* Dimension Badge (Electric Cyan HUD) */
-  --dim-bg: rgba(14, 165, 233, 0.20);
+  /* Dimension Badge (Electric Cyan Telemetry HUD) */
+  --dim-bg: rgba(14, 165, 233, 0.18);
   --dim-border: rgba(56, 189, 248, 0.65);
   --dim-text: #38BDF8;
   --dim-shadow: 0 2px 6px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(56, 189, 248, 0.30);
@@ -61,7 +61,7 @@
   --kbd-shadow: 0 1px 3px rgba(0, 0, 0, 0.60), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 
   /* Close Button (Crimson Warning Pill) */
-  --btn-close-bg: rgba(220, 38, 38, 0.35);
+  --btn-close-bg: rgba(220, 38, 38, 0.32);
   --btn-close-border: rgba(248, 113, 113, 0.70);
   --btn-close-text: #FFFFFF;
   --btn-close-shadow: 0 3px 10px rgba(0, 0, 0, 0.60), inset 0 1px 0 rgba(255, 255, 255, 0.30);
@@ -76,7 +76,7 @@
 }
 
 /* ========================================================
-   LIGHT PLATINUM THEME (MAXIMUM CONTRAST & TACTILE CLARITY)
+   LIGHT PLATINUM THEME (TACTILE DEPTH & CRISP SHARP EDGES)
    ======================================================== */
 #mv-studio-overlay.mv-theme-light,
 body.mv-theme-light {
@@ -182,32 +182,32 @@ body.mv-standalone-body {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* Cupertino Frosted Crystal Island (Topbar) */
+/* Cupertino Frosted Crystal Island (Topbar - Ultra Enak 52px) */
 #mv-topbar {
   width: auto !important;
   max-width: 96vw !important;
-  height: 48px !important;
-  margin: 12px auto 4px auto !important;
+  height: 52px !important;
+  margin: 14px auto 6px auto !important;
   background: var(--topbar-bg) !important;
   backdrop-filter: blur(36px) saturate(200%) !important;
   -webkit-backdrop-filter: blur(36px) saturate(200%) !important;
   border: 1.5px solid var(--topbar-border) !important;
-  border-radius: 18px !important;
+  border-radius: 20px !important;
   box-shadow: var(--topbar-shadow) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 0 8px !important;
+  padding: 0 10px !important;
   z-index: 2147483647 !important;
   box-sizing: border-box !important;
-  gap: 8px !important;
-  transition: background-color 200ms ease, border-color 200ms ease !important;
+  gap: 10px !important;
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease !important;
 }
 
 .mv-group {
   display: flex !important;
   align-items: center !important;
-  gap: 5px !important;
+  gap: 6px !important;
 }
 
 /* Liquid Pool Brand Capsule (High Contrast Accent) */
@@ -220,12 +220,14 @@ body.mv-standalone-body {
   font-size: 11px !important;
   letter-spacing: 0.6px !important;
   text-transform: uppercase !important;
-  padding: 3px 10px !important;
+  padding: 4px 11px !important;
   border-radius: 9999px !important;
   background: rgba(0, 113, 227, 0.24) !important;
   border: 1.5px solid rgba(56, 189, 248, 0.50) !important;
   flex-shrink: 0 !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+  min-height: 28px !important;
+  box-sizing: border-box !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-brand,
 body.mv-theme-light .mv-brand {
@@ -241,16 +243,16 @@ body.mv-theme-light .mv-brand {
   box-shadow: var(--groove-shadow) !important;
   border: 1.5px solid var(--groove-border) !important;
   border-radius: 12px !important;
-  padding: 2.5px !important;
+  padding: 3px !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 2px !important;
+  gap: 3px !important;
   transition: background-color 200ms ease, border-color 200ms ease !important;
 }
 
 /* Segmented Tab Pill (Concentric Radius: 9px) */
 .mv-tab-pill {
-  padding: 4px 11px !important;
+  padding: 5px 12px !important;
   border-radius: 9px !important;
   font-size: 11px !important;
   font-weight: 700 !important;
@@ -258,21 +260,26 @@ body.mv-theme-light .mv-brand {
   background: transparent !important;
   border: 1px solid transparent !important;
   cursor: pointer !important;
-  transition: color 120ms ease, background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease, transform 120ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition-property: color, background-color, border-color, box-shadow, transform !important;
+  transition-duration: 140ms !important;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
   outline: none !important;
   display: flex !important;
   align-items: center !important;
-  gap: 4px !important;
+  gap: 5px !important;
   white-space: nowrap !important;
-  min-height: 26px !important;
+  min-height: 28px !important;
   box-sizing: border-box !important;
+  touch-action: manipulation !important;
 }
 .mv-tab-pill:hover {
   color: var(--tab-inactive-hover-color) !important;
   background: var(--tab-inactive-hover-bg) !important;
+  transform: translateY(-0.5px) !important;
 }
 .mv-tab-pill:active {
   transform: scale(0.96) !important;
+  transition-duration: 75ms !important;
 }
 .mv-tab-pill.mv-active {
   background: var(--tab-active-bg) !important;
@@ -281,47 +288,62 @@ body.mv-theme-light .mv-brand {
   font-weight: 800 !important;
   box-shadow: var(--tab-active-shadow) !important;
 }
+.mv-tab-pill.mv-active:hover {
+  transform: none !important;
+}
 
-/* Tactile High-Contrast Icon Button */
+/* Tactile High-Contrast Icon Button (32px Ultra-Enak) */
 .mv-btn {
   background: var(--pill-bg) !important;
   border: 1.5px solid var(--pill-border) !important;
   color: var(--pill-text) !important;
-  font-size: 11px !important;
+  font-size: 11.5px !important;
   font-weight: 700 !important;
-  padding: 4px 10px !important;
-  border-radius: 10px !important;
+  padding: 5px 11px !important;
+  border-radius: 11px !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  gap: 5px !important;
+  gap: 6px !important;
   box-shadow: var(--pill-shadow) !important;
-  transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1), background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease !important;
+  transition-property: transform, background-color, border-color, color, box-shadow !important;
+  transition-duration: 140ms !important;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
   outline: none !important;
-  min-height: 28px !important;
+  min-height: 32px !important;
   box-sizing: border-box !important;
   white-space: nowrap !important;
+  touch-action: manipulation !important;
 }
 .mv-btn:hover {
-  background: rgba(0, 113, 227, 0.30) !important;
+  background: rgba(0, 113, 227, 0.28) !important;
   border-color: #38BDF8 !important;
   color: #38BDF8 !important;
-  transform: translateY(-0.5px) !important;
+  transform: translateY(-0.75px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 12px rgba(56, 189, 248, 0.25) !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-btn:hover,
 body.mv-theme-light .mv-btn:hover {
   background: #EFF6FF !important;
   border-color: var(--apple-blue) !important;
   color: var(--apple-blue) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), 0 0 8px rgba(0, 113, 227, 0.15) !important;
 }
 .mv-btn:active {
-  transform: scale(0.95) !important;
+  transform: scale(0.96) translateY(0.5px) !important;
+  transition-duration: 75ms !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 .mv-btn.mv-btn-active {
   background: var(--pill-active-bg) !important;
   border-color: var(--pill-active-border) !important;
   color: var(--pill-active-text) !important;
   box-shadow: var(--pill-active-shadow) !important;
+}
+.mv-btn.mv-btn-active:hover {
+  background: var(--apple-blue-hover) !important;
+  color: #FFFFFF !important;
+  border-color: #93C5FD !important;
 }
 
 /* Close Pill (High Contrast Crimson Warning) */
@@ -335,23 +357,55 @@ body.mv-theme-light .mv-btn:hover {
   background: var(--btn-close-hover-bg) !important;
   border-color: var(--btn-close-hover-bg) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 3px 12px rgba(239, 68, 68, 0.60) !important;
+  transform: translateY(-0.75px) !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.65) !important;
+}
+.mv-btn-close:active {
+  transform: scale(0.96) translateY(0.5px) !important;
+  transition-duration: 75ms !important;
 }
 
 /* Live Dimension Capsule (High-Visibility Monospace HUD) */
 .mv-dim-pill {
-  font-family: ui-monospace, "SF Mono", monospace !important;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace !important;
   font-variant-numeric: tabular-nums !important;
   font-size: 11px !important;
   font-weight: 800 !important;
   color: var(--dim-text) !important;
   background: var(--dim-bg) !important;
   border: 1.5px solid var(--dim-border) !important;
-  padding: 3px 9px !important;
-  border-radius: 8px !important;
+  padding: 4px 10px !important;
+  border-radius: 9px !important;
   white-space: nowrap !important;
   letter-spacing: 0.4px !important;
   box-shadow: var(--dim-shadow) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-height: 28px !important;
+  box-sizing: border-box !important;
+}
+
+.mv-dim-dot {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 9999px !important;
+  background: #38BDF8 !important;
+  box-shadow: 0 0 6px #38BDF8, 0 0 10px rgba(56, 189, 248, 0.5) !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+  animation: mv-pulse-beacon 2s ease-in-out infinite !important;
+}
+
+#mv-studio-overlay.mv-theme-light .mv-dim-dot,
+body.mv-theme-light .mv-dim-dot {
+  background: #0071E3 !important;
+  box-shadow: 0 0 6px #0071E3, 0 0 10px rgba(0, 113, 227, 0.4) !important;
+}
+
+@keyframes mv-pulse-beacon {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
 }
 
 /* Tactile Physical Keycap Badge (.mv-kbd) */
@@ -359,14 +413,17 @@ body.mv-theme-light .mv-btn:hover {
   font-size: 9.5px !important;
   background: var(--kbd-bg) !important;
   border: 1px solid var(--kbd-border) !important;
-  padding: 1.5px 5px !important;
-  border-radius: 4px !important;
+  padding: 1.5px 5.5px !important;
+  border-radius: 5px !important;
   color: var(--kbd-text) !important;
-  font-family: ui-monospace, monospace !important;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace !important;
   font-weight: 800 !important;
   line-height: 1.2 !important;
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   box-shadow: var(--kbd-shadow) !important;
+  letter-spacing: 0.3px !important;
 }
 
 .mv-btn.mv-btn-active .mv-kbd {
@@ -396,7 +453,7 @@ body.mv-theme-light .mv-btn-close .mv-kbd {
 #mv-canvas {
   flex: 1 !important;
   width: 100% !important;
-  height: calc(100% - 66px) !important;
+  height: calc(100% - 72px) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -419,13 +476,13 @@ body.mv-theme-light .mv-btn-close .mv-kbd {
 /* Ambient Diffuse Backlight Glow */
 .mv-ambient-glow {
   position: absolute !important;
-  inset: -30px !important;
+  inset: -35px !important;
   background: var(--ambient-glow) !important;
-  filter: blur(42px) !important;
+  filter: blur(48px) !important;
   pointer-events: none !important;
   z-index: -2 !important;
-  border-radius: 40px !important;
-  transition: background 250ms ease !important;
+  border-radius: 44px !important;
+  transition: background 300ms ease, inset 300ms ease !important;
 }
 
 /* Titanium Phone Frame */
@@ -450,8 +507,8 @@ body.mv-theme-light .mv-btn-close .mv-kbd {
 .mv-frameless .mv-phone-frame {
   padding: 0 !important;
   box-shadow: 
-    0 0 0 1px var(--topbar-border),
-    0 25px 65px -10px rgba(0, 0, 0, 0.45) !important;
+    0 0 0 1.5px var(--topbar-border),
+    0 25px 65px -10px rgba(0, 0, 0, 0.50) !important;
 }
 .mv-frameless .mv-btn-hw {
   display: none !important;
@@ -463,7 +520,8 @@ body.mv-theme-light .mv-btn-close .mv-kbd {
   background: var(--chassis-rim) !important;
   border-radius: 2px !important;
   z-index: -1 !important;
-  box-shadow: -1px 0 2px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: -1px 0 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+  transition: background-color 200ms ease !important;
 }
 
 /* 100% Clean Screen Viewport - Radius Presisi 19px */
