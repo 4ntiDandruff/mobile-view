@@ -64,7 +64,7 @@
   }
 
   function calculateFitScale(devW, devH) {
-    const availH = window.innerHeight - 84;
+    const availH = window.innerHeight - 76;
     const availW = window.innerWidth - 32;
     const scaleH = availH / devH;
     const scaleW = availW / devW;

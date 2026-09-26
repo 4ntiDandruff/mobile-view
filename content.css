@@ -1,5 +1,7 @@
-/* content.css - Mobile View Ultra-Enak Tactile Edition (v3.1) */
-/* Single Source of Truth: Liquid Apple UI v2.7 + Make-Interfaces-Feel-Better */
+/* content.css - Mobile View Proportional Clean Tech Edition (v3.2) */
+/* Single Source of Truth: Referensi CekWeb Megapass + Zero-Glow Pure Optics */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
 
 :root {
   --apple-blue: #0071E3;
@@ -11,135 +13,135 @@
   --apple-teal: #64D2FF;
 
   /* ========================================================
-     DARK OBSIDIAN THEME (TACTILE DEPTH & LUMINOUS ACCENTS)
+     DARK OBSIDIAN THEME (PROPORTIONAL CLEAN TECH - REF: CEKWEB)
      ======================================================== */
-  --bg-page: #07090E;
+  --bg-page: #0B0F19;
   --text-primary: #FFFFFF;
   --text-secondary: #F1F5F9;
-  --topbar-bg: rgba(13, 17, 28, 0.94);
-  --topbar-border: rgba(255, 255, 255, 0.22);
-  --topbar-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.85), 0 8px 24px -4px rgba(0, 113, 227, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  --topbar-bg: rgba(15, 23, 42, 0.94);
+  --topbar-border: rgba(255, 255, 255, 0.14);
+  --topbar-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 
-  /* Neomorphic Groove Track (Concentric 12px) */
-  --groove-bg: rgba(0, 0, 0, 0.75);
-  --groove-border: rgba(255, 255, 255, 0.22);
-  --groove-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.80), 0 1px 0 rgba(255, 255, 255, 0.15);
+  /* Neomorphic Groove Track (Concentric 9px) */
+  --groove-bg: rgba(0, 0, 0, 0.60);
+  --groove-border: rgba(255, 255, 255, 0.12);
+  --groove-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.60), 0 1px 0 rgba(255, 255, 255, 0.10);
 
   /* Segmented Inactive Tab */
-  --tab-inactive-color: rgba(255, 255, 255, 0.88);
-  --tab-inactive-hover-bg: rgba(255, 255, 255, 0.18);
+  --tab-inactive-color: rgba(255, 255, 255, 0.78);
+  --tab-inactive-hover-bg: rgba(255, 255, 255, 0.12);
   --tab-inactive-hover-color: #FFFFFF;
 
   /* Segmented Active Pill (Elevated Neomorphic White) */
   --tab-active-bg: #FFFFFF;
   --tab-active-text: #0F172A;
   --tab-active-border: rgba(255, 255, 255, 0.90);
-  --tab-active-shadow: 0 3px 10px rgba(0, 0, 0, 0.40), 0 1px 2px rgba(0, 0, 0, 0.20), inset 0 1px 0 #FFFFFF, inset 0 -0.5px 0 rgba(0, 0, 0, 0.05);
+  --tab-active-shadow: 0 2px 5px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.20), inset 0 1px 0 #FFFFFF;
 
   /* Standard Tactile Button (.mv-btn) - Neomorphic White */
   --pill-bg: #FFFFFF;
-  --pill-border: rgba(255, 255, 255, 0.90);
+  --pill-border: rgba(255, 255, 255, 0.85);
   --pill-text: #0F172A;
-  --pill-shadow: 0 3px 10px rgba(0, 0, 0, 0.40), 0 1px 2px rgba(0, 0, 0, 0.20), inset 0 1px 0 #FFFFFF, inset 0 -1px 0 rgba(0, 0, 0, 0.06);
+  --pill-shadow: 0 2px 5px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.20), inset 0 1px 0 #FFFFFF;
 
   /* Active Tactile Button (.mv-btn.mv-btn-active) - Neomorphic White with Apple Blue */
   --pill-active-bg: #FFFFFF;
   --pill-active-border: #0071E3;
   --pill-active-text: #0071E3;
-  --pill-active-shadow: 0 4px 14px rgba(0, 113, 227, 0.40), 0 1px 2px rgba(0, 0, 0, 0.20), inset 0 1px 0 #FFFFFF, inset 0 0 0 1px #0071E3;
+  --pill-active-shadow: 0 2px 5px rgba(0, 0, 0, 0.30), inset 0 1px 0 #FFFFFF;
 
   /* Dimension Badge (Neomorphic White Capsule) */
   --dim-bg: #FFFFFF;
-  --dim-border: rgba(255, 255, 255, 0.90);
+  --dim-border: rgba(255, 255, 255, 0.85);
   --dim-text: #0F172A;
-  --dim-shadow: 0 3px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 #FFFFFF;
+  --dim-shadow: 0 2px 5px rgba(0, 0, 0, 0.30), inset 0 1px 0 #FFFFFF;
 
   /* Tactile Physical Keycap Badge (.mv-kbd) */
   --kbd-bg: #F1F5F9;
-  --kbd-border: rgba(0, 0, 0, 0.18);
+  --kbd-border: rgba(0, 0, 0, 0.15);
   --kbd-text: #0F172A;
-  --kbd-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF;
+  --kbd-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
 
-  /* Close Button (Neomorphic White with Crimson Warning) */
+  /* Close Button (Neomorphic White with Crimson) */
   --btn-close-bg: #FFFFFF;
-  --btn-close-border: rgba(239, 68, 68, 0.50);
+  --btn-close-border: rgba(239, 68, 68, 0.40);
   --btn-close-text: #DC2626;
-  --btn-close-shadow: 0 3px 10px rgba(0, 0, 0, 0.40), 0 1px 2px rgba(0, 0, 0, 0.20), inset 0 1px 0 #FFFFFF, inset 0 -1px 0 rgba(220, 38, 38, 0.10);
+  --btn-close-shadow: 0 2px 5px rgba(0, 0, 0, 0.30), inset 0 1px 0 #FFFFFF;
   --btn-close-hover-bg: #DC2626;
 
-  /* Chassis & Ambient Halo */
+  /* Chassis (Clean Natural Depth - Zero Glow) */
   --chassis-bg: #0f1219;
   --chassis-outer: #1b202c;
   --chassis-rim: #2d3546;
-  --chassis-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.90), 0 0 35px rgba(0, 113, 227, 0.18);
-  --ambient-glow: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.22) 0%, rgba(99, 102, 241, 0.12) 50%, transparent 75%);
+  --chassis-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(0, 0, 0, 0.40);
+  --ambient-glow: none;
 }
 
 /* ========================================================
-   LIGHT PLATINUM THEME (TACTILE DEPTH & CRISP SHARP EDGES)
+   LIGHT PLATINUM THEME (PROPORTIONAL CLEAN TECH - REF: CEKWEB)
    ======================================================== */
 #mv-studio-overlay.mv-theme-light,
 body.mv-theme-light {
   --bg-page: #F5F5F7;
   --text-primary: #0F172A;
   --text-secondary: #1E293B;
-  --topbar-bg: rgba(255, 255, 255, 0.96);
-  --topbar-border: rgba(0, 0, 0, 0.22);
-  --topbar-shadow: 0 18px 40px -4px rgba(0, 0, 0, 0.16), 0 4px 14px -2px rgba(0, 113, 227, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --topbar-bg: rgba(255, 255, 255, 0.94);
+  --topbar-border: rgba(0, 0, 0, 0.12);
+  --topbar-shadow: 0 12px 28px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.02), inset 0 1px 0 rgba(255, 255, 255, 1);
 
   /* Neomorphic Groove Track */
-  --groove-bg: rgba(0, 0, 0, 0.08);
-  --groove-border: rgba(0, 0, 0, 0.14);
-  --groove-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.12), 0 1px 0 rgba(255, 255, 255, 0.95);
+  --groove-bg: rgba(0, 0, 0, 0.05);
+  --groove-border: rgba(0, 0, 0, 0.08);
+  --groove-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06), 0 1px 0 rgba(255, 255, 255, 0.95);
 
   /* Segmented Inactive Tab */
-  --tab-inactive-color: #334155;
-  --tab-inactive-hover-bg: rgba(0, 0, 0, 0.06);
+  --tab-inactive-color: #475569;
+  --tab-inactive-hover-bg: rgba(0, 0, 0, 0.05);
   --tab-inactive-hover-color: #0F172A;
 
   /* Segmented Active Pill (Neomorphic White) */
   --tab-active-bg: #FFFFFF;
   --tab-active-text: #0F172A;
-  --tab-active-border: rgba(0, 0, 0, 0.10);
-  --tab-active-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04), inset 0 1px 0 #FFFFFF, inset 0 -0.5px 0 rgba(0, 0, 0, 0.03);
+  --tab-active-border: rgba(0, 0, 0, 0.08);
+  --tab-active-shadow: 0 2px 5px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03), inset 0 1px 0 #FFFFFF;
 
   /* Standard Tactile Button (.mv-btn) - Neomorphic White */
   --pill-bg: #FFFFFF;
-  --pill-border: rgba(0, 0, 0, 0.12);
+  --pill-border: rgba(0, 0, 0, 0.09);
   --pill-text: #0F172A;
-  --pill-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04), inset 0 1px 0 #FFFFFF, inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+  --pill-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03), inset 0 1px 0 #FFFFFF;
 
   /* Active Tactile Button (.mv-btn.mv-btn-active) - Neomorphic White with Apple Blue */
   --pill-active-bg: #FFFFFF;
   --pill-active-border: #0071E3;
   --pill-active-text: #0071E3;
-  --pill-active-shadow: 0 3px 10px rgba(0, 113, 227, 0.28), 0 1px 2px rgba(0, 0, 0, 0.06), inset 0 1px 0 #FFFFFF, inset 0 0 0 1px #0071E3;
+  --pill-active-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), inset 0 1px 0 #FFFFFF;
 
   /* Dimension Badge (Neomorphic White Capsule) */
   --dim-bg: #FFFFFF;
-  --dim-border: rgba(0, 0, 0, 0.12);
+  --dim-border: rgba(0, 0, 0, 0.09);
   --dim-text: #0F172A;
-  --dim-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 #FFFFFF;
+  --dim-shadow: 0 2px 5px rgba(0, 0, 0, 0.04), inset 0 1px 0 #FFFFFF;
 
   /* Tactile Physical Keycap Badge (.mv-kbd) */
   --kbd-bg: #F1F5F9;
-  --kbd-border: rgba(0, 0, 0, 0.16);
+  --kbd-border: rgba(0, 0, 0, 0.12);
   --kbd-text: #0F172A;
-  --kbd-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), inset 0 1px 0 #FFFFFF;
+  --kbd-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
   /* Close Button (Neomorphic White with Crimson) */
   --btn-close-bg: #FFFFFF;
-  --btn-close-border: rgba(239, 68, 68, 0.35);
+  --btn-close-border: rgba(239, 68, 68, 0.30);
   --btn-close-text: #DC2626;
-  --btn-close-shadow: 0 2px 8px rgba(220, 38, 38, 0.12), inset 0 1px 0 #FFFFFF;
+  --btn-close-shadow: 0 2px 5px rgba(220, 38, 38, 0.08), inset 0 1px 0 #FFFFFF;
   --btn-close-hover-bg: #DC2626;
 
-  /* Chassis & Ambient Halo */
+  /* Chassis (Clean Natural Depth - Zero Glow) */
   --chassis-bg: #1c1f26;
   --chassis-outer: #2c323f;
   --chassis-rim: #434c5f;
-  --chassis-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.25), 0 0 35px rgba(0, 113, 227, 0.08);
-  --ambient-glow: radial-gradient(ellipse at center, rgba(0, 113, 227, 0.15) 0%, rgba(94, 92, 230, 0.08) 50%, transparent 75%);
+  --chassis-shadow: 0 18px 40px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --ambient-glow: none;
 }
 
 /* Base Workbench Canvas (Overlay & Standalone) */
@@ -152,19 +154,20 @@ body.mv-standalone-body {
   z-index: 2147483646 !important;
   background-color: var(--bg-page) !important;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(94, 92, 230, 0.16) 0px, transparent 45%),
-    radial-gradient(at 100% 0%, rgba(0, 113, 227, 0.18) 0px, transparent 45%),
-    radial-gradient(at 50% 30%, rgba(255, 159, 10, 0.08) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(48, 209, 88, 0.12) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(255, 55, 95, 0.11) 0px, transparent 45%) !important;
+    radial-gradient(at 0% 0%, rgba(94, 92, 230, 0.14) 0px, transparent 45%),
+    radial-gradient(at 100% 0%, rgba(0, 113, 227, 0.15) 0px, transparent 45%),
+    radial-gradient(at 50% 30%, rgba(255, 159, 10, 0.07) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(48, 209, 88, 0.10) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(255, 55, 95, 0.09) 0px, transparent 45%) !important;
   background-attachment: fixed !important;
-  backdrop-filter: blur(32px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", system-ui, sans-serif !important;
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif !important;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11" !important;
   overflow: hidden !important;
   user-select: none !important;
   -webkit-user-select: none !important;
@@ -182,50 +185,50 @@ body.mv-standalone-body {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* Cupertino Frosted Crystal Island (Topbar - Ultra Enak 52px) */
+/* Cupertino Frosted Crystal Island (Topbar - Proportional 48px) */
 #mv-topbar {
   width: auto !important;
   max-width: 96vw !important;
-  height: 52px !important;
-  margin: 14px auto 6px auto !important;
+  height: 48px !important;
+  margin: 12px auto 6px auto !important;
   background: var(--topbar-bg) !important;
-  backdrop-filter: blur(36px) saturate(200%) !important;
-  -webkit-backdrop-filter: blur(36px) saturate(200%) !important;
-  border: 1.5px solid var(--topbar-border) !important;
-  border-radius: 20px !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid var(--topbar-border) !important;
+  border-radius: 14px !important;
   box-shadow: var(--topbar-shadow) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 0 10px !important;
+  padding: 0 8px !important;
   z-index: 2147483647 !important;
   box-sizing: border-box !important;
-  gap: 10px !important;
+  gap: 8px !important;
   transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease !important;
 }
 
 .mv-group {
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 5px !important;
 }
 
-/* Liquid Pool Brand Capsule (Neomorphic White Pill with Apple Blue) */
+/* Liquid Pool Brand Capsule (Neomorphic White with Apple Blue) */
 .mv-brand {
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 5px !important;
   color: var(--apple-blue) !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
   font-size: 11px !important;
-  letter-spacing: 0.6px !important;
+  letter-spacing: 0.4px !important;
   text-transform: uppercase !important;
-  padding: 4px 11px !important;
-  border-radius: 9999px !important;
+  padding: 3.5px 9px !important;
+  border-radius: 8px !important;
   background: #FFFFFF !important;
-  border: 1px solid rgba(0, 113, 227, 0.30) !important;
+  border: 1px solid rgba(0, 113, 227, 0.25) !important;
   flex-shrink: 0 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06), inset 0 1px 0 #FFFFFF !important;
   min-height: 28px !important;
   box-sizing: border-box !important;
 }
@@ -233,42 +236,43 @@ body.mv-standalone-body {
 body.mv-theme-light .mv-brand {
   color: var(--apple-blue) !important;
   background: #FFFFFF !important;
-  border-color: rgba(0, 113, 227, 0.28) !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 #FFFFFF !important;
+  border-color: rgba(0, 113, 227, 0.25) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04), inset 0 1px 0 #FFFFFF !important;
 }
 
-/* Neomorphic Recessed Groove (Concentric Radius: 12px) */
+/* Neomorphic Recessed Groove (Concentric Radius: 9px) */
 .mv-neo-groove {
   background: var(--groove-bg) !important;
   box-shadow: var(--groove-shadow) !important;
-  border: 1.5px solid var(--groove-border) !important;
-  border-radius: 12px !important;
-  padding: 3px !important;
+  border: 1px solid var(--groove-border) !important;
+  border-radius: 9px !important;
+  padding: 2.5px !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 3px !important;
+  gap: 2px !important;
   transition: background-color 200ms ease, border-color 200ms ease !important;
 }
 
-/* Segmented Tab Pill (Concentric Radius: 9px) */
+/* Segmented Tab Pill (Concentric Radius: 7px) */
 .mv-tab-pill {
-  padding: 5px 12px !important;
-  border-radius: 9px !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
+  padding: 4px 10px !important;
+  border-radius: 7px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
   color: var(--tab-inactive-color) !important;
   background: transparent !important;
   border: 1px solid transparent !important;
   cursor: pointer !important;
+  letter-spacing: -0.01em !important;
   transition-property: color, background-color, border-color, box-shadow, transform !important;
   transition-duration: 140ms !important;
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
   outline: none !important;
   display: flex !important;
   align-items: center !important;
-  gap: 5px !important;
+  gap: 4px !important;
   white-space: nowrap !important;
-  min-height: 28px !important;
+  min-height: 26px !important;
   box-sizing: border-box !important;
   touch-action: manipulation !important;
 }
@@ -285,32 +289,33 @@ body.mv-theme-light .mv-brand {
   background: var(--tab-active-bg) !important;
   color: var(--tab-active-text) !important;
   border: 1px solid var(--tab-active-border) !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
   box-shadow: var(--tab-active-shadow) !important;
 }
 .mv-tab-pill.mv-active:hover {
   transform: none !important;
 }
 
-/* Tactile High-Contrast Icon Button (32px White Neomorphism) */
+/* Tactile High-Contrast Icon Button (30px White Neomorphism) */
 .mv-btn {
   background: var(--pill-bg) !important;
   border: 1px solid var(--pill-border) !important;
   color: var(--pill-text) !important;
   font-size: 11.5px !important;
-  font-weight: 750 !important;
-  padding: 5px 11px !important;
-  border-radius: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 5px !important;
   box-shadow: var(--pill-shadow) !important;
   transition-property: transform, background-color, border-color, color, box-shadow !important;
   transition-duration: 140ms !important;
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
   outline: none !important;
-  min-height: 32px !important;
+  min-height: 30px !important;
   box-sizing: border-box !important;
   white-space: nowrap !important;
   touch-action: manipulation !important;
@@ -320,31 +325,32 @@ body.mv-theme-light .mv-brand {
   border-color: #0071E3 !important;
   color: #0071E3 !important;
   transform: translateY(-0.75px) !important;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.20), 0 2px 6px rgba(0, 113, 227, 0.30), inset 0 1px 0 #FFFFFF, inset 0 -1px 0 rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-btn:hover,
 body.mv-theme-light .mv-btn:hover {
   background: #FFFFFF !important;
   border-color: var(--apple-blue) !important;
   color: var(--apple-blue) !important;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0, 113, 227, 0.18), inset 0 1px 0 #FFFFFF, inset 0 -1px 0 rgba(0, 0, 0, 0.03) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 1px 0 #FFFFFF !important;
 }
 .mv-btn:active {
   transform: scale(0.96) translateY(0.5px) !important;
   transition-duration: 75ms !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20), inset 0 1px 2px rgba(0, 0, 0, 0.10) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
 }
 .mv-btn.mv-btn-active {
   background: var(--pill-active-bg) !important;
   border-color: var(--pill-active-border) !important;
   color: var(--pill-active-text) !important;
+  font-weight: 700 !important;
   box-shadow: var(--pill-active-shadow) !important;
 }
 .mv-btn.mv-btn-active:hover {
   background: #FFFFFF !important;
   color: var(--apple-blue) !important;
   border-color: var(--apple-blue) !important;
-  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.35), inset 0 1px 0 #FFFFFF, inset 0 0 0 1px #0071E3 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF !important;
 }
 
 /* Close Pill (White Neomorphism with Crimson Warning) */
@@ -359,41 +365,40 @@ body.mv-theme-light .mv-btn:hover {
   border-color: var(--btn-close-hover-bg) !important;
   color: #FFFFFF !important;
   transform: translateY(-0.75px) !important;
-  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.40) !important;
 }
 .mv-btn-close:active {
   transform: scale(0.96) translateY(0.5px) !important;
   transition-duration: 75ms !important;
-  box-shadow: 0 1px 2px rgba(220, 38, 38, 0.30), inset 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 1px 2px rgba(220, 38, 38, 0.25) !important;
 }
 
 /* Live Dimension Capsule (High-Visibility Monospace HUD) */
 .mv-dim-pill {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace !important;
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace !important;
   font-variant-numeric: tabular-nums !important;
   font-size: 11px !important;
-  font-weight: 800 !important;
+  font-weight: 600 !important;
   color: var(--dim-text) !important;
   background: var(--dim-bg) !important;
-  border: 1.5px solid var(--dim-border) !important;
-  padding: 4px 10px !important;
-  border-radius: 9px !important;
+  border: 1px solid var(--dim-border) !important;
+  padding: 3.5px 9px !important;
+  border-radius: 8px !important;
   white-space: nowrap !important;
-  letter-spacing: 0.4px !important;
+  letter-spacing: 0.2px !important;
   box-shadow: var(--dim-shadow) !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 5px !important;
   min-height: 28px !important;
   box-sizing: border-box !important;
 }
 
 .mv-dim-dot {
-  width: 6px !important;
-  height: 6px !important;
+  width: 5px !important;
+  height: 5px !important;
   border-radius: 9999px !important;
   background: #0071E3 !important;
-  box-shadow: 0 0 6px #0071E3, 0 0 10px rgba(0, 113, 227, 0.45) !important;
   display: inline-block !important;
   flex-shrink: 0 !important;
   animation: mv-pulse-beacon 2s ease-in-out infinite !important;
@@ -402,52 +407,51 @@ body.mv-theme-light .mv-btn:hover {
 #mv-studio-overlay.mv-theme-light .mv-dim-dot,
 body.mv-theme-light .mv-dim-dot {
   background: #0071E3 !important;
-  box-shadow: 0 0 6px #0071E3, 0 0 10px rgba(0, 113, 227, 0.40) !important;
 }
 
 @keyframes mv-pulse-beacon {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.85); }
+  50% { opacity: 0.35; transform: scale(0.85); }
 }
 
 /* Tactile Physical Keycap Badge (.mv-kbd) */
 .mv-kbd {
-  font-size: 9.5px !important;
+  font-size: 9px !important;
   background: var(--kbd-bg) !important;
   border: 1px solid var(--kbd-border) !important;
-  padding: 1.5px 5.5px !important;
-  border-radius: 5px !important;
+  padding: 1px 4.5px !important;
+  border-radius: 4px !important;
   color: var(--kbd-text) !important;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace !important;
-  font-weight: 800 !important;
-  line-height: 1.2 !important;
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   box-shadow: var(--kbd-shadow) !important;
-  letter-spacing: 0.3px !important;
+  letter-spacing: 0.2px !important;
 }
 
 .mv-btn.mv-btn-active .mv-kbd {
-  background: rgba(0, 113, 227, 0.10) !important;
-  border-color: rgba(0, 113, 227, 0.30) !important;
+  background: rgba(0, 113, 227, 0.08) !important;
+  border-color: rgba(0, 113, 227, 0.25) !important;
   color: #0071E3 !important;
 }
 
 .mv-btn-close .mv-kbd {
   background: #FEE2E2 !important;
-  border-color: rgba(239, 68, 68, 0.35) !important;
+  border-color: rgba(239, 68, 68, 0.30) !important;
   color: #DC2626 !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-btn-close .mv-kbd,
 body.mv-theme-light .mv-btn-close .mv-kbd {
   background: #FEE2E2 !important;
-  border-color: rgba(239, 68, 68, 0.35) !important;
+  border-color: rgba(239, 68, 68, 0.30) !important;
   color: #DC2626 !important;
 }
 .mv-btn-close:hover .mv-kbd {
-  background: rgba(255, 255, 255, 0.30) !important;
-  border-color: rgba(255, 255, 255, 0.55) !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
   color: #FFFFFF !important;
 }
 
@@ -455,7 +459,7 @@ body.mv-theme-light .mv-btn-close .mv-kbd {
 #mv-canvas {
   flex: 1 !important;
   width: 100% !important;
-  height: calc(100% - 72px) !important;
+  height: calc(100% - 66px) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -475,27 +479,20 @@ body.mv-theme-light .mv-btn-close .mv-kbd {
   position: relative !important;
 }
 
-/* Ambient Diffuse Backlight Glow */
+/* Ambient Diffuse Backlight Glow (Disabled / Zero-Glow Referensi CekWeb) */
 .mv-ambient-glow {
-  position: absolute !important;
-  inset: -35px !important;
-  background: var(--ambient-glow) !important;
-  filter: blur(48px) !important;
-  pointer-events: none !important;
-  z-index: -2 !important;
-  border-radius: 44px !important;
-  transition: background 300ms ease, inset 300ms ease !important;
+  display: none !important;
 }
 
-/* Titanium Phone Frame */
+/* Titanium Phone Frame (Natural Optical Shadow - Zero Glow) */
 .mv-phone-frame {
   position: relative !important;
   background: var(--chassis-bg) !important;
   box-shadow: 
-    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
     0 0 0 3px var(--chassis-outer),
     0 0 0 4.5px var(--chassis-rim),
-    0 1px 2px rgba(255, 255, 255, 0.12),
+    0 1px 2px rgba(255, 255, 255, 0.10),
     var(--chassis-shadow) !important;
   box-sizing: border-box !important;
   transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
@@ -509,8 +506,8 @@ body.mv-theme-light .mv-btn-close .mv-kbd {
 .mv-frameless .mv-phone-frame {
   padding: 0 !important;
   box-shadow: 
-    0 0 0 1.5px var(--topbar-border),
-    0 25px 65px -10px rgba(0, 0, 0, 0.50) !important;
+    0 0 0 1px var(--topbar-border),
+    0 20px 48px rgba(0, 0, 0, 0.45) !important;
 }
 .mv-frameless .mv-btn-hw {
   display: none !important;

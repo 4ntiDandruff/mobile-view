@@ -67,7 +67,7 @@
    * Menghitung zoom scale adaptif agar frame pas dengan monitor
    */
   function calculateFitScale(devW, devH) {
-    const availH = window.innerHeight - 84;
+    const availH = window.innerHeight - 76;
     const availW = window.innerWidth - 32;
     const scaleH = availH / devH;
     const scaleW = availW / devW;
@@ -311,9 +311,6 @@
       <!-- Canvas Area (Clean Floating Center) -->
       <div id="mv-canvas">
         <div id="mv-scale-wrapper">
-          <!-- Ambient Diffuse Glow -->
-          <div class="mv-ambient-glow"></div>
-
           <!-- Phone Chassis -->
           <div id="mv-phone-frame" class="mv-phone-frame">
             <!-- Hardware Buttons -->
