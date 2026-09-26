@@ -6,6 +6,19 @@ Format pencatatan mengacu pada standar *Keep a Changelog* dengan prinsip pelapor
 
 ---
 
+## [1.15.1] - 2026-09-26
+
+### Diperbaiki (Fixed)
+* **Sekring Fatal Crash `ReferenceError: totalW is not defined`**: Memulihkan variabel pembacaan HUD dimensi di `content.js` ke `${screenW} × ${screenH} px` sehingga inisialisasi overlay studio dan listener resize jendela berjalan mulus tanpa menghentikan eksekusi script.
+* **Kalibrasi Fit-Scale Viewport Jendela Non-Fullscreen**: Mengkalkulasi ulang ruang vertikal aman `calculateFitScale` (`availH = window.innerHeight - 96` dan `availW = window.innerWidth - 32`) dengan batas aman bawah 80px, memastikan sasis fisik smartphone tidak lagi terpotong atau menyentuh tepian layar saat browser berada dalam mode windowed atau resolusi layar laptop kecil.
+* **Pencegahan Pemotongan Bilah Atas (*Topbar Overflow Safety*)**: Mengamankan bilah atas `#mv-topbar` dengan `overflow-x: auto`, `flex-shrink: 0`, dan `scrollbar-width: none`. Tombol tetap utuh 100% dan dapat diakses pada layar sempit/split-screen hingga lebar 500px tanpa merusak posisi canvas studio.
+* **Media Query Adaptif Bilah Kontrol**: Menyembunyikan label teks merek pada lebar <= 1080px dan label teks tombol aksi (Putar, Setelan, Tutup) pada lebar <= 960px dengan tetap mempertahankan ikon SVG Lucide dan lencana keyboard, menghemat ruang horizontal lebih dari 180px di jendela browser sempit.
+* **Kanvas Bebas Terpotong pada Zoom 100%**: Mengubah perilaku area `#mv-canvas` dari `overflow: hidden` menjadi `overflow: auto` dengan styling scrollbar tipis netral. Pengguna dapat menggulir kanvas secara ergonomis saat memeriksa tampilan 100% pada layar monitor non-fullscreen.
+* **Debouncing Halus Resize Jendela (60 FPS)**: Membungkus pendengar event `resize` pada `content.js` dan `preview.js` dengan `requestAnimationFrame` untuk mengeliminasi pemborosan repaint GPU dan layout thrashing saat jendela browser diubah ukurannya secara dinamis.
+* **Kueri Tab Multi-Window Fail-Safe di Background Worker**: Memperbarui listener `chrome.commands` pada `background.js` dengan rantai pencarian tab bertingkat (`currentWindow` → `lastFocusedWindow` → active tab) agar pintasan keyboard `Alt+M` selalu tereksekusi meskipun fokus jendela browser sempat berpindah ke jendela lain.
+
+---
+
 ## [1.15.0] - 2026-09-26
 
 ### Ditambahkan (Added)

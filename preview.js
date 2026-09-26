@@ -91,20 +91,20 @@
   } catch (_) {}
 
   let target = params.get('url');
-  if (target && target !== 'about:blank') {
-    if (!target.startsWith('http://') && !target.startsWith('https://') && !target.startsWith('file://')) {
-      target = 'https://' + target;
-    }
-    state.currentUrl = target;
+  if (!target || target === 'about:blank') {
+    target = 'https://google.com';
+  } else if (!target.startsWith('http://') && !target.startsWith('https://') && !target.startsWith('file://')) {
+    target = 'https://' + target;
   }
+  state.currentUrl = target;
 
   function calculateFitScale(devW, devH) {
-    const availH = window.innerHeight - 76;
-    const availW = window.innerWidth - 32;
+    const availH = Math.max(80, window.innerHeight - 96);
+    const availW = Math.max(80, window.innerWidth - 32);
     const scaleH = availH / devH;
     const scaleW = availW / devW;
     const best = Math.min(scaleH, scaleW);
-    return Math.min(1.0, Math.max(0.2, parseFloat(best.toFixed(3))));
+    return Math.min(1.0, Math.max(0.15, parseFloat(best.toFixed(3))));
   }
 
   function updateChassisView() {
@@ -424,10 +424,14 @@
     }
   });
 
+  let resizeTimer = null;
   window.addEventListener('resize', () => {
-    if (state.scaleMode === 'fit') {
-      updateChassisView();
-    }
+    if (resizeTimer) cancelAnimationFrame(resizeTimer);
+    resizeTimer = requestAnimationFrame(() => {
+      if (state.scaleMode === 'fit') {
+        updateChassisView();
+      }
+    });
   });
 
   updateChassisView();

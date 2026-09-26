@@ -188,7 +188,7 @@ body.mv-standalone-body {
 /* Workbench Island Topbar (Proportional 48px - Solid Matte in Dark, Frosted in Light) */
 #mv-topbar {
   width: auto !important;
-  max-width: 96vw !important;
+  max-width: calc(100vw - 24px) !important;
   height: 48px !important;
   margin: 12px auto 6px auto !important;
   background: var(--topbar-bg) !important;
@@ -202,7 +202,16 @@ body.mv-standalone-body {
   z-index: 2147483647 !important;
   box-sizing: border-box !important;
   gap: 8px !important;
+  flex-shrink: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
   transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease !important;
+}
+
+#mv-topbar::-webkit-scrollbar {
+  display: none !important;
 }
 
 #mv-studio-overlay.mv-theme-light #mv-topbar,
@@ -512,7 +521,7 @@ body.mv-theme-light .mv-btn-close .mv-kbd {
   color: #FFFFFF !important;
 }
 
-/* Canvas Area */
+/* Canvas Area (Scrollable in 100% Zoom / Non-Fullscreen Windowed) */
 #mv-canvas {
   flex: 1 !important;
   width: 100% !important;
@@ -521,9 +530,16 @@ body.mv-theme-light .mv-btn-close .mv-kbd {
   align-items: center !important;
   justify-content: center !important;
   position: relative !important;
-  overflow: hidden !important;
-  padding: 10px !important;
+  overflow: auto !important;
+  padding: 12px !important;
   box-sizing: border-box !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent !important;
+}
+
+#mv-studio-overlay.mv-theme-light #mv-canvas,
+body.mv-theme-light #mv-canvas {
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent !important;
 }
 
 /* Scaling Wrapper */
@@ -1055,4 +1071,54 @@ body.mv-theme-light .mv-log-text {
 #mv-studio-overlay.mv-theme-light .mv-link-btn:focus-visible {
   outline: 2px solid rgba(15, 23, 42, 0.40) !important;
   outline-offset: 2px !important;
+}
+
+/* Responsive Viewport & Non-Fullscreen Window Adaptations */
+@media (max-width: 1080px) {
+  .mv-brand span {
+    display: none !important;
+  }
+  .mv-brand {
+    padding: 0 8px !important;
+  }
+}
+
+@media (max-width: 960px) {
+  #mv-rot-btn span:not(.mv-kbd),
+  #mv-settings-btn span:not(.mv-kbd),
+  #mv-close-btn span:not(.mv-kbd) {
+    display: none !important;
+  }
+  #mv-rot-btn,
+  #mv-settings-btn,
+  #mv-close-btn {
+    padding: 0 8px !important;
+  }
+}
+
+@media (max-width: 820px) {
+  .mv-kbd {
+    display: none !important;
+  }
+  #mv-topbar {
+    gap: 4px !important;
+    padding: 0 6px !important;
+  }
+  .mv-group {
+    gap: 3px !important;
+  }
+  .mv-tab-pill {
+    padding: 2px 7px !important;
+    font-size: 11px !important;
+  }
+  #mv-dim-badge {
+    padding: 0 7px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #mv-dim-badge {
+    display: none !important;
+  }
 }

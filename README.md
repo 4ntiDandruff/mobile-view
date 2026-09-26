@@ -5,7 +5,7 @@
 ### Simulator Responsif Smartphone Presisi Piksel & Inspeksi Web Bebas Bloatware
 
 [![Manifest V3](https://img.shields.io/badge/Chromium-Manifest_V3-38BDF8?style=for-the-badge&logo=googlechrome&logoColor=white)](https://github.com/4ntiDandruff/mobile-view)
-[![Release](https://img.shields.io/badge/Release-v1.15.0-10B981?style=for-the-badge&logo=github)](https://github.com/4ntiDandruff/mobile-view/releases)
+[![Release](https://img.shields.io/badge/Release-v1.15.1-10B981?style=for-the-badge&logo=github)](https://github.com/4ntiDandruff/mobile-view/releases)
 [![Memory Footprint](https://img.shields.io/badge/RAM_Footprint-%3C_25_MB-6366F1?style=for-the-badge)](https://github.com/4ntiDandruff/mobile-view)
 [![CPU Standby](https://img.shields.io/badge/CPU_Standby-0.0%25-EC4899?style=for-the-badge)](https://github.com/4ntiDandruff/mobile-view)
 [![Architecture](https://img.shields.io/badge/Architecture-Zero--Bloat_Solid_Matte-0F172A?style=for-the-badge)](https://github.com/4ntiDandruff/mobile-view)
@@ -134,7 +134,7 @@ Ekstensi ini mendukung seluruh browser modern berbasis Chromium (**Google Chrome
 1. **Unduh Berkas Paket Rilis**:
    Buka halaman rilis resmi di GitHub:
    [https://github.com/4ntiDandruff/mobile-view/releases](https://github.com/4ntiDandruff/mobile-view/releases)
-   Unduh berkas **`mobile-view-v1.15.0.zip`**.
+   Unduh berkas **`mobile-view-v1.15.1.zip`**.
 2. **Ekstrak Berkas ZIP**:
    Ekstrak berkas zip tersebut ke folder yang aman di komputer Anda (misal: di `C:\Tools\mobile-view` pada Windows, atau `~/Tools/mobile-view` pada Linux/macOS). Pastikan folder ini tidak terhapus.
 3. **Buka Halaman Ekstensi Browser**:

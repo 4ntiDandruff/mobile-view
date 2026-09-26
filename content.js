@@ -100,12 +100,12 @@
    * Menghitung zoom scale adaptif agar frame pas dengan monitor
    */
   function calculateFitScale(devW, devH) {
-    const availH = window.innerHeight - 76;
-    const availW = window.innerWidth - 32;
+    const availH = Math.max(80, window.innerHeight - 96);
+    const availW = Math.max(80, window.innerWidth - 32);
     const scaleH = availH / devH;
     const scaleW = availW / devW;
     const best = Math.min(scaleH, scaleW);
-    return Math.min(1.0, Math.max(0.2, parseFloat(best.toFixed(3))));
+    return Math.min(1.0, Math.max(0.15, parseFloat(best.toFixed(3))));
   }
 
   /**
@@ -210,7 +210,7 @@
 
     // 6. Update HUD Dimensi
     if (dimBadge) {
-      dimBadge.innerHTML = `<span class="mv-dim-dot"></span><span>${totalW} × ${totalH} px</span>`;
+      dimBadge.innerHTML = `<span class="mv-dim-dot"></span><span>${screenW} × ${screenH} px</span>`;
     }
 
     // 7. Update Modal Settings Option Highlights
@@ -486,7 +486,7 @@
                   </svg>
                 </div>
                 <div>
-                  <div class="mv-about-name">Mobile View Studio v1.15.0</div>
+                  <div class="mv-about-name">Mobile View Studio v1.15.1</div>
                   <div class="mv-about-sub">Zero-Bloat Device Frame Studio by Megapass Intra Solusindo</div>
                 </div>
               </div>
@@ -510,6 +510,10 @@
             <div class="mv-changelog-wrap">
               <div class="mv-changelog-title">Catatan Rilis (Changelog Rekam Medis)</div>
               <div class="mv-changelog-list">
+                <div class="mv-log-item">
+                  <span class="mv-log-badge">v1.15.1</span>
+                  <span class="mv-log-text">Perbaikan fatal crash totalW, responsivitas bilah atas non-fullscreen, kalibrasi fit-scale anti-terpotong, dan fail-safe shortcut multi-window.</span>
+                </div>
                 <div class="mv-log-item">
                   <span class="mv-log-badge">v1.15.0</span>
                   <span class="mv-log-text">Panel Pengaturan Topbar, Tab Tentang & Promosi GitHub, Frame Always-On, dan PM2 Dev-Watcher Auto-Reload.</span>
@@ -708,11 +712,15 @@
     }
   });
 
-  // Listener Resize Jendela
+  // Listener Resize Jendela (Debounced via requestAnimationFrame)
+  let resizeTimer = null;
   window.addEventListener('resize', () => {
-    if (document.getElementById('mv-studio-overlay') && state.scaleMode === 'fit') {
-      updateChassisView();
-    }
+    if (resizeTimer) cancelAnimationFrame(resizeTimer);
+    resizeTimer = requestAnimationFrame(() => {
+      if (document.getElementById('mv-studio-overlay') && state.scaleMode === 'fit') {
+        updateChassisView();
+      }
+    });
   });
 
   // Listener Pesan dari Background Worker (Klik Ikon Toolbar / Shortcut Alt+M)

@@ -40,12 +40,23 @@ chrome.action.onClicked.addListener(async (tab) => {
   await toggleTabMobileView(tab);
 });
 
-// 2. Tangani Shortcut Keyboard Alt+M (Toggle ON/OFF)
+// 2. Tangani Shortcut Keyboard Alt+M (Toggle ON/OFF - Resilient Multi-Window Query)
 chrome.commands.onCommand.addListener(async (command) => {
   if (command === 'open-mobile-view') {
-    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-    if (tab) {
-      await toggleTabMobileView(tab);
+    try {
+      let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (!tab) {
+        [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+      }
+      if (!tab) {
+        const tabs = await chrome.tabs.query({ active: true });
+        tab = tabs && tabs[0];
+      }
+      if (tab) {
+        await toggleTabMobileView(tab);
+      }
+    } catch (cmdErr) {
+      console.error('[Mobile View] Error handling command:', cmdErr);
     }
   }
 });
