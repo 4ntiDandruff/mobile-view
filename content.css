@@ -599,6 +599,13 @@ div.mv-hidden {
   animation: mv-fade-in 0.18s ease-out !important;
 }
 
+#mv-studio-overlay.mv-theme-light .mv-modal-backdrop,
+body.mv-theme-light .mv-modal-backdrop {
+  background: rgba(15, 23, 42, 0.32) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
 @keyframes mv-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -657,6 +664,7 @@ body.mv-theme-light .mv-modal-header {
   font-size: 14px !important;
   font-weight: 700 !important;
   letter-spacing: -0.01em !important;
+  text-wrap: balance !important;
   color: inherit !important;
 }
 
@@ -665,6 +673,7 @@ body.mv-theme-light .mv-modal-header {
   font-size: 11px !important;
   color: #94A3B8 !important;
   font-weight: 500 !important;
+  text-wrap: pretty !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-modal-subtitle,
 body.mv-theme-light .mv-modal-subtitle {
@@ -676,19 +685,29 @@ body.mv-theme-light .mv-modal-subtitle {
   border: 1px solid #2F384C !important;
   border-radius: 8px !important;
   color: #94A3B8 !important;
-  width: 28px !important;
-  height: 28px !important;
+  width: 30px !important;
+  height: 30px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
-  transition: all 0.15s ease !important;
+  position: relative !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease !important;
   padding: 0 !important;
+}
+.mv-modal-close-btn::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: -5px !important;
 }
 .mv-modal-close-btn:hover {
   background: #283042 !important;
   color: #FFFFFF !important;
   border-color: #3D4862 !important;
+}
+.mv-modal-close-btn:active {
+  transform: scale(0.92) !important;
+  transition-duration: 75ms !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-modal-close-btn,
 body.mv-theme-light .mv-modal-close-btn {
@@ -700,6 +719,11 @@ body.mv-theme-light .mv-modal-close-btn {
 body.mv-theme-light .mv-modal-close-btn:hover {
   background: #E2E8F0 !important;
   color: #0F172A !important;
+}
+#mv-studio-overlay.mv-theme-light .mv-modal-close-btn:active,
+body.mv-theme-light .mv-modal-close-btn:active {
+  transform: scale(0.92) !important;
+  transition-duration: 75ms !important;
 }
 
 /* Modal Tabs */
@@ -854,6 +878,7 @@ body.mv-theme-light .mv-about-sub {
   font-size: 11px !important;
   line-height: 1.5 !important;
   color: #CBD5E1 !important;
+  text-wrap: pretty !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-about-desc,
 body.mv-theme-light .mv-about-desc {
@@ -891,13 +916,17 @@ body.mv-theme-light .mv-about-meta {
   font-size: 11px !important;
   font-weight: 600 !important;
   text-decoration: none !important;
-  transition: all 0.15s ease !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease !important;
 }
 .mv-link-btn:hover {
   background: #283042 !important;
   color: #FFFFFF !important;
   border-color: #3D4862 !important;
   transform: translateY(-0.5px) !important;
+}
+.mv-link-btn:active {
+  transform: scale(0.97) !important;
+  transition-duration: 75ms !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-link-btn,
 body.mv-theme-light .mv-link-btn {
@@ -909,6 +938,11 @@ body.mv-theme-light .mv-link-btn {
 #mv-studio-overlay.mv-theme-light .mv-link-btn:hover,
 body.mv-theme-light .mv-link-btn:hover {
   border-color: rgba(0, 0, 0, 0.22) !important;
+}
+#mv-studio-overlay.mv-theme-light .mv-link-btn:active,
+body.mv-theme-light .mv-link-btn:active {
+  transform: scale(0.97) !important;
+  transition-duration: 75ms !important;
 }
 
 /* Changelog List */
@@ -933,6 +967,7 @@ body.mv-theme-light .mv-changelog-wrap {
   text-transform: uppercase !important;
   letter-spacing: 0.4px !important;
   color: #94A3B8 !important;
+  text-wrap: balance !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-changelog-title,
 body.mv-theme-light .mv-changelog-title {
@@ -955,6 +990,7 @@ body.mv-theme-light .mv-changelog-title {
 
 .mv-log-badge {
   font-family: "JetBrains Mono", monospace !important;
+  font-variant-numeric: tabular-nums !important;
   font-size: 9.5px !important;
   font-weight: 700 !important;
   padding: 1.5px 5px !important;
@@ -973,8 +1009,25 @@ body.mv-theme-light .mv-log-badge {
 
 .mv-log-text {
   color: #CBD5E1 !important;
+  text-wrap: pretty !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-log-text,
 body.mv-theme-light .mv-log-text {
   color: #475569 !important;
+}
+
+/* Accessibility Focus-Visible Rings */
+.mv-btn:focus-visible,
+.mv-tab-pill:focus-visible,
+.mv-modal-close-btn:focus-visible,
+.mv-link-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.50) !important;
+  outline-offset: 2px !important;
+}
+#mv-studio-overlay.mv-theme-light .mv-btn:focus-visible,
+#mv-studio-overlay.mv-theme-light .mv-tab-pill:focus-visible,
+#mv-studio-overlay.mv-theme-light .mv-modal-close-btn:focus-visible,
+#mv-studio-overlay.mv-theme-light .mv-link-btn:focus-visible {
+  outline: 2px solid rgba(15, 23, 42, 0.40) !important;
+  outline-offset: 2px !important;
 }
