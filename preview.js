@@ -116,8 +116,10 @@
     const screenW = state.isLandscape ? dev.height : dev.width;
     const screenH = state.isLandscape ? dev.width : dev.height;
 
-    const totalW = screenW;
-    const totalH = screenH;
+    // Viewport murni smartphone harus persis screenW x screenH.
+    // Bezel fisik adalah bingkai sasis di luar layar viewport.
+    const frameW = screenW + (dev.bezel * 2);
+    const frameH = screenH + (dev.bezel * 2);
 
     const frameEl = document.getElementById('mv-phone-frame');
     const screenContainer = document.getElementById('mv-screen-container');
@@ -128,18 +130,19 @@
 
     if (!frameEl || !scaleWrapper) return;
 
-    frameEl.style.width = totalW + 'px';
-    frameEl.style.height = totalH + 'px';
-    frameEl.style.borderRadius = dev.radius + 'px';
+    frameEl.style.width = frameW + 'px';
+    frameEl.style.height = frameH + 'px';
+    frameEl.style.borderRadius = (dev.radius + dev.bezel) + 'px';
     frameEl.style.padding = dev.bezel + 'px';
 
     if (screenContainer) {
-      const innerRadius = Math.max(0, dev.radius - dev.bezel);
-      screenContainer.style.borderRadius = innerRadius + 'px';
+      screenContainer.style.width = screenW + 'px';
+      screenContainer.style.height = screenH + 'px';
+      screenContainer.style.borderRadius = dev.radius + 'px';
     }
 
     if (state.scaleMode === 'fit') {
-      state.zoom = calculateFitScale(totalW, totalH);
+      state.zoom = calculateFitScale(frameW, frameH);
     } else {
       state.zoom = parseFloat(state.scaleMode) || 1.0;
     }

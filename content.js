@@ -119,8 +119,13 @@
     overlay.classList.add(state.theme === 'light' ? 'mv-theme-light' : 'mv-theme-dark');
 
     const dev = DEVICES[state.activeDeviceKey] || DEVICES.iphone15pro;
-    const totalW = state.isLandscape ? dev.height : dev.width;
-    const totalH = state.isLandscape ? dev.width : dev.height;
+    const screenW = state.isLandscape ? dev.height : dev.width;
+    const screenH = state.isLandscape ? dev.width : dev.height;
+
+    // Viewport murni smartphone harus persis screenW x screenH.
+    // Bezel fisik adalah bingkai sasis di luar layar viewport.
+    const frameW = screenW + (dev.bezel * 2);
+    const frameH = screenH + (dev.bezel * 2);
 
     const frameEl = document.getElementById('mv-phone-frame');
     const screenContainer = document.getElementById('mv-screen-container');
@@ -132,19 +137,20 @@
     if (!frameEl || !scaleWrapper) return;
 
     // 1. Terapkan Dimensi & Radius Presisi
-    frameEl.style.width = totalW + 'px';
-    frameEl.style.height = totalH + 'px';
-    frameEl.style.borderRadius = dev.radius + 'px';
+    frameEl.style.width = frameW + 'px';
+    frameEl.style.height = frameH + 'px';
+    frameEl.style.borderRadius = (dev.radius + dev.bezel) + 'px';
     frameEl.style.padding = dev.bezel + 'px';
 
     if (screenContainer) {
-      const innerRadius = Math.max(0, dev.radius - dev.bezel);
-      screenContainer.style.borderRadius = innerRadius + 'px';
+      screenContainer.style.width = screenW + 'px';
+      screenContainer.style.height = screenH + 'px';
+      screenContainer.style.borderRadius = dev.radius + 'px';
     }
 
     // 2. Skala Zoom Adaptif
     if (state.scaleMode === 'fit') {
-      state.zoom = calculateFitScale(totalW, totalH);
+      state.zoom = calculateFitScale(frameW, frameH);
     } else {
       state.zoom = parseFloat(state.scaleMode) || 1.0;
     }
@@ -154,29 +160,21 @@
     if (hwButtonsContainer) {
       hwButtonsContainer.innerHTML = '';
       if (dev.platform !== 'tablet') {
-        const pBtn = document.createElement('div');
-        pBtn.className = 'mv-btn-hw';
-        pBtn.style.right = '-2.5px';
-        pBtn.style.top = '100px';
-        pBtn.style.width = '2.5px';
-        pBtn.style.height = '48px';
-        hwButtonsContainer.appendChild(pBtn);
-
-        const vUp = document.createElement('div');
-        vUp.className = 'mv-btn-hw';
-        vUp.style.left = '-2.5px';
-        vUp.style.top = '90px';
-        vUp.style.width = '2.5px';
-        vUp.style.height = '42px';
-        hwButtonsContainer.appendChild(vUp);
-
-        const vDown = document.createElement('div');
-        vDown.className = 'mv-btn-hw';
-        vDown.style.left = '-2.5px';
-        vDown.style.top = '140px';
-        vDown.style.width = '2.5px';
-        vDown.style.height = '42px';
-        hwButtonsContainer.appendChild(vDown);
+        if (!state.isLandscape) {
+          hwButtonsContainer.innerHTML = `
+            <div class="mv-btn-hw" style="top: 80px; left: -7px; width: 3px; height: 24px;"></div>
+            <div class="mv-btn-hw" style="top: 115px; left: -7px; width: 3px; height: 42px;"></div>
+            <div class="mv-btn-hw" style="top: 168px; left: -7px; width: 3px; height: 42px;"></div>
+            <div class="mv-btn-hw" style="top: 125px; right: -7px; width: 3px; height: 65px;"></div>
+          `;
+        } else {
+          hwButtonsContainer.innerHTML = `
+            <div class="mv-btn-hw" style="top: -7px; left: 80px; width: 24px; height: 3px;"></div>
+            <div class="mv-btn-hw" style="top: -7px; left: 115px; width: 42px; height: 3px;"></div>
+            <div class="mv-btn-hw" style="top: -7px; left: 168px; width: 42px; height: 3px;"></div>
+            <div class="mv-btn-hw" style="bottom: -7px; right: 125px; width: 65px; height: 3px;"></div>
+          `;
+        }
       }
     }
 

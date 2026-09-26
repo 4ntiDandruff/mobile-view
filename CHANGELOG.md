@@ -23,6 +23,9 @@ Format pencatatan mengacu pada standar *Keep a Changelog* dengan prinsip pelapor
 * **Tabular Numbers pada Badge**: Menambahkan `font-variant-numeric: tabular-nums` pada `.mv-log-badge` dan `.mv-dim-pill` guna mengunci kestabilan lebar karakter numerik saat rendering font monospace.
 
 ### Diperbaiki (Fixed)
+* **Kalibrasi Dimensi Viewport 1:1**: Memperbaiki kalkulasi dimensi sasis smartphone sehingga padding bezel berada di sisi luar viewport (`screenW + 2*bezel`), menjamin iframe rendered murni 1:1 sesuai spesifikasi hardware (iPhone 15 Pro persis 393x852px, Galaxy S24 persis 360x780px) tanpa terpotong lebar bezel.
+* **Keselarasan Garis Horizontal Topbar (Uniform 30px)**: Menyeragamkan seluruh kapsul merek, segmented groove, dan tombol workstation ke ketinggian presisi 30px (selisih vertikal 0px lintas-elemen), merapikan tombol reload menjadi bujur sangkar simetris 30x30px, dan menetralkan titik suar dimensi ke palet slate bebas warna biru.
+* **Konsentrisitas Radius Sasis Smartphone**: Menerapkan formula radius konsentris matematis `R_outer = R_inner + bezel` pada sasis fisik dan layar dalam sehingga lengkungan sasis luar sejajar presisi dengan kurva kaca layar.
 * **Rekursi Stack Overflow `safeSet()`**: Memperbaiki fungsi pembungkus penyimpanan yang sebelumnya memanggil dirinya sendiri secara rekursif hingga batas `Maximum call stack size`, sehingga setelan preferensi kini tersimpan permanen ke media penyimpanan.
 * **Tabrakan Saklar Keyboard Global**: Menambahkan sekring penyaring modifier key (`e.ctrlKey || e.metaKey || e.altKey`) agar kombinasi tombol browser `Ctrl+R` (Reload) dan `Ctrl+T` (Buka Tab Baru) tidak memutar layar smartphone atau mengganti tema studio secara liar.
 * **Intersepsi Input Teks Kaya**: Menambahkan filter `e.target.isContentEditable` pada listener tombol global agar pengetikan pada editor dokumen web (Notion, Google Docs, Slack) tidak memicu pintasan ekstensi.

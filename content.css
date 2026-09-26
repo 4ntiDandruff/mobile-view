@@ -217,7 +217,7 @@ body.mv-theme-light #mv-topbar {
   gap: 5px !important;
 }
 
-/* Solid Matte Workstation Brand Capsule (Zero-Blue Harmonic) */
+/* Solid Matte Workstation Brand Capsule (Zero-Blue Harmonic & Unified 30px) */
 .mv-brand {
   display: flex !important;
   align-items: center !important;
@@ -227,13 +227,14 @@ body.mv-theme-light #mv-topbar {
   font-size: 11px !important;
   letter-spacing: 0.4px !important;
   text-transform: uppercase !important;
-  padding: 3.5px 9px !important;
+  padding: 4px 10px !important;
   border-radius: 8px !important;
   background: var(--pill-bg) !important;
   border: 1px solid var(--pill-border) !important;
   flex-shrink: 0 !important;
   box-shadow: var(--pill-shadow) !important;
-  min-height: 28px !important;
+  min-height: 30px !important;
+  height: 30px !important;
   box-sizing: border-box !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-brand,
@@ -255,6 +256,11 @@ body.mv-theme-light .mv-brand {
   align-items: center !important;
   gap: 2px !important;
   transition: background-color 200ms ease, border-color 200ms ease !important;
+}
+
+#mv-topbar .mv-neo-groove {
+  padding: 2px !important;
+  border-radius: 9px !important;
 }
 
 /* Segmented Tab Pill (Concentric Radius: 7px) */
@@ -279,6 +285,15 @@ body.mv-theme-light .mv-brand {
   min-height: 26px !important;
   box-sizing: border-box !important;
   touch-action: manipulation !important;
+}
+
+#mv-topbar .mv-tab-pill {
+  min-height: 24px !important;
+  height: 24px !important;
+  padding: 2px 9px !important;
+  border-radius: 7px !important;
+  font-size: 11.5px !important;
+  line-height: 1.2 !important;
 }
 .mv-tab-pill:hover {
   color: var(--tab-inactive-hover-color) !important;
@@ -385,7 +400,7 @@ body.mv-theme-light .mv-btn.mv-btn-active:hover {
   box-shadow: 0 1px 2px rgba(220, 38, 38, 0.25) !important;
 }
 
-/* Live Dimension Capsule (High-Visibility Monospace HUD) */
+/* Live Dimension Capsule (High-Visibility Monospace HUD - Unified 30px) */
 .mv-dim-pill {
   font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace !important;
   font-variant-numeric: tabular-nums !important;
@@ -394,15 +409,16 @@ body.mv-theme-light .mv-btn.mv-btn-active:hover {
   color: var(--dim-text) !important;
   background: var(--dim-bg) !important;
   border: 1px solid var(--dim-border) !important;
-  padding: 3.5px 9px !important;
+  padding: 4px 10px !important;
   border-radius: 8px !important;
   white-space: nowrap !important;
   letter-spacing: 0.2px !important;
   box-shadow: var(--dim-shadow) !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 5px !important;
-  min-height: 28px !important;
+  gap: 6px !important;
+  min-height: 30px !important;
+  height: 30px !important;
   box-sizing: border-box !important;
 }
 
@@ -410,10 +426,19 @@ body.mv-theme-light .mv-btn.mv-btn-active:hover {
   width: 5px !important;
   height: 5px !important;
   border-radius: 9999px !important;
-  background: #38BDF8 !important;
+  background: #94A3B8 !important;
   display: inline-block !important;
   flex-shrink: 0 !important;
   animation: mv-pulse-beacon 2s ease-in-out infinite !important;
+}
+
+#mv-reload-btn {
+  width: 30px !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  justify-content: center !important;
 }
 
 #mv-studio-overlay.mv-theme-light .mv-dim-dot,
