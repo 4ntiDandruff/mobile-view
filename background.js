@@ -64,3 +64,50 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     await toggleTabMobileView(tab);
   }
 });
+
+// 4. Watchdog Auto-Reload Client (Zero-Touch Hot Reload via Inotify)
+(function setupAutoReload() {
+  const WATCHER_URL = "http://127.0.0.1:8897/wait-reload";
+  let isPolling = false;
+  let isReloading = false;
+  let retryDelay = 3000;
+
+  const poll = () => {
+    if (isReloading || isPolling) return;
+    isPolling = true;
+
+    fetch(WATCHER_URL)
+      .then((res) => {
+        if (!res.ok) throw new Error("Status " + res.status);
+        return res.json();
+      })
+      .then((data) => {
+        isPolling = false;
+        retryDelay = 3000;
+        if (data && data.reload && !isReloading) {
+          isReloading = true;
+          console.log("[MobileView-Watcher] Inotify update detected:", data.file);
+          chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs && tabs[0] && tabs[0].id) {
+              try { chrome.tabs.reload(tabs[0].id); } catch (_) {}
+            }
+            chrome.runtime.reload();
+          });
+        } else {
+          setTimeout(poll, 150);
+        }
+      })
+      .catch(() => {
+        isPolling = false;
+        const waitTime = retryDelay;
+        retryDelay = Math.min(15000, retryDelay * 1.5);
+        setTimeout(poll, waitTime);
+      });
+  };
+
+  poll();
+
+  chrome.tabs.onActivated.addListener(() => {
+    if (!isPolling && !isReloading) poll();
+  });
+})();

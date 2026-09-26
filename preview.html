@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <!-- Center: Metrics + Rotate + Frame Toggle + Reload -->
+    <!-- Center: Metrics + Rotate + Reload -->
     <div class="mv-group">
       <div id="mv-dim-badge" class="mv-dim-pill"><span class="mv-dim-dot"></span><span>393 × 852 px</span></div>
 
@@ -54,18 +54,8 @@
         <span class="mv-kbd">R</span>
       </button>
 
-      <!-- Frame On/Off Toggle Button -->
-      <button id="mv-frame-btn" class="mv-btn mv-btn-active" title="Saklar Bingkai HP (Tekan F)">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <rect width="18" height="18" x="3" y="3" rx="4"/>
-          <path d="M7 7h10v10H7z" opacity="0.5"/>
-        </svg>
-        <span>Bingkai</span>
-        <span class="mv-kbd">F</span>
-      </button>
-
       <!-- Reload Button -->
-      <button id="mv-reload-btn" class="mv-btn" title="Segarkan Layar">
+      <button id="mv-reload-btn" class="mv-btn" title="Segarkan Layar (Ctrl+R)">
         <svg id="mv-reload-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
           <path d="M3 3v5h5"/>
@@ -75,7 +65,7 @@
       </button>
     </div>
 
-    <!-- Right: Segmented Zoom, Theme Toggle, & Close -->
+    <!-- Right: Segmented Zoom, Theme Toggle, Settings, & Close -->
     <div class="mv-group">
       <!-- Neomorphic Segmented Track for Zoom -->
       <div class="mv-neo-groove">
@@ -90,6 +80,16 @@
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
         </svg>
         <span class="mv-kbd">T</span>
+      </button>
+
+      <!-- Settings & About Button -->
+      <button id="mv-settings-btn" class="mv-btn" title="Pengaturan & Tentang (Tekan ',')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span>Setelan</span>
+        <span class="mv-kbd">,</span>
       </button>
 
       <!-- Close / Back to Desktop -->
@@ -115,6 +115,147 @@
         <!-- Screen Viewport (100% Bersih Tanpa Obstruksi Kamera) -->
         <div id="mv-screen-container" class="mv-screen-container">
           <iframe id="mv-viewport-iframe" src="about:blank"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Pengaturan & Tentang Studio (Slide-Down / Popup Taktil) -->
+  <div id="mv-modal-backdrop" class="mv-modal-backdrop mv-hidden">
+    <div id="mv-settings-modal" class="mv-settings-modal">
+      <!-- Header -->
+      <div class="mv-modal-header">
+        <div class="mv-modal-title-wrap">
+          <h3 class="mv-modal-title">Mobile View Studio</h3>
+          <p class="mv-modal-subtitle">Pengaturan Preferensi & Identitas Studio</p>
+        </div>
+        <button id="mv-modal-close" class="mv-modal-close-btn" title="Tutup (Esc)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Tab Selector -->
+      <div class="mv-modal-tabs mv-neo-groove">
+        <button id="mv-tab-nav-prefs" class="mv-tab-pill mv-active">Preferensi Bawaan</button>
+        <button id="mv-tab-nav-about" class="mv-tab-pill">Tentang & Changelog</button>
+      </div>
+
+      <!-- Tab Content 1: Preferensi Bawaan -->
+      <div id="mv-tab-content-prefs" class="mv-modal-tab-content">
+        <div class="mv-setting-row">
+          <div class="mv-setting-label">
+            <span class="mv-setting-name">Mode Tampilan Bawaan</span>
+            <span class="mv-setting-desc">Tema saat studio pertama kali aktif</span>
+          </div>
+          <div class="mv-neo-groove">
+            <button class="mv-tab-pill mv-opt-theme mv-active" data-val="dark">Gelap (Dark)</button>
+            <button class="mv-tab-pill mv-opt-theme" data-val="light">Terang (Light)</button>
+          </div>
+        </div>
+
+        <div class="mv-setting-row">
+          <div class="mv-setting-label">
+            <span class="mv-setting-name">Perangkat Bawaan</span>
+            <span class="mv-setting-desc">Smartphone awal saat studio dibuka</span>
+          </div>
+          <div class="mv-neo-groove">
+            <button class="mv-tab-pill mv-opt-dev mv-active" data-val="iphone15pro">iPhone 15 Pro</button>
+            <button class="mv-tab-pill mv-opt-dev" data-val="galaxys24">Galaxy S24</button>
+            <button class="mv-tab-pill mv-opt-dev" data-val="iphonese">SE</button>
+            <button class="mv-tab-pill mv-opt-dev" data-val="ipadmini">iPad</button>
+          </div>
+        </div>
+
+        <div class="mv-setting-row">
+          <div class="mv-setting-label">
+            <span class="mv-setting-name">Skala Zoom Awal</span>
+            <span class="mv-setting-desc">Penyesuaian ukuran frame ke layar</span>
+          </div>
+          <div class="mv-neo-groove">
+            <button class="mv-tab-pill mv-opt-scale mv-active" data-val="fit">Fit to Screen</button>
+            <button class="mv-tab-pill mv-opt-scale" data-val="1.0">100% Asli</button>
+          </div>
+        </div>
+
+        <div class="mv-setting-row">
+          <div class="mv-setting-label">
+            <span class="mv-setting-name">Orientasi Awal</span>
+            <span class="mv-setting-desc">Posisi fisik smartphone</span>
+          </div>
+          <div class="mv-neo-groove">
+            <button class="mv-tab-pill mv-opt-orient mv-active" data-val="portrait">Tegak (Portrait)</button>
+            <button class="mv-tab-pill mv-opt-orient" data-val="landscape">Miring (Landscape)</button>
+          </div>
+        </div>
+
+        <div class="mv-modal-footer">
+          <span class="mv-save-badge">Perubahan tersimpan otomatis</span>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Tentang & Changelog -->
+      <div id="mv-tab-content-about" class="mv-modal-tab-content mv-hidden">
+        <div class="mv-about-card">
+          <div class="mv-about-top">
+            <div class="mv-about-logo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <rect width="14" height="20" x="5" y="2" rx="3" ry="3"/>
+                <path d="M12 18h.01"/>
+              </svg>
+            </div>
+            <div>
+              <div class="mv-about-name">Mobile View Studio v1.15.0</div>
+              <div class="mv-about-sub">Zero-Bloat Device Frame Studio by Megapass Intra Solusindo</div>
+            </div>
+          </div>
+          <p class="mv-about-desc">
+            Alat inspeksi responsif web profesional dengan bingkai fisik smartphone presisi pixel. Bebas bundler, zero npm runtime bloat, arsitektur sirkuit terbuka hemat resource hardware ruko.
+          </p>
+          <div class="mv-about-meta">
+            <div><strong>Arsitek Sistem:</strong> Cak Hizam Nahari (Certified Electronics Technician BNSP/BMY)</div>
+            <div><strong>Basis Workshop:</strong> Sidoarjo, Jawa Timur, Indonesia</div>
+          </div>
+          <div class="mv-about-links">
+            <a href="https://github.com/4ntiDandruff" target="_blank" rel="noopener noreferrer" class="mv-link-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+              <span>GitHub Profile (@4ntiDandruff)</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="mv-changelog-wrap">
+          <div class="mv-changelog-title">Catatan Rilis (Changelog Rekam Medis)</div>
+          <div class="mv-changelog-list">
+            <div class="mv-log-item">
+              <span class="mv-log-badge">v1.15.0</span>
+              <span class="mv-log-text">Panel Pengaturan Topbar, Tab Tentang & Promosi GitHub, Frame Always-On, dan PM2 Dev-Watcher Auto-Reload.</span>
+            </div>
+            <div class="mv-log-item">
+              <span class="mv-log-badge">v1.14.0</span>
+              <span class="mv-log-text">Eliminasi aksen biru pada Light Mode untuk menjaga kemurnian neomorphic putih elegan.</span>
+            </div>
+            <div class="mv-log-item">
+              <span class="mv-log-badge">v1.13.1</span>
+              <span class="mv-log-text">Harmonisasi tombol Bingkai ke palet Solid Matte Workstation tanpa pendaran warna biru.</span>
+            </div>
+            <div class="mv-log-item">
+              <span class="mv-log-badge">v1.13.0</span>
+              <span class="mv-log-text">Arsitektur Solid Matte Workstation: eliminasi efek glass/mika berasap di Dark Mode.</span>
+            </div>
+            <div class="mv-log-item">
+              <span class="mv-log-badge">v1.12.0</span>
+              <span class="mv-log-text">Tipografi proporsional Plus Jakarta Sans & JetBrains Mono referensi cekweb.megapass.web.id.</span>
+            </div>
+            <div class="mv-log-item">
+              <span class="mv-log-badge">v1.11.0</span>
+              <span class="mv-log-text">Eliminasi total efek glow, kalibrasi rasio scale viewport monitor 76px.</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

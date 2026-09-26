@@ -1,32 +1,32 @@
-// preview.js - Standalone Studio Controller (Liquid Apple Unified v3.1)
-// 100% Konsisten dengan content.js (In-Page Overlay)
+// preview.js - Mobile View Proportional Clean Tech Edition (v3.5)
+// Standalone Studio Tab Controller by Megapass Intra Solusindo
 
-(function () {
+(function initPreview() {
   const DEVICES = {
     iphone15pro: {
       name: 'iPhone 15 Pro',
       shortName: 'iPhone 15 Pro',
       width: 393,
       height: 852,
-      radius: 26,
-      bezel: 7,
+      radius: 19,
+      bezel: 6,
       platform: 'ios'
     },
     galaxys24: {
       name: 'Samsung Galaxy S24',
       shortName: 'Galaxy S24',
-      width: 412,
-      height: 915,
-      radius: 22,
-      bezel: 6,
+      width: 360,
+      height: 780,
+      radius: 18,
+      bezel: 5,
       platform: 'android'
     },
     iphonese: {
       name: 'iPhone SE (3rd Gen)',
-      shortName: 'iPhone SE',
+      shortName: 'SE',
       width: 375,
       height: 667,
-      radius: 18,
+      radius: 14,
       bezel: 7,
       platform: 'ios'
     },
@@ -41,18 +41,33 @@
     }
   };
 
-  // Baca target URL dan opsi dari query parameter
   const params = new URLSearchParams(window.location.search);
   const themeParam = params.get('theme');
 
+  function safeGet(key, fallback) {
+    try {
+      return localStorage.getItem(key) || fallback;
+    } catch (_) {
+      return fallback;
+    }
+  }
+
+  function safeSet(key, val) {
+    try {
+      safeSet(key, val);
+    } catch (_) {}
+  }
+
   let state = {
-    activeDeviceKey: params.get('device') || localStorage.getItem('mv_device') || 'iphone15pro',
-    isLandscape: localStorage.getItem('mv_landscape') === 'true',
-    scaleMode: localStorage.getItem('mv_scale_mode') || 'fit',
-    showFrame: localStorage.getItem('mv_frame') !== 'false',
-    theme: (themeParam === 'light' || themeParam === 'dark') ? themeParam : (localStorage.getItem('mv_theme') || 'dark'),
+    activeDeviceKey: params.get('device') || safeGet('mv_device', 'iphone15pro'),
+    isLandscape: safeGet('mv_landscape', 'false') === 'true',
+    scaleMode: safeGet('mv_scale_mode', 'fit'),
+    showFrame: true, // Bingkai fisik smartphone selalu aktif
+    theme: (themeParam === 'light' || themeParam === 'dark') ? themeParam : (safeGet('mv_theme', 'dark')),
     zoom: 1.0,
-    currentUrl: 'https://google.com'
+    currentUrl: 'https://google.com',
+    isModalOpen: false,
+    activeTab: 'prefs'
   };
 
   let target = params.get('url');
@@ -69,48 +84,40 @@
     const scaleH = availH / devH;
     const scaleW = availW / devW;
     const best = Math.min(scaleH, scaleW);
-    return Math.min(1.0, Math.max(0.3, Math.round(best * 100) / 100));
+    return Math.min(1.0, Math.max(0.2, parseFloat(best.toFixed(3))));
   }
 
   function updateChassisView() {
-    const bodyEl = document.body;
-    if (!bodyEl) return;
-
-    // Terapkan tema Liquid Apple
-    bodyEl.classList.toggle('mv-theme-light', state.theme === 'light');
+    const body = document.body;
+    body.classList.remove('mv-theme-dark', 'mv-theme-light');
+    body.classList.add(state.theme === 'light' ? 'mv-theme-light' : 'mv-theme-dark');
 
     const dev = DEVICES[state.activeDeviceKey] || DEVICES.iphone15pro;
     const screenW = state.isLandscape ? dev.height : dev.width;
     const screenH = state.isLandscape ? dev.width : dev.height;
-    const currentBezel = state.showFrame ? dev.bezel : 0;
-    const totalW = screenW + (currentBezel * 2);
-    const totalH = screenH + (currentBezel * 2);
-    const innerRadius = Math.max(6, dev.radius - currentBezel);
+
+    const totalW = screenW;
+    const totalH = screenH;
 
     const frameEl = document.getElementById('mv-phone-frame');
     const screenContainer = document.getElementById('mv-screen-container');
     const scaleWrapper = document.getElementById('mv-scale-wrapper');
     const hwButtonsContainer = document.getElementById('mv-hw-buttons');
     const dimBadge = document.getElementById('mv-dim-badge');
-    const frameToggleBtn = document.getElementById('mv-frame-btn');
     const themeBtn = document.getElementById('mv-theme-btn');
 
     if (!frameEl || !scaleWrapper) return;
 
-    // Toggle class frameless
-    scaleWrapper.classList.toggle('mv-frameless', !state.showFrame);
-
-    // 1. Terapkan Dimensi & Radius Presisi (Concentric Radii)
     frameEl.style.width = totalW + 'px';
     frameEl.style.height = totalH + 'px';
     frameEl.style.borderRadius = dev.radius + 'px';
-    frameEl.style.padding = currentBezel + 'px';
+    frameEl.style.padding = dev.bezel + 'px';
 
     if (screenContainer) {
+      const innerRadius = Math.max(0, dev.radius - dev.bezel);
       screenContainer.style.borderRadius = innerRadius + 'px';
     }
 
-    // 2. Skala Zoom Adaptif
     if (state.scaleMode === 'fit') {
       state.zoom = calculateFitScale(totalW, totalH);
     } else {
@@ -118,15 +125,13 @@
     }
     scaleWrapper.style.transform = `scale(${state.zoom})`;
 
-    // 3. Update Badge Dimensi Monospace dengan Live Beacon Dot
     if (dimBadge) {
       dimBadge.innerHTML = `<span class="mv-dim-dot"></span><span>${screenW} × ${screenH} px</span>`;
     }
 
-    // 4. Tombol Fisik Samping (Hardware Buttons di Sisi Luar Bezel)
     if (hwButtonsContainer) {
       hwButtonsContainer.innerHTML = '';
-      if (dev.platform !== 'tablet' && state.showFrame) {
+      if (dev.platform !== 'tablet') {
         if (!state.isLandscape) {
           hwButtonsContainer.innerHTML = `
             <div class="mv-btn-hw" style="top: 80px; left: -7px; width: 3px; height: 24px;"></div>
@@ -145,7 +150,6 @@
       }
     }
 
-    // 5. Update Status Active Segmented Pills
     document.querySelectorAll('.mv-dev-chip').forEach(btn => {
       const key = btn.getAttribute('data-dev');
       btn.classList.toggle('mv-active', key === state.activeDeviceKey);
@@ -161,15 +165,10 @@
       }
     }
 
-    if (frameToggleBtn) {
-      frameToggleBtn.classList.toggle('mv-btn-active', state.showFrame);
-    }
-
     if (themeBtn) {
       const sunIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
       const moonIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
       themeBtn.innerHTML = `${state.theme === 'light' ? moonIcon : sunIcon}<span class="mv-kbd">T</span>`;
-      themeBtn.title = state.theme === 'light' ? "Beralih ke Mode Gelap (Tekan 'T')" : "Beralih ke Mode Terang (Tekan 'T')";
     }
 
     const fitBtn = document.getElementById('mv-fit-btn');
@@ -177,20 +176,62 @@
 
     if (fitBtn) fitBtn.classList.toggle('mv-active', state.scaleMode === 'fit');
     if (z100Btn) z100Btn.classList.toggle('mv-active', state.scaleMode === '1.0');
+
+    updateModalOptionButtons();
   }
 
-  // Inisialisasi Iframe
+  function updateModalOptionButtons() {
+    document.querySelectorAll('.mv-opt-theme').forEach(btn => {
+      btn.classList.toggle('mv-active', btn.getAttribute('data-val') === state.theme);
+    });
+    document.querySelectorAll('.mv-opt-dev').forEach(btn => {
+      btn.classList.toggle('mv-active', btn.getAttribute('data-val') === state.activeDeviceKey);
+    });
+    document.querySelectorAll('.mv-opt-scale').forEach(btn => {
+      btn.classList.toggle('mv-active', btn.getAttribute('data-val') === state.scaleMode);
+    });
+    document.querySelectorAll('.mv-opt-orient').forEach(btn => {
+      const isLand = btn.getAttribute('data-val') === 'landscape';
+      btn.classList.toggle('mv-active', isLand === state.isLandscape);
+    });
+  }
+
+  function setModalOpen(isOpen) {
+    state.isModalOpen = isOpen;
+    const backdrop = document.getElementById('mv-modal-backdrop');
+    if (!backdrop) return;
+    backdrop.classList.toggle('mv-hidden', !isOpen);
+    if (isOpen) {
+      updateModalOptionButtons();
+    }
+  }
+
+  function switchModalTab(tabId) {
+    state.activeTab = tabId;
+    const tabPrefs = document.getElementById('mv-tab-nav-prefs');
+    const tabAbout = document.getElementById('mv-tab-nav-about');
+    const contentPrefs = document.getElementById('mv-tab-content-prefs');
+    const contentAbout = document.getElementById('mv-tab-content-about');
+
+    if (tabPrefs && tabAbout && contentPrefs && contentAbout) {
+      const isPrefs = tabId === 'prefs';
+      tabPrefs.classList.toggle('mv-active', isPrefs);
+      tabAbout.classList.toggle('mv-active', !isPrefs);
+      contentPrefs.classList.toggle('mv-hidden', !isPrefs);
+      contentAbout.classList.toggle('mv-hidden', isPrefs);
+    }
+  }
+
   const iframe = document.getElementById('mv-viewport-iframe');
   if (iframe && state.currentUrl) {
     iframe.src = state.currentUrl;
   }
 
-  // Bindings Event Listener
   document.querySelectorAll('.mv-dev-chip').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const key = e.currentTarget.getAttribute('data-dev');
       state.activeDeviceKey = key;
-      localStorage.setItem('mv_device', key);
+      safeSet('mv_device', key);
       updateChassisView();
     });
   });
@@ -199,16 +240,7 @@
   if (rotBtn) {
     rotBtn.addEventListener('click', () => {
       state.isLandscape = !state.isLandscape;
-      localStorage.setItem('mv_landscape', state.isLandscape);
-      updateChassisView();
-    });
-  }
-
-  const frameBtn = document.getElementById('mv-frame-btn');
-  if (frameBtn) {
-    frameBtn.addEventListener('click', () => {
-      state.showFrame = !state.showFrame;
-      localStorage.setItem('mv_frame', state.showFrame);
+      safeSet('mv_landscape', state.isLandscape);
       updateChassisView();
     });
   }
@@ -217,7 +249,7 @@
   if (fitBtn) {
     fitBtn.addEventListener('click', () => {
       state.scaleMode = 'fit';
-      localStorage.setItem('mv_scale_mode', 'fit');
+      safeSet('mv_scale_mode', 'fit');
       updateChassisView();
     });
   }
@@ -226,7 +258,7 @@
   if (z100Btn) {
     z100Btn.addEventListener('click', () => {
       state.scaleMode = '1.0';
-      localStorage.setItem('mv_scale_mode', '1.0');
+      safeSet('mv_scale_mode', '1.0');
       updateChassisView();
     });
   }
@@ -235,7 +267,7 @@
   if (themeBtn) {
     themeBtn.addEventListener('click', () => {
       state.theme = state.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('mv_theme', state.theme);
+      safeSet('mv_theme', state.theme);
       updateChassisView();
     });
   }
@@ -258,6 +290,74 @@
     });
   }
 
+  const settingsBtn = document.getElementById('mv-settings-btn');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+      setModalOpen(true);
+    });
+  }
+
+  const modalClose = document.getElementById('mv-modal-close');
+  if (modalClose) {
+    modalClose.addEventListener('click', () => {
+      setModalOpen(false);
+    });
+  }
+
+  const backdrop = document.getElementById('mv-modal-backdrop');
+  if (backdrop) {
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) {
+        setModalOpen(false);
+      }
+    });
+  }
+
+  const tabNavPrefs = document.getElementById('mv-tab-nav-prefs');
+  if (tabNavPrefs) {
+    tabNavPrefs.addEventListener('click', () => switchModalTab('prefs'));
+  }
+  const tabNavAbout = document.getElementById('mv-tab-nav-about');
+  if (tabNavAbout) {
+    tabNavAbout.addEventListener('click', () => switchModalTab('about'));
+  }
+
+  document.querySelectorAll('.mv-opt-theme').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const val = e.currentTarget.getAttribute('data-val');
+      state.theme = val;
+      safeSet('mv_theme', val);
+      updateChassisView();
+    });
+  });
+
+  document.querySelectorAll('.mv-opt-dev').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const val = e.currentTarget.getAttribute('data-val');
+      state.activeDeviceKey = val;
+      safeSet('mv_device', val);
+      updateChassisView();
+    });
+  });
+
+  document.querySelectorAll('.mv-opt-scale').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const val = e.currentTarget.getAttribute('data-val');
+      state.scaleMode = val;
+      safeSet('mv_scale_mode', val);
+      updateChassisView();
+    });
+  });
+
+  document.querySelectorAll('.mv-opt-orient').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const val = e.currentTarget.getAttribute('data-val');
+      state.isLandscape = val === 'landscape';
+      safeSet('mv_landscape', state.isLandscape);
+      updateChassisView();
+    });
+  });
+
   const closeBtn = document.getElementById('mv-close-btn');
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
@@ -269,11 +369,14 @@
     });
   }
 
-  // Keyboard Shortcuts: R (rotate), F (frame), T (theme), Esc (close)
   window.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
     if (e.key === 'Escape') {
+      if (state.isModalOpen) {
+        setModalOpen(false);
+        return;
+      }
       if (window.history.length > 1) {
         window.history.back();
       } else {
@@ -282,17 +385,15 @@
       return;
     }
 
-    if (e.key === 'r' || e.key === 'R') {
+    if (e.key === ',' || e.key === '<') {
+      setModalOpen(!state.isModalOpen);
+    } else if (e.key === 'r' || e.key === 'R') {
       state.isLandscape = !state.isLandscape;
-      localStorage.setItem('mv_landscape', state.isLandscape);
-      updateChassisView();
-    } else if (e.key === 'f' || e.key === 'F') {
-      state.showFrame = !state.showFrame;
-      localStorage.setItem('mv_frame', state.showFrame);
+      safeSet('mv_landscape', state.isLandscape);
       updateChassisView();
     } else if (e.key === 't' || e.key === 'T') {
       state.theme = state.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('mv_theme', state.theme);
+      safeSet('mv_theme', state.theme);
       updateChassisView();
     }
   });
@@ -303,6 +404,16 @@
     }
   });
 
-  // Render Perdana
   updateChassisView();
+
+  const paramsModal = new URLSearchParams(window.location.search);
+  const mParam = paramsModal.get('modal') || (window.location.hash.includes('about') ? 'about' : (window.location.hash.includes('prefs') ? 'prefs' : null));
+  if (mParam === 'prefs') {
+    setModalOpen(true);
+    switchModalTab('prefs');
+  } else if (mParam === 'about') {
+    setModalOpen(true);
+    switchModalTab('about');
+  }
+
 })();

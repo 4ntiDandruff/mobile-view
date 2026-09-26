@@ -1,43 +1,38 @@
-// content.js - Mobile View Liquid Apple UI Edition (v3.1)
-// 100% Konsisten dengan preview.js (Standalone Studio)
+// content.js - Mobile View Proportional Clean Tech Edition (v3.5)
+// Zero-Bloat Device Frame Studio by Megapass Intra Solusindo
 
-(function () {
-  // 1. Sekring Anti-Rekursi: Jangan pernah jalan di dalam iframe
-  if (window.self !== window.top) {
-    return;
-  }
+(function initMobileViewStudio() {
+  if (window.__mv_studio_loaded) return;
+  window.__mv_studio_loaded = true;
 
-  // Hindari duplikasi inisialisasi
-  if (window.__MOBILE_VIEW_INITIALIZED__) {
-    return;
-  }
-  window.__MOBILE_VIEW_INITIALIZED__ = true;
-
+  /**
+   * Database Perangkat Smartphone Fisik (1:1 Hardware Scale)
+   */
   const DEVICES = {
     iphone15pro: {
       name: 'iPhone 15 Pro',
       shortName: 'iPhone 15 Pro',
       width: 393,
       height: 852,
-      radius: 26,
-      bezel: 7,
+      radius: 19,
+      bezel: 6,
       platform: 'ios'
     },
     galaxys24: {
       name: 'Samsung Galaxy S24',
       shortName: 'Galaxy S24',
-      width: 412,
-      height: 915,
-      radius: 22,
-      bezel: 6,
+      width: 360,
+      height: 780,
+      radius: 18,
+      bezel: 5,
       platform: 'android'
     },
     iphonese: {
       name: 'iPhone SE (3rd Gen)',
-      shortName: 'iPhone SE',
+      shortName: 'SE',
       width: 375,
       height: 667,
-      radius: 18,
+      radius: 14,
       bezel: 7,
       platform: 'ios'
     },
@@ -52,15 +47,31 @@
     }
   };
 
+  function safeGet(key, fallback) {
+    try {
+      return localStorage.getItem(key) || fallback;
+    } catch (_) {
+      return fallback;
+    }
+  }
+
+  function safeSet(key, val) {
+    try {
+      safeSet(key, val);
+    } catch (_) {}
+  }
+
   let state = {
-    activeDeviceKey: localStorage.getItem('mv_device') || 'iphone15pro',
-    isLandscape: localStorage.getItem('mv_landscape') === 'true',
-    scaleMode: localStorage.getItem('mv_scale_mode') || 'fit',
-    showFrame: localStorage.getItem('mv_frame') !== 'false',
-    theme: localStorage.getItem('mv_theme') || 'dark',
+    activeDeviceKey: safeGet('mv_device', 'iphone15pro'),
+    isLandscape: safeGet('mv_landscape', 'false') === 'true',
+    scaleMode: safeGet('mv_scale_mode', 'fit'),
+    showFrame: true, // Frame fisik smartphone selalu aktif
+    theme: safeGet('mv_theme', 'dark'),
     zoom: 1.0,
     originalOverflowHtml: '',
-    originalOverflowBody: ''
+    originalOverflowBody: '',
+    isModalOpen: false,
+    activeTab: 'prefs'
   };
 
   /**
@@ -72,47 +83,40 @@
     const scaleH = availH / devH;
     const scaleW = availW / devW;
     const best = Math.min(scaleH, scaleW);
-    return Math.min(1.0, Math.max(0.3, Math.round(best * 100) / 100));
+    return Math.min(1.0, Math.max(0.2, parseFloat(best.toFixed(3))));
   }
 
   /**
-   * Update geometri dan tampilan visual frame HP (Bebas Obstruksi)
+   * Perbarui Tampilan Fisik Sasis & Dimensi Layar
    */
   function updateChassisView() {
     const overlay = document.getElementById('mv-studio-overlay');
     if (!overlay) return;
 
-    // Terapkan tema Liquid Apple
-    overlay.classList.toggle('mv-theme-light', state.theme === 'light');
+    overlay.classList.remove('mv-theme-dark', 'mv-theme-light');
+    overlay.classList.add(state.theme === 'light' ? 'mv-theme-light' : 'mv-theme-dark');
 
     const dev = DEVICES[state.activeDeviceKey] || DEVICES.iphone15pro;
-    const screenW = state.isLandscape ? dev.height : dev.width;
-    const screenH = state.isLandscape ? dev.width : dev.height;
-    const currentBezel = state.showFrame ? dev.bezel : 0;
-    const totalW = screenW + (currentBezel * 2);
-    const totalH = screenH + (currentBezel * 2);
-    const innerRadius = Math.max(6, dev.radius - currentBezel);
+    const totalW = state.isLandscape ? dev.height : dev.width;
+    const totalH = state.isLandscape ? dev.width : dev.height;
 
     const frameEl = document.getElementById('mv-phone-frame');
     const screenContainer = document.getElementById('mv-screen-container');
     const scaleWrapper = document.getElementById('mv-scale-wrapper');
     const hwButtonsContainer = document.getElementById('mv-hw-buttons');
     const dimBadge = document.getElementById('mv-dim-badge');
-    const frameToggleBtn = document.getElementById('mv-frame-btn');
     const themeBtn = document.getElementById('mv-theme-btn');
 
     if (!frameEl || !scaleWrapper) return;
 
-    // Toggle class frameless
-    scaleWrapper.classList.toggle('mv-frameless', !state.showFrame);
-
-    // 1. Terapkan Dimensi & Radius Presisi (Concentric Radii)
+    // 1. Terapkan Dimensi & Radius Presisi
     frameEl.style.width = totalW + 'px';
     frameEl.style.height = totalH + 'px';
     frameEl.style.borderRadius = dev.radius + 'px';
-    frameEl.style.padding = currentBezel + 'px';
+    frameEl.style.padding = dev.bezel + 'px';
 
     if (screenContainer) {
+      const innerRadius = Math.max(0, dev.radius - dev.bezel);
       screenContainer.style.borderRadius = innerRadius + 'px';
     }
 
@@ -124,34 +128,37 @@
     }
     scaleWrapper.style.transform = `scale(${state.zoom})`;
 
-    // 3. Update Badge Dimensi Monospace dengan Live Beacon Dot
-    if (dimBadge) {
-      dimBadge.innerHTML = `<span class="mv-dim-dot"></span><span>${screenW} × ${screenH} px</span>`;
-    }
-
-    // 4. Tombol Fisik Samping (Hardware Buttons di Sisi Luar Bezel)
+    // 3. Render Tombol Fisik Hardware Sasis
     if (hwButtonsContainer) {
       hwButtonsContainer.innerHTML = '';
-      if (dev.platform !== 'tablet' && state.showFrame) {
-        if (!state.isLandscape) {
-          hwButtonsContainer.innerHTML = `
-            <div class="mv-btn-hw" style="top: 80px; left: -7px; width: 3px; height: 24px;"></div>
-            <div class="mv-btn-hw" style="top: 115px; left: -7px; width: 3px; height: 42px;"></div>
-            <div class="mv-btn-hw" style="top: 168px; left: -7px; width: 3px; height: 42px;"></div>
-            <div class="mv-btn-hw" style="top: 125px; right: -7px; width: 3px; height: 65px;"></div>
-          `;
-        } else {
-          hwButtonsContainer.innerHTML = `
-            <div class="mv-btn-hw" style="top: -7px; left: 80px; width: 24px; height: 3px;"></div>
-            <div class="mv-btn-hw" style="top: -7px; left: 115px; width: 42px; height: 3px;"></div>
-            <div class="mv-btn-hw" style="top: -7px; left: 168px; width: 42px; height: 3px;"></div>
-            <div class="mv-btn-hw" style="bottom: -7px; right: 125px; width: 65px; height: 3px;"></div>
-          `;
-        }
+      if (dev.platform !== 'tablet') {
+        const pBtn = document.createElement('div');
+        pBtn.className = 'mv-btn-hw';
+        pBtn.style.right = '-2.5px';
+        pBtn.style.top = '100px';
+        pBtn.style.width = '2.5px';
+        pBtn.style.height = '48px';
+        hwButtonsContainer.appendChild(pBtn);
+
+        const vUp = document.createElement('div');
+        vUp.className = 'mv-btn-hw';
+        vUp.style.left = '-2.5px';
+        vUp.style.top = '90px';
+        vUp.style.width = '2.5px';
+        vUp.style.height = '42px';
+        hwButtonsContainer.appendChild(vUp);
+
+        const vDown = document.createElement('div');
+        vDown.className = 'mv-btn-hw';
+        vDown.style.left = '-2.5px';
+        vDown.style.top = '140px';
+        vDown.style.width = '2.5px';
+        vDown.style.height = '42px';
+        hwButtonsContainer.appendChild(vDown);
       }
     }
 
-    // 5. Update Status Active Segmented Pills
+    // 4. Update Quick Device Chips di Topbar
     document.querySelectorAll('.mv-dev-chip').forEach(btn => {
       const key = btn.getAttribute('data-dev');
       btn.classList.toggle('mv-active', key === state.activeDeviceKey);
@@ -167,38 +174,95 @@
       }
     }
 
-    if (frameToggleBtn) {
-      frameToggleBtn.classList.toggle('mv-btn-active', state.showFrame);
-    }
-
     if (themeBtn) {
       const sunIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
       const moonIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
-      themeBtn.innerHTML = `${state.theme === 'light' ? moonIcon : sunIcon}<span class="mv-kbd">T</span>`;
-      themeBtn.title = state.theme === 'light' ? "Beralih ke Mode Gelap (Tekan 'T')" : "Beralih ke Mode Terang (Tekan 'T')";
+      themeBtn.innerHTML = (state.theme === 'light' ? moonIcon : sunIcon) + '<span class="mv-kbd">T</span>';
     }
 
+    // 5. Update Segmented Zoom Tabs
     const fitBtn = document.getElementById('mv-fit-btn');
     const z100Btn = document.getElementById('mv-z100-btn');
+    if (fitBtn && z100Btn) {
+      fitBtn.classList.toggle('mv-active', state.scaleMode === 'fit');
+      z100Btn.classList.toggle('mv-active', state.scaleMode === '1.0');
+    }
 
-    if (fitBtn) fitBtn.classList.toggle('mv-active', state.scaleMode === 'fit');
-    if (z100Btn) z100Btn.classList.toggle('mv-active', state.scaleMode === '1.0');
+    // 6. Update HUD Dimensi
+    if (dimBadge) {
+      dimBadge.innerHTML = `<span class="mv-dim-dot"></span><span>${totalW} × ${totalH} px</span>`;
+    }
+
+    // 7. Update Modal Settings Option Highlights
+    updateModalOptionButtons();
   }
 
   /**
-   * Menutup Overlay & Mengembalikan ke Tampilan Desktop
+   * Sinkronisasi status tombol opsi di dalam modal
+   */
+  function updateModalOptionButtons() {
+    document.querySelectorAll('.mv-opt-theme').forEach(btn => {
+      btn.classList.toggle('mv-active', btn.getAttribute('data-val') === state.theme);
+    });
+    document.querySelectorAll('.mv-opt-dev').forEach(btn => {
+      btn.classList.toggle('mv-active', btn.getAttribute('data-val') === state.activeDeviceKey);
+    });
+    document.querySelectorAll('.mv-opt-scale').forEach(btn => {
+      btn.classList.toggle('mv-active', btn.getAttribute('data-val') === state.scaleMode);
+    });
+    document.querySelectorAll('.mv-opt-orient').forEach(btn => {
+      const isLand = btn.getAttribute('data-val') === 'landscape';
+      btn.classList.toggle('mv-active', isLand === state.isLandscape);
+    });
+  }
+
+  /**
+   * Buka / Tutup Modal Pengaturan & Tentang
+   */
+  function setModalOpen(isOpen) {
+    state.isModalOpen = isOpen;
+    const backdrop = document.getElementById('mv-modal-backdrop');
+    if (!backdrop) return;
+    backdrop.classList.toggle('mv-hidden', !isOpen);
+    if (isOpen) {
+      updateModalOptionButtons();
+    }
+  }
+
+  /**
+   * Beralih Tab di dalam Modal Pengaturan
+   */
+  function switchModalTab(tabId) {
+    state.activeTab = tabId;
+    const tabPrefs = document.getElementById('mv-tab-nav-prefs');
+    const tabAbout = document.getElementById('mv-tab-nav-about');
+    const contentPrefs = document.getElementById('mv-tab-content-prefs');
+    const contentAbout = document.getElementById('mv-tab-content-about');
+
+    if (tabPrefs && tabAbout && contentPrefs && contentAbout) {
+      const isPrefs = tabId === 'prefs';
+      tabPrefs.classList.toggle('mv-active', isPrefs);
+      tabAbout.classList.toggle('mv-active', !isPrefs);
+      contentPrefs.classList.toggle('mv-hidden', !isPrefs);
+      contentAbout.classList.toggle('mv-hidden', isPrefs);
+    }
+  }
+
+  /**
+   * Menutup Studio Mobile View
    */
   function closeMobileView() {
     const overlay = document.getElementById('mv-studio-overlay');
     if (overlay) {
       overlay.remove();
-      document.documentElement.style.overflow = state.originalOverflowHtml;
-      document.body.style.overflow = state.originalOverflowBody;
     }
+    document.documentElement.style.overflow = state.originalOverflowHtml;
+    document.body.style.overflow = state.originalOverflowBody;
+    state.isModalOpen = false;
   }
 
   /**
-   * Membuat dan Memunculkan Overlay Studio Liquid Apple UI
+   * Membuka Studio Mobile View & Menyuntikkan DOM
    */
   function openMobileView() {
     if (document.getElementById('mv-studio-overlay')) return;
@@ -210,15 +274,12 @@
 
     const overlay = document.createElement('div');
     overlay.id = 'mv-studio-overlay';
-    if (state.theme === 'light') {
-      overlay.classList.add('mv-theme-light');
-    }
+    overlay.className = state.theme === 'light' ? 'mv-theme-light' : 'mv-theme-dark';
 
-    // HTML Struktur Overlay Liquid Apple (100% Identik dengan preview.html)
     overlay.innerHTML = `
-      <!-- Topbar Studio (Cupertino Frosted Crystal Island) -->
+      <!-- Top Bar Island (Solid Matte Workstation / Frosted Neomorphic) -->
       <div id="mv-topbar">
-        <!-- Brand & Quick Device Segmented Chips -->
+        <!-- Left: Brand & Quick Device Chips -->
         <div class="mv-group">
           <div class="mv-brand">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -228,7 +289,6 @@
             <span>Mobile View</span>
           </div>
 
-          <!-- Quick 1-Click Segmented Devices (Concentric Radii) -->
           <div class="mv-neo-groove">
             <button class="mv-tab-pill mv-dev-chip ${state.activeDeviceKey === 'iphone15pro' ? 'mv-active' : ''}" data-dev="iphone15pro">
               iPhone 15 Pro
@@ -245,11 +305,10 @@
           </div>
         </div>
 
-        <!-- Center: Metrics + Rotate + Frame Toggle + Reload -->
+        <!-- Center: Metrics + Rotate + Reload -->
         <div class="mv-group">
           <div id="mv-dim-badge" class="mv-dim-pill"><span class="mv-dim-dot"></span><span>393 × 852 px</span></div>
 
-          <!-- Rotate Button -->
           <button id="mv-rot-btn" class="mv-btn ${state.isLandscape ? 'mv-btn-active' : ''}" title="Putar Layar (Tekan 'R')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
@@ -258,18 +317,7 @@
             <span class="mv-kbd">R</span>
           </button>
 
-          <!-- Frame On/Off Toggle Button -->
-          <button id="mv-frame-btn" class="mv-btn ${state.showFrame ? 'mv-btn-active' : ''}" title="Saklar Bingkai HP (Tekan 'F')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <rect width="18" height="18" x="3" y="3" rx="4"/>
-              <path d="M7 7h10v10H7z" opacity="0.5"/>
-            </svg>
-            <span>Bingkai</span>
-            <span class="mv-kbd">F</span>
-          </button>
-
-          <!-- Reload Button -->
-          <button id="mv-reload-btn" class="mv-btn" title="Segarkan Layar">
+          <button id="mv-reload-btn" class="mv-btn" title="Segarkan Layar (Ctrl+R)">
             <svg id="mv-reload-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
               <path d="M3 3v5h5"/>
@@ -279,15 +327,13 @@
           </button>
         </div>
 
-        <!-- Right: Segmented Zoom, Theme Toggle, & Close -->
+        <!-- Right: Zoom, Theme, Settings, Close -->
         <div class="mv-group">
-          <!-- Neomorphic Segmented Track for Zoom -->
           <div class="mv-neo-groove">
             <button id="mv-fit-btn" class="mv-tab-pill ${state.scaleMode === 'fit' ? 'mv-active' : ''}">Fit</button>
             <button id="mv-z100-btn" class="mv-tab-pill ${state.scaleMode === '1.0' ? 'mv-active' : ''}">100%</button>
           </div>
 
-          <!-- Cupertino Theme Toggle (Light / Dark) -->
           <button id="mv-theme-btn" class="mv-btn" title="Ganti Tema (Tekan 'T')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <circle cx="12" cy="12" r="4"/>
@@ -296,7 +342,15 @@
             <span class="mv-kbd">T</span>
           </button>
 
-          <!-- Close / Back to Desktop -->
+          <button id="mv-settings-btn" class="mv-btn" title="Pengaturan & Tentang (Tekan ',')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <span>Setelan</span>
+            <span class="mv-kbd">,</span>
+          </button>
+
           <button id="mv-close-btn" class="mv-btn mv-btn-close" title="Kembali ke Desktop (Esc / Alt+M)">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="18" y1="6" x2="6" y2="18"/>
@@ -308,17 +362,154 @@
         </div>
       </div>
 
-      <!-- Canvas Area (Clean Floating Center) -->
+      <!-- Canvas Area -->
       <div id="mv-canvas">
         <div id="mv-scale-wrapper">
-          <!-- Phone Chassis -->
           <div id="mv-phone-frame" class="mv-phone-frame">
-            <!-- Hardware Buttons -->
             <div id="mv-hw-buttons"></div>
-
-            <!-- Screen Viewport (100% Bersih Tanpa Obstruksi Kamera) -->
             <div id="mv-screen-container" class="mv-screen-container">
               <iframe id="mv-viewport-iframe" src="${window.location.href}"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Pengaturan & Tentang Studio (Slide-Down / Popup Taktil) -->
+      <div id="mv-modal-backdrop" class="mv-modal-backdrop mv-hidden">
+        <div id="mv-settings-modal" class="mv-settings-modal">
+          <!-- Header -->
+          <div class="mv-modal-header">
+            <div class="mv-modal-title-wrap">
+              <h3 class="mv-modal-title">Mobile View Studio</h3>
+              <p class="mv-modal-subtitle">Pengaturan Preferensi & Identitas Studio</p>
+            </div>
+            <button id="mv-modal-close" class="mv-modal-close-btn" title="Tutup (Esc)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Tab Selector -->
+          <div class="mv-modal-tabs mv-neo-groove">
+            <button id="mv-tab-nav-prefs" class="mv-tab-pill mv-active">Preferensi Bawaan</button>
+            <button id="mv-tab-nav-about" class="mv-tab-pill">Tentang & Changelog</button>
+          </div>
+
+          <!-- Tab Content 1: Preferensi Bawaan -->
+          <div id="mv-tab-content-prefs" class="mv-modal-tab-content">
+            <div class="mv-setting-row">
+              <div class="mv-setting-label">
+                <span class="mv-setting-name">Mode Tampilan Bawaan</span>
+                <span class="mv-setting-desc">Tema saat studio pertama kali aktif</span>
+              </div>
+              <div class="mv-neo-groove">
+                <button class="mv-tab-pill mv-opt-theme ${state.theme === 'dark' ? 'mv-active' : ''}" data-val="dark">Gelap (Dark)</button>
+                <button class="mv-tab-pill mv-opt-theme ${state.theme === 'light' ? 'mv-active' : ''}" data-val="light">Terang (Light)</button>
+              </div>
+            </div>
+
+            <div class="mv-setting-row">
+              <div class="mv-setting-label">
+                <span class="mv-setting-name">Perangkat Bawaan</span>
+                <span class="mv-setting-desc">Smartphone awal saat studio dibuka</span>
+              </div>
+              <div class="mv-neo-groove">
+                <button class="mv-tab-pill mv-opt-dev ${state.activeDeviceKey === 'iphone15pro' ? 'mv-active' : ''}" data-val="iphone15pro">iPhone 15 Pro</button>
+                <button class="mv-tab-pill mv-opt-dev ${state.activeDeviceKey === 'galaxys24' ? 'mv-active' : ''}" data-val="galaxys24">Galaxy S24</button>
+                <button class="mv-tab-pill mv-opt-dev ${state.activeDeviceKey === 'iphonese' ? 'mv-active' : ''}" data-val="iphonese">SE</button>
+                <button class="mv-tab-pill mv-opt-dev ${state.activeDeviceKey === 'ipadmini' ? 'mv-active' : ''}" data-val="ipadmini">iPad</button>
+              </div>
+            </div>
+
+            <div class="mv-setting-row">
+              <div class="mv-setting-label">
+                <span class="mv-setting-name">Skala Zoom Awal</span>
+                <span class="mv-setting-desc">Penyesuaian ukuran frame ke layar</span>
+              </div>
+              <div class="mv-neo-groove">
+                <button class="mv-tab-pill mv-opt-scale ${state.scaleMode === 'fit' ? 'mv-active' : ''}" data-val="fit">Fit to Screen</button>
+                <button class="mv-tab-pill mv-opt-scale ${state.scaleMode === '1.0' ? 'mv-active' : ''}" data-val="1.0">100% Asli</button>
+              </div>
+            </div>
+
+            <div class="mv-setting-row">
+              <div class="mv-setting-label">
+                <span class="mv-setting-name">Orientasi Awal</span>
+                <span class="mv-setting-desc">Posisi fisik smartphone</span>
+              </div>
+              <div class="mv-neo-groove">
+                <button class="mv-tab-pill mv-opt-orient ${!state.isLandscape ? 'mv-active' : ''}" data-val="portrait">Tegak (Portrait)</button>
+                <button class="mv-tab-pill mv-opt-orient ${state.isLandscape ? 'mv-active' : ''}" data-val="landscape">Miring (Landscape)</button>
+              </div>
+            </div>
+
+            <div class="mv-modal-footer">
+              <span class="mv-save-badge">Perubahan tersimpan otomatis</span>
+            </div>
+          </div>
+
+          <!-- Tab Content 2: Tentang & Changelog -->
+          <div id="mv-tab-content-about" class="mv-modal-tab-content mv-hidden">
+            <div class="mv-about-card">
+              <div class="mv-about-top">
+                <div class="mv-about-logo">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <rect width="14" height="20" x="5" y="2" rx="3" ry="3"/>
+                    <path d="M12 18h.01"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="mv-about-name">Mobile View Studio v1.15.0</div>
+                  <div class="mv-about-sub">Zero-Bloat Device Frame Studio by Megapass Intra Solusindo</div>
+                </div>
+              </div>
+              <p class="mv-about-desc">
+                Alat inspeksi responsif web profesional dengan bingkai fisik smartphone presisi pixel. Bebas bundler, zero npm runtime bloat, arsitektur sirkuit terbuka hemat resource hardware ruko.
+              </p>
+              <div class="mv-about-meta">
+                <div><strong>Arsitek Sistem:</strong> Cak Hizam Nahari (Certified Electronics Technician BNSP/BMY)</div>
+                <div><strong>Basis Workshop:</strong> Sidoarjo, Jawa Timur, Indonesia</div>
+              </div>
+              <div class="mv-about-links">
+                <a href="https://github.com/4ntiDandruff" target="_blank" rel="noopener noreferrer" class="mv-link-btn">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                  </svg>
+                  <span>GitHub Profile (@4ntiDandruff)</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="mv-changelog-wrap">
+              <div class="mv-changelog-title">Catatan Rilis (Changelog Rekam Medis)</div>
+              <div class="mv-changelog-list">
+                <div class="mv-log-item">
+                  <span class="mv-log-badge">v1.15.0</span>
+                  <span class="mv-log-text">Panel Pengaturan Topbar, Tab Tentang & Promosi GitHub, Frame Always-On, dan PM2 Dev-Watcher Auto-Reload.</span>
+                </div>
+                <div class="mv-log-item">
+                  <span class="mv-log-badge">v1.14.0</span>
+                  <span class="mv-log-text">Eliminasi aksen biru pada Light Mode untuk menjaga kemurnian neomorphic putih elegan.</span>
+                </div>
+                <div class="mv-log-item">
+                  <span class="mv-log-badge">v1.13.1</span>
+                  <span class="mv-log-text">Harmonisasi tombol Bingkai ke palet Solid Matte Workstation tanpa pendaran warna biru.</span>
+                </div>
+                <div class="mv-log-item">
+                  <span class="mv-log-badge">v1.13.0</span>
+                  <span class="mv-log-text">Arsitektur Solid Matte Workstation: eliminasi efek glass/mika berasap di Dark Mode.</span>
+                </div>
+                <div class="mv-log-item">
+                  <span class="mv-log-badge">v1.12.0</span>
+                  <span class="mv-log-text">Tipografi proporsional Plus Jakarta Sans & JetBrains Mono referensi cekweb.megapass.web.id.</span>
+                </div>
+                <div class="mv-log-item">
+                  <span class="mv-log-badge">v1.11.0</span>
+                  <span class="mv-log-text">Eliminasi total efek glow, kalibrasi rasio scale viewport monitor 76px.</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -332,38 +523,32 @@
       btn.addEventListener('click', (e) => {
         const key = e.currentTarget.getAttribute('data-dev');
         state.activeDeviceKey = key;
-        localStorage.setItem('mv_device', key);
+        safeSet('mv_device', key);
         updateChassisView();
       });
     });
 
     document.getElementById('mv-rot-btn').addEventListener('click', () => {
       state.isLandscape = !state.isLandscape;
-      localStorage.setItem('mv_landscape', state.isLandscape);
-      updateChassisView();
-    });
-
-    document.getElementById('mv-frame-btn').addEventListener('click', () => {
-      state.showFrame = !state.showFrame;
-      localStorage.setItem('mv_frame', state.showFrame);
+      safeSet('mv_landscape', state.isLandscape);
       updateChassisView();
     });
 
     document.getElementById('mv-fit-btn').addEventListener('click', () => {
       state.scaleMode = 'fit';
-      localStorage.setItem('mv_scale_mode', 'fit');
+      safeSet('mv_scale_mode', 'fit');
       updateChassisView();
     });
 
     document.getElementById('mv-z100-btn').addEventListener('click', () => {
       state.scaleMode = '1.0';
-      localStorage.setItem('mv_scale_mode', '1.0');
+      safeSet('mv_scale_mode', '1.0');
       updateChassisView();
     });
 
     document.getElementById('mv-theme-btn').addEventListener('click', () => {
       state.theme = state.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('mv_theme', state.theme);
+      safeSet('mv_theme', state.theme);
       updateChassisView();
     });
 
@@ -381,6 +566,69 @@
       if (iframe) {
         iframe.src = window.location.href;
       }
+    });
+
+    // Settings Modal Triggers
+    document.getElementById('mv-settings-btn').addEventListener('click', () => {
+      setModalOpen(true);
+    });
+
+    document.getElementById('mv-modal-close').addEventListener('click', () => {
+      setModalOpen(false);
+    });
+
+    const backdrop = document.getElementById('mv-modal-backdrop');
+    if (backdrop) {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) {
+          setModalOpen(false);
+        }
+      });
+    }
+
+    // Modal Tabs Navigation
+    document.getElementById('mv-tab-nav-prefs').addEventListener('click', () => {
+      switchModalTab('prefs');
+    });
+    document.getElementById('mv-tab-nav-about').addEventListener('click', () => {
+      switchModalTab('about');
+    });
+
+    // Modal Settings Options Click Handlers
+    document.querySelectorAll('.mv-opt-theme').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const val = e.currentTarget.getAttribute('data-val');
+        state.theme = val;
+        safeSet('mv_theme', val);
+        updateChassisView();
+      });
+    });
+
+    document.querySelectorAll('.mv-opt-dev').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const val = e.currentTarget.getAttribute('data-val');
+        state.activeDeviceKey = val;
+        safeSet('mv_device', val);
+        updateChassisView();
+      });
+    });
+
+    document.querySelectorAll('.mv-opt-scale').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const val = e.currentTarget.getAttribute('data-val');
+        state.scaleMode = val;
+        safeSet('mv_scale_mode', val);
+        updateChassisView();
+      });
+    });
+
+    document.querySelectorAll('.mv-opt-orient').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const val = e.currentTarget.getAttribute('data-val');
+        state.isLandscape = val === 'landscape';
+        safeSet('mv_landscape', state.isLandscape);
+        updateChassisView();
+      });
     });
 
     document.getElementById('mv-close-btn').addEventListener('click', () => {
@@ -403,7 +651,7 @@
     }
   }
 
-  // 2. Global Keyboard Shortcuts: Esc (close), R (rotate), F (frame), T (theme)
+  // Keyboard Shortcuts: Esc, R (rotate), T (theme), , (settings)
   window.addEventListener('keydown', (e) => {
     const overlay = document.getElementById('mv-studio-overlay');
     if (!overlay) return;
@@ -411,33 +659,35 @@
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
     if (e.key === 'Escape') {
-      closeMobileView();
+      if (state.isModalOpen) {
+        setModalOpen(false);
+      } else {
+        closeMobileView();
+      }
       return;
     }
 
-    if (e.key === 'r' || e.key === 'R') {
+    if (e.key === ',' || e.key === '<') {
+      setModalOpen(!state.isModalOpen);
+    } else if (e.key === 'r' || e.key === 'R') {
       state.isLandscape = !state.isLandscape;
-      localStorage.setItem('mv_landscape', state.isLandscape);
-      updateChassisView();
-    } else if (e.key === 'f' || e.key === 'F') {
-      state.showFrame = !state.showFrame;
-      localStorage.setItem('mv_frame', state.showFrame);
+      safeSet('mv_landscape', state.isLandscape);
       updateChassisView();
     } else if (e.key === 't' || e.key === 'T') {
       state.theme = state.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('mv_theme', state.theme);
+      safeSet('mv_theme', state.theme);
       updateChassisView();
     }
   });
 
-  // 3. Listener Resize Jendela
+  // Listener Resize Jendela
   window.addEventListener('resize', () => {
     if (document.getElementById('mv-studio-overlay') && state.scaleMode === 'fit') {
       updateChassisView();
     }
   });
 
-  // 4. Listener Pesan dari Background Worker (Klik Ikon Toolbar / Shortcut Alt+M)
+  // Listener Pesan dari Background Worker (Klik Ikon Toolbar / Shortcut Alt+M)
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message && message.action === 'toggle_mobile_view') {
       toggleMobileView();
