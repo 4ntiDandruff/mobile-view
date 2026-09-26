@@ -1,106 +1,65 @@
 #!/usr/bin/env python3
-"""Script Generator Icon & Favicon Mobile View Studio (Flat Modern Minimalis).
-Referensi Desain: cekweb.megapass.web.id (Solid Electric Blue #0071E3, Flat Minimalist, Cyan Accent #64D2FF).
-Standar: Zero-Bloat, Multi-Scale Crispness (16x16 hingga 512x512 px).
+"""Generator Icon & Favicon Mobile View Studio.
+Standar: Zero-Bloat Icon Engine (zero-bloat-icon-favicon-skill)
+Gaya: Flat Modern Minimalis (Referensi: cekweb.megapass.web.id & pastree.megapass.web.id)
+Warna: Solid Electric Blue (#0071E3), Pure White (#FFFFFF), Electric Cyan Accent (#64D2FF)
 """
+
 import os
+import shutil
+import subprocess
 from pathlib import Path
-from PIL import Image, ImageDraw
+from PIL import Image
 
-ICONS_DIR = Path(__file__).resolve().parent.parent / "icons"
-os.makedirs(ICONS_DIR, exist_ok=True)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+ICONS_DIR = PROJECT_ROOT / "icons"
+SKILL_GENERATOR = Path.home() / "zero-bloat-skills" / "skills" / "zero-bloat-icon-favicon-skill" / "scripts" / "generate_favicon.py"
 
-# 1. Master Flat SVG (512x512)
-SVG_CONTENT = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
-  <!-- Flat Solid Blue Squircle Background (Referensi CekWeb Megapass) -->
-  <rect width="512" height="512" rx="128" fill="#0071E3"/>
-
-  <!-- Smartphone Outer Chassis (Bold Solid White Frame) -->
-  <rect x="144" y="72" width="224" height="368" rx="46" fill="none" stroke="#FFFFFF" stroke-width="28"/>
-
-  <!-- Dynamic Island Sensor (Electric Cyan #64D2FF) -->
-  <rect x="224" y="108" width="64" height="16" rx="8" fill="#64D2FF"/>
-
-  <!-- Responsive Mobile Screen Content Blocks -->
-  <!-- Top Hero Card (Crisp White Semi-Translucent) -->
-  <rect x="184" y="148" width="144" height="84" rx="16" fill="#FFFFFF" fill-opacity="0.32"/>
-
-  <!-- Accent Interactive Button (Solid Electric Cyan) -->
-  <rect x="184" y="248" width="144" height="26" rx="12" fill="#64D2FF"/>
-
-  <!-- Content Rows -->
-  <rect x="184" y="290" width="104" height="18" rx="9" fill="#FFFFFF" fill-opacity="0.45"/>
-  <rect x="184" y="320" width="72" height="18" rx="9" fill="#FFFFFF" fill-opacity="0.30"/>
-
-  <!-- Bottom Home Dock Bar (Solid White) -->
-  <rect x="212" y="396" width="88" height="14" rx="7" fill="#FFFFFF"/>
-</svg>"""
+# Master Flat Minimalist Smartphone Glyph (Grid 64x64, Lucide-scale 2)
+GLYPH = '<g transform="translate(8, 8) scale(2)"><rect x="5" y="2" width="14" height="20" rx="3.2" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="9.5" y="4.5" width="5" height="1.8" rx="0.9" fill="#64D2FF"/><rect x="9.5" y="18" width="5" height="1.4" rx="0.7" fill="#FFFFFF"/></g>'
 
 
 def main():
-    print("[*] Menulis master icon.svg (Flat Modern Minimalis)...")
-    svg_path = ICONS_DIR / "icon.svg"
-    with open(svg_path, "w", encoding="utf-8") as f:
-        f.write(SVG_CONTENT)
-    print(f"[+] Master SVG tersimpan: {svg_path.name}")
+    ICONS_DIR.mkdir(parents=True, exist_ok=True)
+    print("[*] Menjalankan zero-bloat-icon-favicon-skill engine...")
 
-    # Render PNG multi-ukuran menggunakan Pillow (1024x1024 supersampling)
-    print("[*] Merender ikon raster PNG (Flat Minimalist)...")
-    S = 1024
-    img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
+    cmd = [
+        "python3",
+        str(SKILL_GENERATOR),
+        "--glyph", GLYPH,
+        "--bg", "#0071E3",
+        "--style", "flat",
+        "--name", "Mobile View - Device Frame Studio",
+        "--prefix", "icons/",
+        "--out", str(ICONS_DIR),
+    ]
 
-    BLUE = (0, 113, 227, 255)       # #0071E3
-    WHITE = (255, 255, 255, 255)    # #FFFFFF
-    CYAN = (100, 210, 255, 255)     # #64D2FF
-    WHITE_32 = (255, 255, 255, 82)  # 32%
-    WHITE_45 = (255, 255, 255, 115) # 45%
-    WHITE_30 = (255, 255, 255, 76)  # 30%
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if res.returncode != 0:
+        print("[-] Gagal menjalankan generator skill:", res.stderr)
+        return False
+    print(res.stdout.strip())
 
-    # 1. Base Squircle (Solid Electric Blue #0071E3)
-    draw.rounded_rectangle([0, 0, S, S], radius=256, fill=BLUE)
+    # Sinkronisasi alias file Chrome Extension
+    print("[*] Menyinkronkan alias aset Chrome Extension...")
+    shutil.copy2(ICONS_DIR / "favicon.svg", ICONS_DIR / "icon.svg")
+    shutil.copy2(ICONS_DIR / "favicon-16x16.png", ICONS_DIR / "icon16.png")
+    shutil.copy2(ICONS_DIR / "favicon-32x32.png", ICONS_DIR / "icon32.png")
+    shutil.copy2(ICONS_DIR / "favicon-48x48.png", ICONS_DIR / "icon48.png")
 
-    # 2. Smartphone Outer Frame (scale 2x)
-    draw.rounded_rectangle([288, 144, 736, 880], radius=92, outline=WHITE, width=56)
+    # Render 128x128 untuk Chrome Web Store
+    master_png = ICONS_DIR / "android-chrome-512x512.png"
+    if master_png.exists():
+        with Image.open(master_png) as im:
+            im.resize((128, 128), Image.Resampling.LANCZOS).save(
+                ICONS_DIR / "icon128.png", "PNG", optimize=True
+            )
+        print("[+] Berhasil slice: icon128.png (128x128)")
 
-    # 3. Dynamic Island Pill
-    draw.rounded_rectangle([448, 216, 576, 248], radius=16, fill=CYAN)
-
-    # 4. Hero Card
-    draw.rounded_rectangle([368, 296, 656, 464], radius=32, fill=WHITE_32)
-
-    # 5. Cyan Action Button
-    draw.rounded_rectangle([368, 496, 656, 548], radius=24, fill=CYAN)
-
-    # 6. Content Rows
-    draw.rounded_rectangle([368, 580, 576, 616], radius=18, fill=WHITE_45)
-    draw.rounded_rectangle([368, 640, 512, 676], radius=18, fill=WHITE_30)
-
-    # 7. Bottom Home Dock Bar
-    draw.rounded_rectangle([424, 792, 600, 820], radius=14, fill=WHITE)
-
-    # Ukuran aset Chrome Extension & Favicon
-    sizes = {
-        "icon16.png": 16,
-        "icon32.png": 32,
-        "icon48.png": 48,
-        "icon128.png": 128,
-        "icon512.png": 512,
-    }
-
-    for filename, sz in sizes.items():
-        resized = img.resize((sz, sz), Image.Resampling.LANCZOS)
-        out_path = ICONS_DIR / filename
-        resized.save(out_path, "PNG", optimize=True)
-        print(f"[+] Berhasil render: {filename} ({sz}x{sz})")
-
-    # Multi-resolution ICO (16, 32, 48px)
-    ico_path = ICONS_DIR / "favicon.ico"
-    img_16 = img.resize((16, 16), Image.Resampling.LANCZOS)
-    img_32 = img.resize((32, 32), Image.Resampling.LANCZOS)
-    img_48 = img.resize((48, 48), Image.Resampling.LANCZOS)
-    img_32.save(ico_path, format="ICO", sizes=[(16, 16), (32, 32), (48, 48)], append_images=[img_16, img_48])
-    print("[+] Berhasil render: favicon.ico (Multi-frame 16, 32, 48px)")
+    print("[✓] Seluruh aset icon & favicon selesai diproduksi:")
+    for f in sorted(ICONS_DIR.iterdir()):
+        if f.is_file():
+            print(f"    - {f.name:24} ({f.stat().st_size:,} bytes)")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,22 @@
+{
+  "name": "Mobile View - Device Frame Studio",
+  "short_name": "Mobile View - Device Frame Studio",
+  "start_url": "icons/",
+  "display": "standalone",
+  "background_color": "#0071E3",
+  "theme_color": "#0071E3",
+  "icons": [
+    {
+      "src": "icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
