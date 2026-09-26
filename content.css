@@ -44,11 +44,11 @@
   --pill-text: #E2E8F0;
   --pill-shadow: 0 1px 3px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-  /* Active Tactile Button (.mv-btn.mv-btn-active) - Solid Pro Blue Accent */
-  --pill-active-bg: #14223A;
-  --pill-active-border: #2563EB;
-  --pill-active-text: #60A5FA;
-  --pill-active-shadow: 0 1px 4px rgba(0, 0, 0, 0.40);
+  /* Active Tactile Button (.mv-btn.mv-btn-active) - Solid Workstation Slate (Consistent with other buttons) */
+  --pill-active-bg: #1E2433;
+  --pill-active-border: #2F384C;
+  --pill-active-text: #E2E8F0;
+  --pill-active-shadow: 0 1px 3px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
   /* Dimension Badge (Solid Matte HUD) */
   --dim-bg: #141824;
@@ -351,10 +351,11 @@ body.mv-theme-light .mv-btn:hover {
   box-shadow: var(--pill-active-shadow) !important;
 }
 .mv-btn.mv-btn-active:hover {
-  background: #192B4A !important;
-  color: #93C5FD !important;
-  border-color: #3B82F6 !important;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.40) !important;
+  background: #283042 !important;
+  border-color: #3D4862 !important;
+  color: #FFFFFF !important;
+  transform: translateY(-0.75px) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45) !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-btn.mv-btn-active:hover,
 body.mv-theme-light .mv-btn.mv-btn-active:hover {
@@ -444,9 +445,23 @@ body.mv-theme-light .mv-dim-dot {
 }
 
 .mv-btn.mv-btn-active .mv-kbd {
-  background: #0D192B !important;
-  border-color: #1E3A8A !important;
-  color: #93C5FD !important;
+  background: #090C12 !important;
+  border-color: #262E40 !important;
+  color: #94A3B8 !important;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.40) !important;
+}
+
+/* Deactivated Frame State (Frameless Mode) */
+#mv-frame-btn:not(.mv-btn-active) {
+  opacity: 0.50 !important;
+  color: #94A3B8 !important;
+  border-color: #1E2433 !important;
+}
+#mv-studio-overlay.mv-theme-light #mv-frame-btn:not(.mv-btn-active),
+body.mv-theme-light #mv-frame-btn:not(.mv-btn-active) {
+  opacity: 0.55 !important;
+  color: #64748B !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-btn.mv-btn-active .mv-kbd,
 body.mv-theme-light .mv-btn.mv-btn-active .mv-kbd {
