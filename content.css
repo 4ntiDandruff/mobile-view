@@ -111,11 +111,11 @@ body.mv-theme-light {
   --pill-text: #0F172A;
   --pill-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03), inset 0 1px 0 #FFFFFF;
 
-  /* Active Tactile Button (.mv-btn.mv-btn-active) - Neomorphic White with Apple Blue */
+  /* Active Tactile Button (.mv-btn.mv-btn-active) - Neomorphic White (Zero-Blue Pure Neomorphism) */
   --pill-active-bg: #FFFFFF;
-  --pill-active-border: #0071E3;
-  --pill-active-text: #0071E3;
-  --pill-active-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), inset 0 1px 0 #FFFFFF;
+  --pill-active-border: rgba(0, 0, 0, 0.12);
+  --pill-active-text: #0F172A;
+  --pill-active-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03), inset 0 1px 0 #FFFFFF;
 
   /* Dimension Badge (Neomorphic White Capsule) */
   --dim-bg: #FFFFFF;
@@ -238,9 +238,9 @@ body.mv-theme-light #mv-topbar {
 }
 #mv-studio-overlay.mv-theme-light .mv-brand,
 body.mv-theme-light .mv-brand {
-  color: var(--apple-blue) !important;
+  color: #0F172A !important;
   background: #FFFFFF !important;
-  border-color: rgba(0, 113, 227, 0.25) !important;
+  border-color: rgba(0, 0, 0, 0.10) !important;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04), inset 0 1px 0 #FFFFFF !important;
 }
 
@@ -334,8 +334,8 @@ body.mv-theme-light .mv-brand {
 #mv-studio-overlay.mv-theme-light .mv-btn:hover,
 body.mv-theme-light .mv-btn:hover {
   background: #FFFFFF !important;
-  border-color: var(--apple-blue) !important;
-  color: var(--apple-blue) !important;
+  border-color: rgba(0, 0, 0, 0.20) !important;
+  color: #0F172A !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 1px 0 #FFFFFF !important;
 }
 .mv-btn:active {
@@ -360,9 +360,9 @@ body.mv-theme-light .mv-btn:hover {
 #mv-studio-overlay.mv-theme-light .mv-btn.mv-btn-active:hover,
 body.mv-theme-light .mv-btn.mv-btn-active:hover {
   background: #FFFFFF !important;
-  color: var(--apple-blue) !important;
-  border-color: var(--apple-blue) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: rgba(0, 0, 0, 0.20) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 #FFFFFF !important;
 }
 
 /* Close Pill */
@@ -418,7 +418,7 @@ body.mv-theme-light .mv-btn.mv-btn-active:hover {
 
 #mv-studio-overlay.mv-theme-light .mv-dim-dot,
 body.mv-theme-light .mv-dim-dot {
-  background: #0071E3 !important;
+  background: #64748B !important;
 }
 
 @keyframes mv-pulse-beacon {
@@ -465,9 +465,9 @@ body.mv-theme-light #mv-frame-btn:not(.mv-btn-active) {
 }
 #mv-studio-overlay.mv-theme-light .mv-btn.mv-btn-active .mv-kbd,
 body.mv-theme-light .mv-btn.mv-btn-active .mv-kbd {
-  background: rgba(0, 113, 227, 0.08) !important;
-  border-color: rgba(0, 113, 227, 0.25) !important;
-  color: #0071E3 !important;
+  background: #F1F5F9 !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #0F172A !important;
 }
 
 .mv-btn-close .mv-kbd {
