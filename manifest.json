@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Mobile View - Device Frame Studio",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "description": "Pratinjau tampilan mobile instan dengan bingkai fisik smartphone, toggle 1-klik, dan siap inspect element.",
   "icons": {
     "16": "icons/icon16.png",

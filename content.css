@@ -1,5 +1,5 @@
-/* content.css - Mobile View Proportional Clean Tech Edition (v3.2) */
-/* Single Source of Truth: Referensi CekWeb Megapass + Zero-Glow Pure Optics */
+/* content.css - Mobile View Proportional Clean Tech Edition (v3.3) */
+/* Single Source of Truth: Dark Slate Obsidian Stealth + Light Cupertino Pure Neomorphism */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
 
@@ -13,60 +13,60 @@
   --apple-teal: #64D2FF;
 
   /* ========================================================
-     DARK OBSIDIAN THEME (PROPORTIONAL CLEAN TECH - REF: CEKWEB)
+     DARK OBSIDIAN THEME (SLATE OBSIDIAN STEALTH - LUXURY PRO)
      ======================================================== */
   --bg-page: #0B0F19;
   --text-primary: #FFFFFF;
   --text-secondary: #F1F5F9;
   --topbar-bg: rgba(15, 23, 42, 0.94);
-  --topbar-border: rgba(255, 255, 255, 0.14);
-  --topbar-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --topbar-border: rgba(255, 255, 255, 0.12);
+  --topbar-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 
   /* Neomorphic Groove Track (Concentric 9px) */
-  --groove-bg: rgba(0, 0, 0, 0.60);
-  --groove-border: rgba(255, 255, 255, 0.12);
-  --groove-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.60), 0 1px 0 rgba(255, 255, 255, 0.10);
+  --groove-bg: rgba(0, 0, 0, 0.45);
+  --groove-border: rgba(255, 255, 255, 0.08);
+  --groove-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.50), 0 1px 0 rgba(255, 255, 255, 0.06);
 
   /* Segmented Inactive Tab */
-  --tab-inactive-color: rgba(255, 255, 255, 0.78);
-  --tab-inactive-hover-bg: rgba(255, 255, 255, 0.12);
+  --tab-inactive-color: rgba(255, 255, 255, 0.65);
+  --tab-inactive-hover-bg: rgba(255, 255, 255, 0.08);
   --tab-inactive-hover-color: #FFFFFF;
 
-  /* Segmented Active Pill (Elevated Neomorphic White) */
-  --tab-active-bg: #FFFFFF;
-  --tab-active-text: #0F172A;
-  --tab-active-border: rgba(255, 255, 255, 0.90);
-  --tab-active-shadow: 0 2px 5px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.20), inset 0 1px 0 #FFFFFF;
+  /* Segmented Active Pill (Slate Glass Plate) */
+  --tab-active-bg: rgba(255, 255, 255, 0.14);
+  --tab-active-text: #FFFFFF;
+  --tab-active-border: rgba(255, 255, 255, 0.18);
+  --tab-active-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.20);
 
-  /* Standard Tactile Button (.mv-btn) - Neomorphic White */
-  --pill-bg: #FFFFFF;
-  --pill-border: rgba(255, 255, 255, 0.85);
-  --pill-text: #0F172A;
-  --pill-shadow: 0 2px 5px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.20), inset 0 1px 0 #FFFFFF;
+  /* Standard Tactile Button (.mv-btn) - Slate Obsidian Stealth */
+  --pill-bg: rgba(255, 255, 255, 0.07);
+  --pill-border: rgba(255, 255, 255, 0.11);
+  --pill-text: #F1F5F9;
+  --pill-shadow: 0 2px 5px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
 
-  /* Active Tactile Button (.mv-btn.mv-btn-active) - Neomorphic White with Apple Blue */
-  --pill-active-bg: #FFFFFF;
-  --pill-active-border: #0071E3;
-  --pill-active-text: #0071E3;
-  --pill-active-shadow: 0 2px 5px rgba(0, 0, 0, 0.30), inset 0 1px 0 #FFFFFF;
+  /* Active Tactile Button (.mv-btn.mv-btn-active) - Subtle Apple Blue Glass */
+  --pill-active-bg: rgba(0, 113, 227, 0.22);
+  --pill-active-border: rgba(0, 113, 227, 0.60);
+  --pill-active-text: #60A5FA;
+  --pill-active-shadow: 0 2px 6px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(96, 165, 250, 0.35);
 
-  /* Dimension Badge (Neomorphic White Capsule) */
-  --dim-bg: #FFFFFF;
-  --dim-border: rgba(255, 255, 255, 0.85);
-  --dim-text: #0F172A;
-  --dim-shadow: 0 2px 5px rgba(0, 0, 0, 0.30), inset 0 1px 0 #FFFFFF;
+  /* Dimension Badge (Slate Glass HUD) */
+  --dim-bg: rgba(255, 255, 255, 0.05);
+  --dim-border: rgba(255, 255, 255, 0.10);
+  --dim-text: #E2E8F0;
+  --dim-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 
   /* Tactile Physical Keycap Badge (.mv-kbd) */
-  --kbd-bg: #F1F5F9;
-  --kbd-border: rgba(0, 0, 0, 0.15);
-  --kbd-text: #0F172A;
-  --kbd-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  --kbd-bg: rgba(0, 0, 0, 0.40);
+  --kbd-border: rgba(255, 255, 255, 0.14);
+  --kbd-text: rgba(255, 255, 255, 0.70);
+  --kbd-shadow: 0 1px 2px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.10);
 
-  /* Close Button (Neomorphic White with Crimson) */
-  --btn-close-bg: #FFFFFF;
-  --btn-close-border: rgba(239, 68, 68, 0.40);
-  --btn-close-text: #DC2626;
-  --btn-close-shadow: 0 2px 5px rgba(0, 0, 0, 0.30), inset 0 1px 0 #FFFFFF;
+  /* Close Button (Muted Crimson Glass) */
+  --btn-close-bg: rgba(220, 38, 38, 0.15);
+  --btn-close-border: rgba(239, 68, 68, 0.35);
+  --btn-close-text: #F87171;
+  --btn-close-shadow: 0 2px 5px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(248, 113, 113, 0.20);
   --btn-close-hover-bg: #DC2626;
 
   /* Chassis (Clean Natural Depth - Zero Glow) */
@@ -78,7 +78,7 @@
 }
 
 /* ========================================================
-   LIGHT PLATINUM THEME (PROPORTIONAL CLEAN TECH - REF: CEKWEB)
+   LIGHT PLATINUM THEME (100% PURE NEOMORPHISM - PERFECT)
    ======================================================== */
 #mv-studio-overlay.mv-theme-light,
 body.mv-theme-light {
@@ -213,22 +213,22 @@ body.mv-standalone-body {
   gap: 5px !important;
 }
 
-/* Liquid Pool Brand Capsule (Neomorphic White with Apple Blue) */
+/* Liquid Pool Brand Capsule */
 .mv-brand {
   display: flex !important;
   align-items: center !important;
   gap: 5px !important;
-  color: var(--apple-blue) !important;
+  color: #38BDF8 !important;
   font-weight: 700 !important;
   font-size: 11px !important;
   letter-spacing: 0.4px !important;
   text-transform: uppercase !important;
   padding: 3.5px 9px !important;
   border-radius: 8px !important;
-  background: #FFFFFF !important;
-  border: 1px solid rgba(0, 113, 227, 0.25) !important;
+  background: rgba(0, 113, 227, 0.16) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
   flex-shrink: 0 !important;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06), inset 0 1px 0 #FFFFFF !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
   min-height: 28px !important;
   box-sizing: border-box !important;
 }
@@ -296,7 +296,7 @@ body.mv-theme-light .mv-brand {
   transform: none !important;
 }
 
-/* Tactile High-Contrast Icon Button (30px White Neomorphism) */
+/* Tactile High-Contrast Icon Button (30px) */
 .mv-btn {
   background: var(--pill-bg) !important;
   border: 1px solid var(--pill-border) !important;
@@ -321,11 +321,11 @@ body.mv-theme-light .mv-brand {
   touch-action: manipulation !important;
 }
 .mv-btn:hover {
-  background: #FFFFFF !important;
-  border-color: #0071E3 !important;
-  color: #0071E3 !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: #FFFFFF !important;
   transform: translateY(-0.75px) !important;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-btn:hover,
 body.mv-theme-light .mv-btn:hover {
@@ -337,7 +337,7 @@ body.mv-theme-light .mv-btn:hover {
 .mv-btn:active {
   transform: scale(0.96) translateY(0.5px) !important;
   transition-duration: 75ms !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20) !important;
 }
 .mv-btn.mv-btn-active {
   background: var(--pill-active-bg) !important;
@@ -347,13 +347,20 @@ body.mv-theme-light .mv-btn:hover {
   box-shadow: var(--pill-active-shadow) !important;
 }
 .mv-btn.mv-btn-active:hover {
+  background: rgba(0, 113, 227, 0.32) !important;
+  color: #93C5FD !important;
+  border-color: #60A5FA !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(147, 197, 253, 0.40) !important;
+}
+#mv-studio-overlay.mv-theme-light .mv-btn.mv-btn-active:hover,
+body.mv-theme-light .mv-btn.mv-btn-active:hover {
   background: #FFFFFF !important;
   color: var(--apple-blue) !important;
   border-color: var(--apple-blue) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF !important;
 }
 
-/* Close Pill (White Neomorphism with Crimson Warning) */
+/* Close Pill */
 .mv-btn-close {
   background: var(--btn-close-bg) !important;
   border: 1px solid var(--btn-close-border) !important;
@@ -398,7 +405,7 @@ body.mv-theme-light .mv-btn:hover {
   width: 5px !important;
   height: 5px !important;
   border-radius: 9999px !important;
-  background: #0071E3 !important;
+  background: #38BDF8 !important;
   display: inline-block !important;
   flex-shrink: 0 !important;
   animation: mv-pulse-beacon 2s ease-in-out infinite !important;
@@ -433,15 +440,21 @@ body.mv-theme-light .mv-dim-dot {
 }
 
 .mv-btn.mv-btn-active .mv-kbd {
+  background: rgba(0, 113, 227, 0.20) !important;
+  border-color: rgba(96, 165, 250, 0.35) !important;
+  color: #93C5FD !important;
+}
+#mv-studio-overlay.mv-theme-light .mv-btn.mv-btn-active .mv-kbd,
+body.mv-theme-light .mv-btn.mv-btn-active .mv-kbd {
   background: rgba(0, 113, 227, 0.08) !important;
   border-color: rgba(0, 113, 227, 0.25) !important;
   color: #0071E3 !important;
 }
 
 .mv-btn-close .mv-kbd {
-  background: #FEE2E2 !important;
-  border-color: rgba(239, 68, 68, 0.30) !important;
-  color: #DC2626 !important;
+  background: rgba(220, 38, 38, 0.25) !important;
+  border-color: rgba(248, 113, 113, 0.30) !important;
+  color: #FCA5A5 !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-btn-close .mv-kbd,
 body.mv-theme-light .mv-btn-close .mv-kbd {
