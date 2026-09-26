@@ -46,7 +46,8 @@
 
   function safeGet(key, fallback) {
     try {
-      return localStorage.getItem(key) || fallback;
+      const val = localStorage.getItem(key);
+      return val !== null ? val : fallback;
     } catch (_) {
       return fallback;
     }
@@ -54,7 +55,12 @@
 
   function safeSet(key, val) {
     try {
-      safeSet(key, val);
+      localStorage.setItem(key, String(val));
+    } catch (_) {}
+    try {
+      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.set({ [key]: String(val) });
+      }
     } catch (_) {}
   }
 
@@ -69,6 +75,20 @@
     isModalOpen: false,
     activeTab: 'prefs'
   };
+
+  // Sinkronisasi preferensi universal via chrome.storage.local
+  try {
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get(['mv_theme', 'mv_device', 'mv_scale_mode', 'mv_landscape'], (items) => {
+        if (!items) return;
+        if (!themeParam && items.mv_theme) { state.theme = items.mv_theme; try { localStorage.setItem('mv_theme', items.mv_theme); } catch (_) {} }
+        if (!params.get('device') && items.mv_device) { state.activeDeviceKey = items.mv_device; try { localStorage.setItem('mv_device', items.mv_device); } catch (_) {} }
+        if (items.mv_scale_mode) { state.scaleMode = items.mv_scale_mode; try { localStorage.setItem('mv_scale_mode', items.mv_scale_mode); } catch (_) {} }
+        if (items.mv_landscape !== undefined) { state.isLandscape = items.mv_landscape === 'true'; try { localStorage.setItem('mv_landscape', items.mv_landscape); } catch (_) {} }
+        updateChassisView();
+      });
+    }
+  } catch (_) {}
 
   let target = params.get('url');
   if (target && target !== 'about:blank') {
@@ -370,7 +390,7 @@
   }
 
   window.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
 
     if (e.key === 'Escape') {
       if (state.isModalOpen) {
@@ -384,6 +404,9 @@
       }
       return;
     }
+
+    // Abaikan jika modifier Ctrl/Cmd/Alt aktif agar tidak tabrakan dengan Ctrl+R (Reload) atau Ctrl+T (New Tab)
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
 
     if (e.key === ',' || e.key === '<') {
       setModalOpen(!state.isModalOpen);

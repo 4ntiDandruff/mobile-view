@@ -49,7 +49,8 @@
 
   function safeGet(key, fallback) {
     try {
-      return localStorage.getItem(key) || fallback;
+      const val = localStorage.getItem(key);
+      return val !== null ? val : fallback;
     } catch (_) {
       return fallback;
     }
@@ -57,7 +58,12 @@
 
   function safeSet(key, val) {
     try {
-      safeSet(key, val);
+      localStorage.setItem(key, String(val));
+    } catch (_) {}
+    try {
+      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.set({ [key]: String(val) });
+      }
     } catch (_) {}
   }
 
@@ -73,6 +79,22 @@
     isModalOpen: false,
     activeTab: 'prefs'
   };
+
+  // Sinkronisasi preferensi universal lintas-domain via chrome.storage.local
+  try {
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get(['mv_theme', 'mv_device', 'mv_scale_mode', 'mv_landscape'], (items) => {
+        if (!items) return;
+        if (items.mv_theme) { state.theme = items.mv_theme; try { localStorage.setItem('mv_theme', items.mv_theme); } catch (_) {} }
+        if (items.mv_device) { state.activeDeviceKey = items.mv_device; try { localStorage.setItem('mv_device', items.mv_device); } catch (_) {} }
+        if (items.mv_scale_mode) { state.scaleMode = items.mv_scale_mode; try { localStorage.setItem('mv_scale_mode', items.mv_scale_mode); } catch (_) {} }
+        if (items.mv_landscape !== undefined) { state.isLandscape = items.mv_landscape === 'true'; try { localStorage.setItem('mv_landscape', items.mv_landscape); } catch (_) {} }
+        if (document.getElementById('mv-studio-overlay')) {
+          updateChassisView();
+        }
+      });
+    }
+  } catch (_) {}
 
   /**
    * Menghitung zoom scale adaptif agar frame pas dengan monitor
@@ -271,6 +293,11 @@
     state.originalOverflowBody = document.body.style.overflow;
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
+
+    state.activeDeviceKey = safeGet('mv_device', state.activeDeviceKey || 'iphone15pro');
+    state.isLandscape = safeGet('mv_landscape', String(state.isLandscape)) === 'true';
+    state.scaleMode = safeGet('mv_scale_mode', state.scaleMode || 'fit');
+    state.theme = safeGet('mv_theme', state.theme || 'dark');
 
     const overlay = document.createElement('div');
     overlay.id = 'mv-studio-overlay';
@@ -656,7 +683,7 @@
     const overlay = document.getElementById('mv-studio-overlay');
     if (!overlay) return;
 
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
 
     if (e.key === 'Escape') {
       if (state.isModalOpen) {
@@ -666,6 +693,9 @@
       }
       return;
     }
+
+    // Abaikan jika modifier Ctrl/Cmd/Alt aktif agar tidak tabrakan dengan Ctrl+R (Reload) atau Ctrl+T (New Tab)
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
 
     if (e.key === ',' || e.key === '<') {
       setModalOpen(!state.isModalOpen);
