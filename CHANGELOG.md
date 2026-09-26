@@ -16,6 +16,7 @@ Format pencatatan mengacu pada standar *Keep a Changelog* dengan prinsip pelapor
 * **Paket Lengkap Ikon Flat Minimalis**: Regenerasi 11 aset ikon dan favicon resolusi tinggi (16px hingga 512px) berbasis palet Solid Electric Blue (`#0071E3`) dan aksen Electric Cyan (`#64D2FF`) menggunakan mesin C-native `zero-bloat-icon-favicon-skill`.
 
 ### Diubah (Changed)
+* **Harmonisasi Kapsul Brand Topbar (Zero-Blue Solid Matte)**: Mengganti warna teks, latar, dan border biru/cyan pada kapsul MOBILE VIEW (`.mv-brand`) di mode dark menjadi palet Solid Matte Workstation netral (`#1E2433`, border `#2F384C`, teks `#E2E8F0`), menjadikannya 100% seragam dengan tombol kontrol studio lainnya tanpa pendaran warna yang mengganggu fokus kerja teknisi.
 * **Bingkai Smartphone Selalu Aktif (*Always-On*)**: Tombol saklar frame `[F]` di topbar dieliminasi secara permanen, memanfaatkan ruang kosong topbar untuk tombol Pengaturan yang lebih fungsional.
 * **Transisi CSS Terisolasi**: Mengganti seluruh sintaks boros `transition: all` menjadi deklarasi properti terarah (`background-color`, `border-color`, `color`, `transform`, `box-shadow`) untuk memangkas siklus repaint GPU.
 * **Tipografi & Wrapping Taktil**: Menerapkan `text-wrap: balance` pada judul modal dan `text-wrap: pretty` pada seluruh teks deskripsi untuk mencegah kata menggantung (*orphan words*).

@@ -217,31 +217,31 @@ body.mv-theme-light #mv-topbar {
   gap: 5px !important;
 }
 
-/* Liquid Pool Brand Capsule */
+/* Solid Matte Workstation Brand Capsule (Zero-Blue Harmonic) */
 .mv-brand {
   display: flex !important;
   align-items: center !important;
   gap: 5px !important;
-  color: #38BDF8 !important;
+  color: var(--pill-text) !important;
   font-weight: 700 !important;
   font-size: 11px !important;
   letter-spacing: 0.4px !important;
   text-transform: uppercase !important;
   padding: 3.5px 9px !important;
   border-radius: 8px !important;
-  background: #111A29 !important;
-  border: 1px solid #1E3A5F !important;
+  background: var(--pill-bg) !important;
+  border: 1px solid var(--pill-border) !important;
   flex-shrink: 0 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.30) !important;
+  box-shadow: var(--pill-shadow) !important;
   min-height: 28px !important;
   box-sizing: border-box !important;
 }
 #mv-studio-overlay.mv-theme-light .mv-brand,
 body.mv-theme-light .mv-brand {
-  color: #0F172A !important;
-  background: #FFFFFF !important;
-  border-color: rgba(0, 0, 0, 0.10) !important;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04), inset 0 1px 0 #FFFFFF !important;
+  color: var(--pill-text) !important;
+  background: var(--pill-bg) !important;
+  border-color: var(--pill-border) !important;
+  box-shadow: var(--pill-shadow) !important;
 }
 
 /* Recessed Groove Track (Concentric Radius: 9px) */
