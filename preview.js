@@ -69,6 +69,7 @@
     isLandscape: safeGet('mv_landscape', 'false') === 'true',
     scaleMode: safeGet('mv_scale_mode', 'fit'),
     showFrame: true, // Bingkai fisik smartphone selalu aktif
+    touchMode: safeGet('mv_touch_mode', 'true') === 'true',
     theme: (themeParam === 'light' || themeParam === 'dark') ? themeParam : (safeGet('mv_theme', 'dark')),
     zoom: 1.0,
     currentUrl: 'https://google.com',
@@ -79,12 +80,13 @@
   // Sinkronisasi preferensi universal via chrome.storage.local
   try {
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.get(['mv_theme', 'mv_device', 'mv_scale_mode', 'mv_landscape'], (items) => {
+      chrome.storage.local.get(['mv_theme', 'mv_device', 'mv_scale_mode', 'mv_landscape', 'mv_touch_mode'], (items) => {
         if (!items) return;
         if (!themeParam && items.mv_theme) { state.theme = items.mv_theme; try { localStorage.setItem('mv_theme', items.mv_theme); } catch (_) {} }
         if (!params.get('device') && items.mv_device) { state.activeDeviceKey = items.mv_device; try { localStorage.setItem('mv_device', items.mv_device); } catch (_) {} }
         if (items.mv_scale_mode) { state.scaleMode = items.mv_scale_mode; try { localStorage.setItem('mv_scale_mode', items.mv_scale_mode); } catch (_) {} }
         if (items.mv_landscape !== undefined) { state.isLandscape = items.mv_landscape === 'true'; try { localStorage.setItem('mv_landscape', items.mv_landscape); } catch (_) {} }
+        if (items.mv_touch_mode !== undefined) { state.touchMode = items.mv_touch_mode === 'true'; try { localStorage.setItem('mv_touch_mode', items.mv_touch_mode); } catch (_) {} }
         updateChassisView();
       });
     }
@@ -139,7 +141,11 @@
       screenContainer.style.width = screenW + 'px';
       screenContainer.style.height = screenH + 'px';
       screenContainer.style.borderRadius = dev.radius + 'px';
+      screenContainer.classList.toggle('mv-touch-active', state.touchMode);
     }
+
+    const touchBtn = document.getElementById('mv-touch-btn');
+    if (touchBtn) touchBtn.classList.toggle('mv-btn-active', state.touchMode);
 
     if (state.scaleMode === 'fit') {
       state.zoom = calculateFitScale(frameW, frameH);
@@ -217,6 +223,10 @@
       const isLand = btn.getAttribute('data-val') === 'landscape';
       btn.classList.toggle('mv-active', isLand === state.isLandscape);
     });
+    document.querySelectorAll('.mv-opt-touch').forEach(btn => {
+      const isTouch = btn.getAttribute('data-val') === 'true';
+      btn.classList.toggle('mv-active', isTouch === state.touchMode);
+    });
   }
 
   function setModalOpen(isOpen) {
@@ -291,6 +301,15 @@
     themeBtn.addEventListener('click', () => {
       state.theme = state.theme === 'light' ? 'dark' : 'light';
       safeSet('mv_theme', state.theme);
+      updateChassisView();
+    });
+  }
+
+  const touchBtn = document.getElementById('mv-touch-btn');
+  if (touchBtn) {
+    touchBtn.addEventListener('click', () => {
+      state.touchMode = !state.touchMode;
+      safeSet('mv_touch_mode', state.touchMode);
       updateChassisView();
     });
   }
@@ -381,6 +400,15 @@
     });
   });
 
+  document.querySelectorAll('.mv-opt-touch').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const val = e.currentTarget.getAttribute('data-val') === 'true';
+      state.touchMode = val;
+      safeSet('mv_touch_mode', val);
+      updateChassisView();
+    });
+  });
+
   const closeBtn = document.getElementById('mv-close-btn');
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
@@ -413,6 +441,10 @@
 
     if (e.key === ',' || e.key === '<') {
       setModalOpen(!state.isModalOpen);
+    } else if (e.key === 's' || e.key === 'S') {
+      state.touchMode = !state.touchMode;
+      safeSet('mv_touch_mode', state.touchMode);
+      updateChassisView();
     } else if (e.key === 'r' || e.key === 'R') {
       state.isLandscape = !state.isLandscape;
       safeSet('mv_landscape', state.isLandscape);

@@ -6,6 +6,17 @@ Format pencatatan mengacu pada standar *Keep a Changelog* dengan prinsip pelapor
 
 ---
 
+## [1.16.0] - 2026-10-25
+
+### Ditambahkan (Added)
+* **Simulasi Kursor Touchscreen Berbasis Vektor SVG**: Mengubah kursor standar panah desktop menjadi lingkaran sentuh semi-transparan (*translucent touch ring circle*) presisi 24x24 px dengan filter bayangan optik kontras tinggi pada area layar smartphone.
+* **Umpan Balik Taktil Tekanan Jari (*Active Press & Ripple Effect*)**: Saat mouse ditekan (*mousedown / active*), kursor bertransformasi secara dinamis menjadi lingkaran biru Apple dengan diameter membesar dan pendaran titik sentuh, disertai animasi gelembung gelombang (*touch ripple bubble*) yang merekah ke luar pada koordinat sentuhan.
+* **Saklar Topbar & Pintasan Keyboard Sentuh (`S`)**: Menambahkan tombol saklar `[Touch]` di bilah atas studio (`#mv-touch-btn`) dan pintasan keyboard satu tombol `S` (atau `s`) untuk mengaktifkan/menonaktifkan simulasi kursor sentuh secara instan (*zero-touch toggle*).
+* **Ekspansi Content Script Subframe (`all_frames: true`)**: Menginjeksikan styling kursor touchscreen dan pendengar pointerdown langsung ke dalam subframe iframe, memastikan halaman internal web maupun localhost tetap menampilkan kursor sentuh mobile tanpa terblokir isolasi frame.
+* **Panel Preferensi Touchscreen Terpadu**: Opsi setelan `Simulasi Touchscreen` (Aktif / Nonaktif) di dalam modal Preferensi Bawaan dengan auto-save instan ke `localStorage` dan sinkronisasi lintas-domain via `chrome.storage.local`.
+
+---
+
 ## [1.15.1] - 2026-09-26
 
 ### Diperbaiki (Fixed)

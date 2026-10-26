@@ -5,6 +5,287 @@
   if (window.__mv_studio_loaded) return;
   window.__mv_studio_loaded = true;
 
+  // Jika berjalan di dalam subframe (iframe mobile-view), aktifkan simulasi touchscreen & drag-to-scroll penuh
+  if (window !== window.top) {
+    function initSubframeTouch() {
+      if (document.getElementById("mv-subframe-touch-style")) return;
+
+      // 1. Emulasi API Touchscreen Native Browser
+      try {
+        if (!('ontouchstart' in window)) {
+          window.ontouchstart = null;
+        }
+        if (!('ontouchend' in window)) {
+          window.ontouchend = null;
+        }
+        if (!('ontouchmove' in window)) {
+          window.ontouchmove = null;
+        }
+        if (!('ontouchcancel' in window)) {
+          window.ontouchcancel = null;
+        }
+        if (navigator.maxTouchPoints === 0 || navigator.maxTouchPoints === undefined) {
+          Object.defineProperty(navigator, 'maxTouchPoints', {
+            get: () => 5,
+            configurable: true
+          });
+        }
+      } catch (_) {}
+
+      // 2. Injeksi Kursor Lingkaran Sentuh & Feedback Visual
+      const s = document.createElement("style");
+      s.id = "mv-subframe-touch-style";
+      s.textContent = `
+        *, html, body {
+          cursor: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZGVmcz48ZmlsdGVyIGlkPSJtdi1zIiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMSIgc3RkRGV2aWF0aW9uPSIxIiBmbG9vZC1jb2xvcj0iIzAwMCIgZmxvb2Qtb3BhY2l0eT0iMC40NSIvPjwvZmlsdGVyPjwvZGVmcz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI5IiBmaWxsPSJyZ2JhKDYwLDYwLDY3LDAuMjgpIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS44IiBmaWx0ZXI9InVybCgjbXYtcykiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIzLjIiIGZpbGw9IiNmZmZmZmYiIGZpbHRlcj0idXJsKCNtdi1zKSIvPjwvc3ZnPg==") 12 12, auto !important;
+          user-select: none !important;
+          -webkit-user-select: none !important;
+        }
+        *:active, html:active, body:active {
+          cursor: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZGVmcz48ZmlsdGVyIGlkPSJtdi1zIiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMSIgc3RkRGV2aWF0aW9uPSIxIiBmbG9vZC1jb2xvcj0iIzAwMCIgZmxvb2Qtb3BhY2l0eT0iMC41Ii8+PC9maWx0ZXI+PC9kZWZzPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIiBmaWxsPSJyZ2JhKDAsMTEzLDIyNywwLjM4KSIgc3Ryb2tlPSIjMDA3MUUzIiBzdHJva2Utd2lkdGg9IjIuMiIgZmlsdGVyPSJ1cmwoI212LXMpIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iI2ZmZmZmZiIgZmlsdGVyPSJ1cmwoI212LXMpIi8+PC9zdmc+") 12 12, auto !important;
+        }
+        input, textarea, select, [contenteditable="true"] {
+          user-select: text !important;
+          -webkit-user-select: text !important;
+          cursor: text !important;
+        }
+        .mv-subframe-ripple {
+          position: fixed !important;
+          pointer-events: none !important;
+          width: 32px !important;
+          height: 32px !important;
+          border-radius: 50% !important;
+          background: rgba(0, 113, 227, 0.22) !important;
+          border: 1.5px solid rgba(0, 113, 227, 0.75) !important;
+          transform: translate(-50%, -50%) scale(0.6) !important;
+          opacity: 0.9 !important;
+          z-index: 2147483647 !important;
+          transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease-out !important;
+        }
+        .mv-subframe-ripple.mv-expand {
+          transform: translate(-50%, -50%) scale(1.6) !important;
+          opacity: 0 !important;
+        }
+      `;
+      (document.head || document.documentElement).appendChild(s);
+
+      // State Mesin Simulasi Sentuhan Fisik Mobile
+      let isDown = false;
+      let hasDragged = false;
+      let startX = 0, startY = 0;
+      let lastX = 0, lastY = 0;
+      let lastTime = 0;
+      let velX = 0, velY = 0;
+      let momentumId = null;
+      let activeScrollContainer = null;
+      const DRAG_THRESHOLD = 4; // px
+
+      // Dispatcher TouchEvent Asli Browser (touchstart, touchmove, touchend)
+      let touchIdentifier = 1;
+      function createAndDispatchTouchEvent(type, pointerEvent, targetOverride) {
+        if (typeof Touch === 'undefined' || typeof TouchEvent === 'undefined') return;
+        try {
+          const target = targetOverride || pointerEvent.target || document.body;
+          const touch = new Touch({
+            identifier: touchIdentifier,
+            target: target,
+            clientX: pointerEvent.clientX,
+            clientY: pointerEvent.clientY,
+            screenX: pointerEvent.screenX || pointerEvent.clientX,
+            screenY: pointerEvent.screenY || pointerEvent.clientY,
+            pageX: pointerEvent.pageX !== undefined ? pointerEvent.pageX : pointerEvent.clientX + window.scrollX,
+            pageY: pointerEvent.pageY !== undefined ? pointerEvent.pageY : pointerEvent.clientY + window.scrollY,
+            radiusX: 12,
+            radiusY: 12,
+            rotationAngle: 0,
+            force: type === 'touchend' ? 0 : 1.0
+          });
+
+          const touchesList = type === 'touchend' ? [] : [touch];
+          const changedTouchesList = [touch];
+
+          const touchEv = new TouchEvent(type, {
+            bubbles: true,
+            cancelable: true,
+            composed: true,
+            view: window,
+            touches: touchesList,
+            targetTouches: touchesList,
+            changedTouches: changedTouchesList
+          });
+
+          target.dispatchEvent(touchEv);
+        } catch (_) {}
+      }
+
+      function isScrollableElement(el, isY) {
+        if (!el || el === document || el === window) return false;
+        try {
+          const style = window.getComputedStyle(el);
+          const ov = isY ? style.overflowY : style.overflowX;
+          if (ov === "auto" || ov === "scroll" || ov === "overlay") {
+            if (isY && el.scrollHeight > el.clientHeight) return true;
+            if (!isY && el.scrollWidth > el.clientWidth) return true;
+          }
+        } catch (_) {}
+        return false;
+      }
+
+      function resolveScrollTarget(targetEl, totalDx, totalDy) {
+        let curr = targetEl;
+        const preferY = Math.abs(totalDy) >= Math.abs(totalDx);
+        while (curr && curr !== document.body && curr !== document.documentElement) {
+          if (preferY && isScrollableElement(curr, true)) return curr;
+          if (!preferY && isScrollableElement(curr, false)) return curr;
+          curr = curr.parentElement;
+        }
+        return window;
+      }
+
+      function performScroll(container, deltaX, deltaY) {
+        if (!container) return;
+        if (container === window) {
+          window.scrollBy({ left: deltaX, top: deltaY, behavior: "instant" });
+        } else {
+          container.scrollLeft += deltaX;
+          container.scrollTop += deltaY;
+        }
+      }
+
+      function cancelMomentum() {
+        if (momentumId) {
+          cancelAnimationFrame(momentumId);
+          momentumId = null;
+        }
+      }
+
+      // Pointerdown / Mousedown Touch Hook
+      let initialTouchTarget = null;
+      window.addEventListener("pointerdown", (e) => {
+        if (e.button !== 0 || e.ctrlKey || e.metaKey || e.altKey) return;
+        const tag = (e.target && e.target.tagName) || "";
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (e.target && e.target.isContentEditable)) return;
+
+        cancelMomentum();
+        isDown = true;
+        hasDragged = false;
+        touchIdentifier++;
+        initialTouchTarget = e.target;
+        startX = e.clientX;
+        startY = e.clientY;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        lastTime = performance.now();
+        velX = 0;
+        velY = 0;
+        activeScrollContainer = null;
+
+        // Dispatch touchstart asli ke elemen target
+        createAndDispatchTouchEvent('touchstart', e, initialTouchTarget);
+
+        // Render Touch Ripple
+        try {
+          const rip = document.createElement("div");
+          rip.className = "mv-subframe-ripple";
+          rip.style.left = e.clientX + "px";
+          rip.style.top = e.clientY + "px";
+          (document.body || document.documentElement).appendChild(rip);
+          requestAnimationFrame(() => rip.classList.add("mv-expand"));
+          setTimeout(() => rip.remove(), 380);
+        } catch (_) {}
+      }, { capture: true, passive: true });
+
+      // Pointermove / Mousemove Drag-Scroll Physics
+      window.addEventListener("pointermove", (e) => {
+        if (!isDown) return;
+
+        // Dispatch touchmove asli
+        createAndDispatchTouchEvent('touchmove', e, initialTouchTarget || e.target);
+
+        const currentX = e.clientX;
+        const currentY = e.clientY;
+        const currentTime = performance.now();
+        const totalDx = currentX - startX;
+        const totalDy = currentY - startY;
+
+        if (!hasDragged) {
+          if (Math.hypot(totalDx, totalDy) > DRAG_THRESHOLD) {
+            hasDragged = true;
+            activeScrollContainer = resolveScrollTarget(e.target, totalDx, totalDy);
+          } else {
+            return;
+          }
+        }
+
+        // Pada smartphone, menarik ke atas (currentY < lastY) menggeser halaman ke bawah (scrollTop bertambah)
+        const stepDx = -(currentX - lastX);
+        const stepDy = -(currentY - lastY);
+
+        const dt = Math.max(1, currentTime - lastTime);
+        velX = stepDx / dt;
+        velY = stepDy / dt;
+
+        lastX = currentX;
+        lastY = currentY;
+        lastTime = currentTime;
+
+        if (activeScrollContainer) {
+          performScroll(activeScrollContainer, stepDx, stepDy);
+        }
+      }, { capture: true, passive: true });
+
+      // Pointerup / Mouseup Touch Release & Momentum Decay
+      const handlePointerUp = (e) => {
+        if (!isDown) return;
+        isDown = false;
+
+        // Dispatch touchend asli
+        createAndDispatchTouchEvent('touchend', e, initialTouchTarget || e.target);
+        initialTouchTarget = null;
+
+        if (hasDragged) {
+          // Cegah eksekusi click / navigasi link yang tidak disengaja saat drag selesai
+          window.addEventListener("click", function suppressClick(ev) {
+            ev.stopPropagation();
+            ev.preventDefault();
+            window.removeEventListener("click", suppressClick, true);
+          }, { capture: true, once: true });
+
+          // Inersia Fisik Touch Momentum
+          const target = activeScrollContainer;
+          let currentVelX = velX * 16;
+          let currentVelY = velY * 16;
+          const FRICTION = 0.92;
+
+          function runMomentumStep() {
+            if (Math.abs(currentVelX) < 0.25 && Math.abs(currentVelY) < 0.25) {
+              cancelMomentum();
+              return;
+            }
+            performScroll(target, currentVelX, currentVelY);
+            currentVelX *= FRICTION;
+            currentVelY *= FRICTION;
+            momentumId = requestAnimationFrame(runMomentumStep);
+          }
+
+          if (Math.abs(currentVelX) > 1.2 || Math.abs(currentVelY) > 1.2) {
+            cancelMomentum();
+            momentumId = requestAnimationFrame(runMomentumStep);
+          }
+        }
+      };
+
+      window.addEventListener("pointerup", handlePointerUp, { capture: true });
+      window.addEventListener("pointercancel", handlePointerUp, { capture: true });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initSubframeTouch);
+    } else {
+      initSubframeTouch();
+    }
+    return;
+  }
   /**
    * Database Perangkat Smartphone Fisik (1:1 Hardware Scale)
    */
@@ -72,6 +353,7 @@
     isLandscape: safeGet('mv_landscape', 'false') === 'true',
     scaleMode: safeGet('mv_scale_mode', 'fit'),
     showFrame: true, // Frame fisik smartphone selalu aktif
+    touchMode: safeGet('mv_touch_mode', 'true') === 'true',
     theme: safeGet('mv_theme', 'dark'),
     zoom: 1.0,
     originalOverflowHtml: '',
@@ -83,12 +365,13 @@
   // Sinkronisasi preferensi universal lintas-domain via chrome.storage.local
   try {
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.get(['mv_theme', 'mv_device', 'mv_scale_mode', 'mv_landscape'], (items) => {
+      chrome.storage.local.get(['mv_theme', 'mv_device', 'mv_scale_mode', 'mv_landscape', 'mv_touch_mode'], (items) => {
         if (!items) return;
         if (items.mv_theme) { state.theme = items.mv_theme; try { localStorage.setItem('mv_theme', items.mv_theme); } catch (_) {} }
         if (items.mv_device) { state.activeDeviceKey = items.mv_device; try { localStorage.setItem('mv_device', items.mv_device); } catch (_) {} }
         if (items.mv_scale_mode) { state.scaleMode = items.mv_scale_mode; try { localStorage.setItem('mv_scale_mode', items.mv_scale_mode); } catch (_) {} }
         if (items.mv_landscape !== undefined) { state.isLandscape = items.mv_landscape === 'true'; try { localStorage.setItem('mv_landscape', items.mv_landscape); } catch (_) {} }
+        if (items.mv_touch_mode !== undefined) { state.touchMode = items.mv_touch_mode === 'true'; try { localStorage.setItem('mv_touch_mode', items.mv_touch_mode); } catch (_) {} }
         if (document.getElementById('mv-studio-overlay')) {
           updateChassisView();
         }
@@ -200,6 +483,12 @@
       themeBtn.innerHTML = (state.theme === 'light' ? moonIcon : sunIcon) + '<span class="mv-kbd">T</span>';
     }
 
+
+    // Touchscreen Simulator Mode
+    const touchBtn = document.getElementById('mv-touch-btn');
+    if (touchBtn) touchBtn.classList.toggle('mv-btn-active', state.touchMode);
+    if (screenContainer) screenContainer.classList.toggle('mv-touch-active', state.touchMode);
+
     // 5. Update Segmented Zoom Tabs
     const fitBtn = document.getElementById('mv-fit-btn');
     const z100Btn = document.getElementById('mv-z100-btn');
@@ -233,6 +522,10 @@
     document.querySelectorAll('.mv-opt-orient').forEach(btn => {
       const isLand = btn.getAttribute('data-val') === 'landscape';
       btn.classList.toggle('mv-active', isLand === state.isLandscape);
+    });
+    document.querySelectorAll('.mv-opt-touch').forEach(btn => {
+      const isTouch = btn.getAttribute('data-val') === 'true';
+      btn.classList.toggle('mv-active', isTouch === state.touchMode);
     });
   }
 
@@ -340,6 +633,15 @@
             </svg>
             <span>Putar</span>
             <span class="mv-kbd">R</span>
+          </button>
+
+          <button id="mv-touch-btn" class="mv-btn ${state.touchMode ? 'mv-btn-active' : ''}" title="Simulasi Touchscreen (Tekan S)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="8"/>
+              <circle cx="12" cy="12" r="3" fill="currentColor"/>
+            </svg>
+            <span>Touch</span>
+            <span class="mv-kbd">S</span>
           </button>
 
           <button id="mv-reload-btn" class="mv-btn" title="Segarkan Layar (Ctrl+R)">
@@ -470,6 +772,17 @@
               </div>
             </div>
 
+            <div class="mv-setting-row">
+              <div class="mv-setting-label">
+                <span class="mv-setting-name">Simulasi Touchscreen</span>
+                <span class="mv-setting-desc">Kursor lingkaran sentuh & gestur mobile</span>
+              </div>
+              <div class="mv-neo-groove">
+                <button class="mv-tab-pill mv-opt-touch ${state.touchMode ? 'mv-active' : ''}" data-val="true">Aktif</button>
+                <button class="mv-tab-pill mv-opt-touch ${!state.touchMode ? 'mv-active' : ''}" data-val="false">Nonaktif</button>
+              </div>
+            </div>
+
             <div class="mv-modal-footer">
               <span class="mv-save-badge">Perubahan tersimpan otomatis</span>
             </div>
@@ -486,7 +799,7 @@
                   </svg>
                 </div>
                 <div>
-                  <div class="mv-about-name">Mobile View Studio v1.15.1</div>
+                  <div class="mv-about-name">Mobile View Studio v1.16.0</div>
                   <div class="mv-about-sub">Zero-Bloat Device Frame Studio by Megapass Intra Solusindo</div>
                 </div>
               </div>
@@ -511,7 +824,7 @@
               <div class="mv-changelog-title">Catatan Rilis (Changelog Rekam Medis)</div>
               <div class="mv-changelog-list">
                 <div class="mv-log-item">
-                  <span class="mv-log-badge">v1.15.1</span>
+                  <span class="mv-log-badge">v1.16.0</span>
                   <span class="mv-log-text">Perbaikan fatal crash totalW, responsivitas bilah atas non-fullscreen, kalibrasi fit-scale anti-terpotong, dan fail-safe shortcut multi-window.</span>
                 </div>
                 <div class="mv-log-item">
@@ -562,6 +875,15 @@
       safeSet('mv_landscape', state.isLandscape);
       updateChassisView();
     });
+
+    const touchBtn = document.getElementById('mv-touch-btn');
+    if (touchBtn) {
+      touchBtn.addEventListener('click', () => {
+        state.touchMode = !state.touchMode;
+        safeSet('mv_touch_mode', state.touchMode);
+        updateChassisView();
+      });
+    }
 
     document.getElementById('mv-fit-btn').addEventListener('click', () => {
       state.scaleMode = 'fit';
@@ -660,6 +982,15 @@
       });
     });
 
+    document.querySelectorAll('.mv-opt-touch').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const val = e.currentTarget.getAttribute('data-val') === 'true';
+        state.touchMode = val;
+        safeSet('mv_touch_mode', val);
+        updateChassisView();
+      });
+    });
+
     document.getElementById('mv-close-btn').addEventListener('click', () => {
       closeMobileView();
     });
@@ -701,6 +1032,10 @@
 
     if (e.key === ',' || e.key === '<') {
       setModalOpen(!state.isModalOpen);
+    } else if (e.key === 's' || e.key === 'S') {
+      state.touchMode = !state.touchMode;
+      safeSet('mv_touch_mode', state.touchMode);
+      updateChassisView();
     } else if (e.key === 'r' || e.key === 'R') {
       state.isLandscape = !state.isLandscape;
       safeSet('mv_landscape', state.isLandscape);

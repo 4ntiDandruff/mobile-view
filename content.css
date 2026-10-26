@@ -1122,3 +1122,36 @@ body.mv-theme-light .mv-log-text {
     display: none !important;
   }
 }
+
+/* ========================================================
+   SIMULASI TOUCHSCREEN CURSOR & GESTUR SENTUH
+   ======================================================== */
+.mv-touch-active,
+.mv-touch-active * {
+  cursor: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZGVmcz48ZmlsdGVyIGlkPSJtdi1zIiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMSIgc3RkRGV2aWF0aW9uPSIxIiBmbG9vZC1jb2xvcj0iIzAwMCIgZmxvb2Qtb3BhY2l0eT0iMC40NSIvPjwvZmlsdGVyPjwvZGVmcz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI5IiBmaWxsPSJyZ2JhKDYwLDYwLDY3LDAuMjgpIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS44IiBmaWx0ZXI9InVybCgjbXYtcykiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIzLjIiIGZpbGw9IiNmZmZmZmYiIGZpbHRlcj0idXJsKCNtdi1zKSIvPjwvc3ZnPg==") 12 12, auto !important;
+}
+
+.mv-touch-active:active,
+.mv-touch-active *:active {
+  cursor: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZGVmcz48ZmlsdGVyIGlkPSJtdi1zIiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj48ZmVEcm9wU2hhZG93IGR4PSIwIiBkeT0iMSIgc3RkRGV2aWF0aW9uPSIxIiBmbG9vZC1jb2xvcj0iIzAwMCIgZmxvb2Qtb3BhY2l0eT0iMC41Ii8+PC9maWx0ZXI+PC9kZWZzPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIiBmaWxsPSJyZ2JhKDAsMTEzLDIyNywwLjM4KSIgc3Ryb2tlPSIjMDA3MUUzIiBzdHJva2Utd2lkdGg9IjIuMiIgZmlsdGVyPSJ1cmwoI212LXMpIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iI2ZmZmZmZiIgZmlsdGVyPSJ1cmwoI212LXMpIi8+PC9zdmc+") 12 12, auto !important;
+}
+
+/* Touch Ring Feedback Bubble */
+.mv-touch-ripple {
+  position: absolute !important;
+  pointer-events: none !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: rgba(0, 113, 227, 0.22) !important;
+  border: 1.5px solid rgba(0, 113, 227, 0.75) !important;
+  transform: translate(-50%, -50%) scale(0.6) !important;
+  opacity: 0.9 !important;
+  z-index: 2147483640 !important;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease-out !important;
+}
+
+.mv-touch-ripple.mv-touch-ripple-expand {
+  transform: translate(-50%, -50%) scale(1.6) !important;
+  opacity: 0 !important;
+}

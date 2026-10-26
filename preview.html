@@ -60,6 +60,16 @@
         <span class="mv-kbd">R</span>
       </button>
 
+      <!-- Touch Simulation Toggle -->
+      <button id="mv-touch-btn" class="mv-btn mv-btn-active" title="Simulasi Touchscreen (Tekan S)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="12" cy="12" r="8"/>
+          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+        </svg>
+        <span>Touch</span>
+        <span class="mv-kbd">S</span>
+      </button>
+
       <!-- Reload Button -->
       <button id="mv-reload-btn" class="mv-btn" title="Segarkan Layar (Ctrl+R)">
         <svg id="mv-reload-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -197,6 +207,18 @@
           </div>
         </div>
 
+
+        <div class="mv-setting-row">
+          <div class="mv-setting-label">
+            <span class="mv-setting-name">Simulasi Touchscreen</span>
+            <span class="mv-setting-desc">Kursor lingkaran sentuh & gestur mobile</span>
+          </div>
+          <div class="mv-neo-groove">
+            <button class="mv-tab-pill mv-opt-touch mv-active" data-val="true">Aktif</button>
+            <button class="mv-tab-pill mv-opt-touch" data-val="false">Nonaktif</button>
+          </div>
+        </div>
+
         <div class="mv-modal-footer">
           <span class="mv-save-badge">Perubahan tersimpan otomatis</span>
         </div>
@@ -213,7 +235,7 @@
               </svg>
             </div>
             <div>
-              <div class="mv-about-name">Mobile View Studio v1.15.1</div>
+              <div class="mv-about-name">Mobile View Studio v1.16.0</div>
               <div class="mv-about-sub">Zero-Bloat Device Frame Studio by Megapass Intra Solusindo</div>
             </div>
           </div>
@@ -238,7 +260,7 @@
           <div class="mv-changelog-title">Catatan Rilis (Changelog Rekam Medis)</div>
           <div class="mv-changelog-list">
             <div class="mv-log-item">
-              <span class="mv-log-badge">v1.15.1</span>
+              <span class="mv-log-badge">v1.16.0</span>
               <span class="mv-log-text">Perbaikan fatal crash totalW, responsivitas bilah atas non-fullscreen, kalibrasi fit-scale anti-terpotong, dan fail-safe shortcut multi-window.</span>
             </div>
             <div class="mv-log-item">
